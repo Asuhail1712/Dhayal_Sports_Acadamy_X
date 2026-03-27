@@ -36,7 +36,7 @@ Vercel settings:
 - Framework Preset: `Vite`
 - Root Directory: `artifacts/badminton-club`
 - Build Command: `pnpm build`
-- Output Directory: `dist/public`
+- Output Directory: `dist`
 
 Required environment variable in Vercel:
 
