@@ -74,7 +74,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full glass-panel border-primary/30"
+          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full hero-glass border-primary/30"
         >
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
           <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-primary uppercase text-center">High Performance Badminton Academy</span>
@@ -156,7 +156,7 @@ export function Hero() {
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </Button>
-          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full border-white/20 text-white hover:bg-white/10 glass-panel" asChild>
+          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full border-white/20 text-white hover:bg-white/10 hero-glass" asChild>
             <a href="#about">
               About Academy
             </a>
@@ -183,7 +183,7 @@ export function Hero() {
         transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-20 hidden md:block"
       >
-        <div className="glass-panel rounded-2xl py-4 flex items-center justify-evenly divide-x divide-white/10">
+        <div className="hero-glass rounded-2xl py-4 flex items-center justify-evenly divide-x divide-white/10">
           <div className="px-6 text-center w-1/4">
             <div className="text-2xl font-black text-white">5</div>
             <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Guinness Records</div>
