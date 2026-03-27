@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Badminton Club API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: classes
+    description: Classes operations
+  - name: coaches
+    description: Coaches operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /classes:
+    get:
+      operationId: getClasses
+      tags: [classes]
+      summary: Get all classes
+      description: Returns a list of badminton classes
+      responses:
+        "200":
+          description: List of classes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BadmintonClass"
+  /coaches:
+    get:
+      operationId: getCoaches
+      tags: [coaches]
+      summary: Get all coaches
+      description: Returns a list of coaches
+      responses:
+        "200":
+          description: List of coaches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Coach"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    BadmintonClass:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        level:
+          type: string
+          enum: [Beginner, Intermediate, Advanced, Elite]
+        description:
+          type: string
+        schedule:
+          type: string
+        duration:
+          type: string
+        maxStudents:
+          type: integer
+        price:
+          type: number
+        coachName:
+          type: string
+        imageUrl:
+          type: string
+      required:
+        - id
+        - name
+        - level
+        - description
+        - schedule
+        - duration
+        - maxStudents
+        - price
+        - coachName
+    Coach:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        title:
+          type: string
+        bio:
+          type: string
+        specialties:
+          type: array
+          items:
+            type: string
+        experience:
+          type: string
+        achievements:
+          type: array
+          items:
+            type: string
+        imageUrl:
+          type: string
+        rating:
+          type: number
+        studentsCount:
+          type: integer
+      required:
+        - id
+        - name
+        - title
+        - bio
+        - specialties
+        - experience
+        - achievements
+        - rating
+        - studentsCount

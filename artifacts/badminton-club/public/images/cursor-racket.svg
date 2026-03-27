@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <filter id="glow" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.2" flood-color="#00F0FF" flood-opacity="0.8"/>
+    </filter>
+    <linearGradient id="frame" x1="13" y1="6" x2="32" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4FFFF"/>
+      <stop offset="0.42" stop-color="#00F0FF"/>
+      <stop offset="1" stop-color="#00A7C2"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#glow)" transform="rotate(-28 24 24)">
+    <ellipse cx="18" cy="13" rx="7.8" ry="10.2" fill="#0A1620" stroke="url(#frame)" stroke-width="2.2"/>
+    <path d="M18 23.5V33.2" stroke="url(#frame)" stroke-width="3.2" stroke-linecap="round"/>
+    <rect x="15.5" y="32.4" width="5" height="9.4" rx="2.3" fill="#00D8E8" stroke="#DFFFFF" stroke-width="0.9"/>
+    <path d="M13.5 7.4V18.5M16.7 5.6V20.4M19.9 5.6V20.4M23.1 7.4V18.5" stroke="#E8FFFF" stroke-width="0.95" stroke-opacity="0.92"/>
+    <path d="M11.3 9.5H24.7M10.7 13H25.3M11.3 16.5H24.7" stroke="#E8FFFF" stroke-width="0.95" stroke-opacity="0.92"/>
+  </g>
+</svg>

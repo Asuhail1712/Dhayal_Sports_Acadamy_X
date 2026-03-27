@@ -1,0 +1,21 @@
+packages:
+  "framer-motion": "For premium page transitions, scroll animations, and parallax effects"
+  "lucide-react": "For modern UI icons"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to merge tailwind classes without conflicts"
+
+images:
+  - path: "artifacts/badminton-club/public/images/hero-bg.png"
+    description: "Dark, moody, highly abstract background with subtle neon cyan and purple light leaks, suggesting motion and energy, perfect for a premium sports website hero section. Glassmorphism style."
+    aspect_ratio: "16:9"
+  - path: "artifacts/badminton-club/public/images/abstract-shuttlecock.png"
+    description: "A highly stylized, abstract 3D render of a badminton shuttlecock made of frosted glass and glowing neon wireframes floating in dark space."
+    aspect_ratio: "1:1"
+  - path: "artifacts/badminton-club/public/images/court-texture.png"
+    description: "Subtle dark texture resembling a badminton court floor with glowing neon boundary lines fading into darkness."
+    aspect_ratio: "16:9"
+
+notes:
+  - Application uses a single-page architecture with smooth anchor scrolling
+  - Uses @workspace/api-client-react for data fetching
+  - Theme is deeply dark with glassmorphic elements and neon cyan/purple accents
