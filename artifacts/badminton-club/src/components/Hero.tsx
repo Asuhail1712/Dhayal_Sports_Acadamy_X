@@ -14,8 +14,6 @@ export function Hero() {
   const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
   const abstractY = useTransform(scrollYProgress, [0, 1], ["0px", "-240px"]);
   const orbsY = useTransform(scrollYProgress, [0, 1], ["0px", "-120px"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0px", "-150px"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   const words = "POWER PLUS INTELLIGENCE".split(" ");
 
@@ -66,10 +64,7 @@ export function Hero() {
       </motion.div>
 
       {/* Main Content (Layer 4) */}
-      <motion.div 
-        style={{ y: textY, opacity }}
-        className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4"
-      >
+      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -162,7 +157,7 @@ export function Hero() {
             </a>
           </Button>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Layer 2: Abstract Element / Shuttlecock */}
       <motion.div 
