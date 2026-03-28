@@ -1,12 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const partnerLogos = [
+const brandLogos = [
+  {
+    name: 'Yonex',
+    domain: 'yonex.com',
+  },
+  {
+    name: 'Li-Ning',
+    domain: 'lining.com',
+  },
+  {
+    name: 'Victor',
+    domain: 'victorsport.com',
+  },
+  {
+    name: 'Ashaway',
+    domain: 'ashawayusa.com',
+  },
+];
+
+const institutionalPartners = [
   'AJ Stadium',
-  'Yonex',
-  'Li-Ning',
-  'Victor',
-  'Ashaway',
   'Youth Sports Hub',
   'Campus League',
   'Nutrition Lab',
@@ -33,23 +48,47 @@ const highlights = [
   },
 ];
 
-function LogoWordmark({ name, index }: { name: string; index: number }) {
+function BrandLogoTile({
+  item,
+  index,
+}: {
+  item: (typeof brandLogos)[number];
+  index: number;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.4, delay: index * 0.04 }}
-      className="group flex min-h-[92px] items-center justify-center rounded-[1.6rem] border border-white/8 bg-white/[0.02] px-6 py-5 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:bg-white/[0.04]"
+      className="group flex min-h-[88px] items-center justify-center px-6 py-5 text-center transition-all duration-300 hover:-translate-y-1"
     >
-      <div className="space-y-2">
-        <div className="text-[0.6rem] uppercase tracking-[0.34em] text-white/22 transition-colors duration-300 group-hover:text-primary/70">
-          Partner
-        </div>
-        <div className="text-lg md:text-[1.45rem] font-black tracking-[-0.04em] text-white/88 transition-colors duration-300 group-hover:text-white">
-          {name}
+      <div className="flex flex-col items-center gap-3">
+        <img
+          src={`https://logo.clearbit.com/${item.domain}`}
+          alt={item.name}
+          className="h-10 w-auto max-w-[140px] object-contain brightness-110 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:saturate-100 group-hover:invert-0"
+          loading="lazy"
+          referrerPolicy="no-referrer"
+        />
+        <div className="text-[0.72rem] uppercase tracking-[0.28em] text-white/34 transition-colors duration-300 group-hover:text-primary/70">
+          {item.name}
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+function InstitutionChip({ name, index }: { name: string; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.35, delay: index * 0.04 }}
+      className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-white/72 backdrop-blur-xl transition-all duration-300 hover:border-primary/25 hover:bg-white/[0.05] hover:text-white"
+    >
+      {name}
     </motion.div>
   );
 }
@@ -80,10 +119,13 @@ function HighlightCard({
       </div>
 
       <div className="relative flex min-h-[360px] flex-col justify-end p-6 md:min-h-[420px] md:p-8">
-        <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-background/55 px-4 py-2 text-[0.65rem] font-bold uppercase tracking-[0.28em] text-white/75 backdrop-blur-xl">
-          {item.eyebrow}
+        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-white/[0.04] px-4 py-2 backdrop-blur-md">
+          <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+          <span className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+            {item.eyebrow}
+          </span>
         </div>
-        <h3 className="max-w-md text-2xl md:text-4xl font-black leading-[0.96] tracking-[-0.04em] text-white">
+        <h3 className="max-w-md text-2xl md:text-4xl font-black leading-[1.02] tracking-[-0.04em] text-white">
           {item.title}
         </h3>
         <p className="mt-4 max-w-md text-sm md:text-base leading-relaxed text-white/68">
@@ -138,13 +180,21 @@ export function Partners() {
               </h3>
             </div>
             <div className="max-w-sm text-sm leading-relaxed text-white/42 md:text-right">
-              This area is designed for real partner wordmarks or logos, without the boxed listing feel.
+              Real brand marks below, with a lighter institutional strip and no boxed listing feel.
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {partnerLogos.map((logo, index) => (
-              <LogoWordmark key={logo} name={logo} index={index} />
+          <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.015] px-4 py-4 md:px-6 md:py-5">
+            <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2 xl:grid-cols-4">
+              {brandLogos.map((logo, index) => (
+                <BrandLogoTile key={logo.name} item={logo} index={index} />
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3 border-t border-white/8 pt-6">
+            {institutionalPartners.map((partner, index) => (
+              <InstitutionChip key={partner} name={partner} index={index} />
             ))}
           </div>
         </div>
