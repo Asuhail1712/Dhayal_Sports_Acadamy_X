@@ -11,6 +11,9 @@ type EnquiryPayload = {
   message: string;
 };
 
+const defaultGoogleScriptUrl =
+  "https://script.google.com/macros/s/AKfycbzMnkSmEKq_aTEyuKJN4qhVTYbOxI_XlrwZFkyvOtdN50uHCjvTZopHOjoF1Gakhfbvlg/exec";
+
 function readRequiredEnv(name: string): string {
   const value = process.env[name]?.trim();
   if (!value) {
@@ -55,9 +58,42 @@ async function resolveSmtpTarget(host: string): Promise<{
   }
 }
 
+async function sendViaGoogleScript(payload: EnquiryPayload): Promise<void> {
+  const scriptUrl =
+    process.env.GOOGLE_SCRIPT_URL?.trim() || defaultGoogleScriptUrl;
+
+  const response = await fetch(scriptUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: `${payload.firstName} ${payload.lastName}`.trim(),
+      email: payload.email,
+      phone: "",
+      message: payload.message,
+    }),
+  });
+
+  const text = await response.text();
+  const data = text ? (JSON.parse(text) as { status?: string; error?: string }) : {};
+
+  if (!response.ok || data.status === "error") {
+    throw new Error(data.error || "Google Script delivery failed");
+  }
+}
+
 router.post("/enquiries", async (req, res) => {
   try {
     const payload = validatePayload(req.body);
+    const preferGoogleScript = process.env.ENQUIRY_DELIVERY?.trim() !== "smtp";
+
+    if (preferGoogleScript) {
+      await sendViaGoogleScript(payload);
+      res.status(202).json({ ok: true });
+      return;
+    }
+
     const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
     const requestedPort = Number(process.env.SMTP_PORT?.trim() || "465");
     const requestedSecure = process.env.SMTP_SECURE
