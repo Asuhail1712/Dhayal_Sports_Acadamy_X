@@ -1,15 +1,41 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
-const logoBrands = [
-  { name: 'Yonex', domain: 'yonex.com' },
-  { name: 'Victor', domain: 'victorsport.com' },
-  { name: 'Li-Ning', domain: 'lining.com' },
-  { name: 'Ashaway', domain: 'ashawayusa.com' },
-  { name: 'Babolat', domain: 'babolat.com' },
-  { name: 'Wilson', domain: 'wilson.com' },
-  { name: 'Head', domain: 'head.com' },
-  { name: 'Adidas', domain: 'adidas.com' },
+const partnerLogos = [
+  {
+    name: 'Li-Ning',
+    src: '/images/Li-Ning-Logo-Vector.svg-.png',
+    tint: 'bg-[#c80d0d]',
+  },
+  {
+    name: 'Decathlon',
+    src: '/images/decathlon-logo.png',
+    tint: 'bg-[#1d5fb5]',
+  },
+  {
+    name: 'Nike',
+    src: '/images/Nike-Logo-History-1-1-1155x770.png',
+    tint: 'bg-white',
+  },
+  {
+    name: 'Yonex',
+    src: '/images/images.png',
+    tint: 'bg-[#0c5aad]',
+  },
+  {
+    name: 'Adidas',
+    src: '/images/web-192037111.webp',
+    tint: 'bg-white',
+  },
+  {
+    name: 'Anta',
+    src: '/images/c491f6650684385e2dcb53124f9e6f5c.jpg',
+    tint: 'bg-white',
+  },
+  {
+    name: 'Spall',
+    src: '/images/EkiwkueI_400x400.jpg',
+    tint: 'bg-[#0d5360]',
+  },
 ];
 
 const highlights = [
@@ -17,7 +43,7 @@ const highlights = [
     eyebrow: 'School Partners',
     title: 'Institutional collaborations for school badminton growth',
     description:
-      'Showcase partner schools, training hubs, and youth development collaborations in a more executive visual format.',
+      'Structured school tie-ups, training hubs, and youth development initiatives designed to grow badminton through institutional partnerships.',
     image:
       'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=85',
     accent: 'from-primary/50 via-primary/12 to-transparent',
@@ -26,81 +52,12 @@ const highlights = [
     eyebrow: 'Brand Partners',
     title: 'Equipment, performance, and activation partners',
     description:
-      'Present sports brands, nutrition partners, and event collaborators with a layout that feels closer to a sponsorship deck.',
+      'A premium brand showcase for equipment, retail, and performance names that support the academy ecosystem on and off court.',
     image:
       'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1600&q=85',
     accent: 'from-secondary/45 via-secondary/10 to-transparent',
   },
 ];
-
-function PartnerLogo({
-  item,
-  priority = false,
-}: {
-  item: (typeof logoBrands)[number];
-  priority?: boolean;
-}) {
-  const [logoSrc, setLogoSrc] = React.useState(
-    `https://logo.clearbit.com/${item.domain}?size=256`
-  );
-  const [showWordmark, setShowWordmark] = React.useState(false);
-
-  const handleLogoError = () => {
-    if (logoSrc.includes('clearbit')) {
-      setLogoSrc(
-        `https://www.google.com/s2/favicons?sz=256&domain=${item.domain}`
-      );
-      return;
-    }
-
-    setShowWordmark(true);
-  };
-
-  return (
-    <div className="group flex min-w-[220px] items-center justify-center rounded-[1.5rem] border border-white/8 bg-white/[0.02] px-8 py-7 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:bg-white/[0.045]">
-      {showWordmark ? (
-        <div className="text-center">
-          <div className="text-[1.7rem] font-black tracking-[-0.06em] text-white/92 transition-transform duration-300 group-hover:scale-[1.03]">
-            {item.name}
-          </div>
-        </div>
-      ) : (
-        <img
-          src={logoSrc}
-          alt={item.name}
-          className="h-14 w-auto max-w-[160px] object-contain brightness-125 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:brightness-100 group-hover:saturate-100 group-hover:invert-0"
-          loading={priority ? 'eager' : 'lazy'}
-          referrerPolicy="no-referrer"
-          onError={handleLogoError}
-        />
-      )}
-    </div>
-  );
-}
-
-function LogoRail({ reverse = false }: { reverse?: boolean }) {
-  const railItems = [...logoBrands, ...logoBrands];
-
-  return (
-    <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
-      <div
-        className={`flex w-max gap-5 ${
-          reverse ? 'animate-[marquee-reverse_34s_linear_infinite]' : 'animate-[marquee_34s_linear_infinite]'
-        }`}
-      >
-        {railItems.map((item, index) => (
-          <PartnerLogo
-            key={`${item.name}-${index}`}
-            item={item}
-            priority={index < logoBrands.length}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function HighlightCard({
   item,
@@ -124,24 +81,76 @@ function HighlightCard({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
         <div className={`absolute inset-0 bg-gradient-to-br ${item.accent}`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/12" />
       </div>
 
       <div className="relative flex min-h-[360px] flex-col justify-end p-6 md:min-h-[420px] md:p-8">
-        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-white/[0.04] px-4 py-2 backdrop-blur-md">
+        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-background/55 px-4 py-2 backdrop-blur-md">
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary" />
           <span className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
             {item.eyebrow}
           </span>
         </div>
-        <h3 className="max-w-md text-2xl font-black leading-[1.02] tracking-[-0.04em] text-white md:text-4xl">
+        <h3 className="max-w-md text-2xl font-black leading-[1.08] tracking-[-0.04em] text-white md:text-4xl">
           {item.title}
         </h3>
-        <p className="mt-4 max-w-md text-sm leading-relaxed text-white/68 md:text-base">
+        <p className="mt-4 max-w-md text-sm leading-relaxed text-white/72 md:text-base">
           {item.description}
         </p>
       </div>
     </motion.article>
+  );
+}
+
+function LogoPuck({
+  logo,
+  priority = false,
+}: {
+  logo: (typeof partnerLogos)[number];
+  priority?: boolean;
+}) {
+  return (
+    <div className="group flex min-w-[220px] items-center justify-center px-6 py-6 md:min-w-[260px] md:px-8">
+      <div className="flex w-full flex-col items-center gap-5 rounded-[1.8rem] border border-white/8 bg-white/[0.02] px-6 py-8 transition-all duration-300 group-hover:border-primary/20 group-hover:bg-white/[0.04]">
+        <div
+          className={`flex h-20 w-full items-center justify-center rounded-[1.35rem] ${logo.tint} px-8 md:h-24`}
+        >
+          <img
+            src={logo.src}
+            alt={logo.name}
+            className="max-h-12 w-auto max-w-full object-contain md:max-h-14"
+            loading={priority ? 'eager' : 'lazy'}
+          />
+        </div>
+        <div className="text-[0.72rem] font-medium uppercase tracking-[0.3em] text-white/45">
+          {logo.name}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LogoRail({ reverse = false }: { reverse?: boolean }) {
+  const items = [...partnerLogos, ...partnerLogos];
+
+  return (
+    <div className="overflow-hidden">
+      <div
+        className={`flex w-max items-stretch ${
+          reverse
+            ? 'animate-[marquee-reverse_34s_linear_infinite]'
+            : 'animate-[marquee_34s_linear_infinite]'
+        }`}
+      >
+        {items.map((logo, index) => (
+          <LogoPuck
+            key={`${logo.name}-${index}`}
+            logo={logo}
+            priority={index < partnerLogos.length}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -171,8 +180,9 @@ export function Partners() {
             Built for <span className="text-gradient">schools and brands</span>
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
-            A cleaner partner section to present institutional collaborations,
-            sponsor brands, and ecosystem support in a more premium way.
+            Presenting real performance and retail brands with a cleaner moving
+            logo wall, while keeping the school and institutional story in the
+            editorial feature cards above.
           </p>
         </motion.div>
 
@@ -182,8 +192,14 @@ export function Partners() {
           ))}
         </div>
 
-        <div className="mt-8 rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015))] p-5 backdrop-blur-xl md:mt-10 md:p-8">
-          <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.55, delay: 0.08 }}
+          className="mt-8 rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] p-5 backdrop-blur-xl md:mt-10 md:p-8"
+        >
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="text-[0.65rem] uppercase tracking-[0.28em] text-white/30">
                 Brand Carousel
@@ -192,17 +208,18 @@ export function Partners() {
                 Recognized performance brands
               </h3>
             </div>
-            <div className="max-w-sm text-sm leading-relaxed text-white/42 md:text-right">
-              A moving logo showcase feels cleaner, more premium, and far less
-              like a boxed listing.
+            <div className="max-w-md text-sm leading-relaxed text-white/42 md:text-right">
+              A cleaner, higher-quality logo wall built only from your local
+              partner assets, with no boxed listing feel and no faded carousel
+              edges.
             </div>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-2">
             <LogoRail />
             <LogoRail reverse />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
