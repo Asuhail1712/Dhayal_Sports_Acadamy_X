@@ -208,6 +208,31 @@ body[data-route-transition="active"] .route-transition-app {
   transition: opacity 0.22s ease;
 }
 
+.route-transition-overlay__backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.18), transparent 18%),
+    radial-gradient(circle at 82% 12%, rgba(0, 240, 255, 0.1), transparent 20%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.route-transition-overlay__backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.14;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
 .route-transition-overlay__panel {
   position: relative;
   display: flex;
