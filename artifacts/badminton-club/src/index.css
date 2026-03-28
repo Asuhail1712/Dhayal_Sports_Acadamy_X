@@ -178,14 +178,12 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  opacity: 0;
   visibility: hidden;
   isolation: isolate;
-  transition: opacity 0.22s ease, visibility 0.22s ease;
+  transition: visibility 0.22s ease;
 }
 
 .route-transition-overlay.is-visible {
-  opacity: 1;
   visibility: visible;
 }
 
@@ -197,6 +195,8 @@
     rgba(5, 10, 18, 0.2);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
+  opacity: 0;
+  transition: opacity 0.22s ease;
 }
 
 .route-transition-overlay__panel {
@@ -214,6 +214,18 @@
     0 24px 80px rgba(0, 0, 0, 0.35),
     0 0 60px rgba(0, 240, 255, 0.1);
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.route-transition-overlay.is-visible .route-transition-overlay__backdrop {
+  opacity: 1;
+}
+
+.route-transition-overlay.is-visible .route-transition-overlay__panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .route-transition-overlay__panel::before {
