@@ -196,11 +196,6 @@ body[data-route-transition="active"] .route-transition-app {
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  background:
-    radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
-    rgba(5, 10, 18, 0.18);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.22s ease, visibility 0.22s ease;

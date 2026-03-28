@@ -164,7 +164,15 @@ function RouteTransitionOverlay() {
       className={`route-transition-overlay ${visible ? "is-visible" : ""}`}
       aria-hidden={!visible}
     >
-      <div className="route-transition-overlay__backdrop" />
+      <div
+        className="route-transition-overlay__backdrop"
+        style={{
+          background:
+            "radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%), rgba(5, 10, 18, 0.18)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+        }}
+      />
       <div className="route-transition-overlay__panel bg-white/[0.04] backdrop-blur-md border border-white/10 shadow-lg">
         <div className="route-transition-overlay__aura" />
         <div className="route-transition-overlay__core">
