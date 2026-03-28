@@ -75,9 +75,10 @@ router.post("/enquiries", async (req, res) => {
     const smtpTarget = await resolveSmtpTarget(host);
 
     const transporter = nodemailer.createTransport({
-      host: secure ? smtpTarget.connectHost : host,
+      host: smtpTarget.connectHost,
       port,
       secure,
+      family: 4,
       auth: { user, pass },
       requireTLS: !secure,
       connectionTimeout: 15000,
