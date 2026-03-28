@@ -140,8 +140,10 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <ScrollManager />
+          <div className="route-transition-app">
+            <Router />
+          </div>
           <RouteTransitionOverlay />
-          <Router />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

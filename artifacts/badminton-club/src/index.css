@@ -170,6 +170,17 @@
   }
 }
 
+.route-transition-app {
+  transition: filter 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
+  will-change: filter, transform, opacity;
+}
+
+body[data-route-transition="active"] .route-transition-app {
+  filter: blur(18px);
+  transform: scale(1.01);
+  opacity: 0.42;
+}
+
 .route-transition-overlay {
   position: fixed;
   inset: 0;
@@ -192,9 +203,7 @@
   inset: 0;
   background:
     radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
-    rgba(5, 10, 18, 0.2);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+    rgba(5, 10, 18, 0.3);
   opacity: 0;
   transition: opacity 0.22s ease;
 }
