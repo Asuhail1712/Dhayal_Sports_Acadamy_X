@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 
 export function Navbar() {
+  const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,12 +17,15 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toHomeAnchor = (hash: string) => (location === '/' ? hash : `/${hash}`);
+
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Classes', href: '#classes' },
-    { name: 'Coaches', href: '#coaches' },
-    { name: 'Partners', href: '#partners' },
+    { name: 'Home', href: toHomeAnchor('#home') },
+    { name: 'About', href: toHomeAnchor('#about') },
+    { name: 'Classes', href: toHomeAnchor('#classes') },
+    { name: 'Coaches', href: toHomeAnchor('#coaches') },
+    { name: 'Partners', href: toHomeAnchor('#partners') },
+    { name: 'Blogs', href: location === '/' ? '#blogs' : '/blogs' },
   ];
 
   return (
@@ -35,7 +40,7 @@ export function Navbar() {
         }`}>
           
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 z-10 group -ml-2 md:ml-0">
+          <a href={toHomeAnchor('#home')} className="flex items-center gap-2 z-10 group -ml-2 md:ml-0">
             <img
               src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}
               alt="Dayal Sports Academy"
@@ -64,7 +69,7 @@ export function Navbar() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4 z-10">
             <Button variant="neon" size="sm" asChild>
-              <a href="#contact">Join Club</a>
+              <a href={toHomeAnchor('#contact')}>Join Club</a>
             </Button>
           </div>
 
@@ -106,7 +111,7 @@ export function Navbar() {
               />
             </div>
             <Button variant="neon" className="w-full" asChild>
-              <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Join Club Now</a>
+              <a href={toHomeAnchor('#contact')} onClick={() => setMobileMenuOpen(false)}>Join Club Now</a>
             </Button>
           </motion.div>
         )}

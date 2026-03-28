@@ -6,6 +6,7 @@ import { Classes } from '@/components/Classes';
 import { Coaches } from '@/components/Coaches';
 import { Gallery } from '@/components/Gallery';
 import { Partners } from '@/components/Partners';
+import { BlogSection } from '@/components/BlogSection';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 
@@ -20,6 +21,7 @@ export default function Home() {
         <Coaches />
         <Gallery />
         <Partners />
+        <BlogSection />
         <Contact />
       </main>
       <Footer />

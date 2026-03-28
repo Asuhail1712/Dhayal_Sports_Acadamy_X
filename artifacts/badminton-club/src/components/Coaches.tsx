@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Award, Users } from 'lucide-react';
+import { useLocation } from 'wouter';
 import { useGetCoaches } from '@workspace/api-client-react';
 import { fallbackCoaches } from '@/lib/fallback-data';
 
@@ -13,10 +14,10 @@ const coachImages = [
 
 export function Coaches() {
   const { data, isLoading } = useGetCoaches();
+  const [, setLocation] = useLocation();
   const coaches = Array.isArray(data) ? data : fallbackCoaches;
-  const [isExpanded, setIsExpanded] = React.useState(false);
   const [isDesktop, setIsDesktop] = React.useState(false);
-  const visibleCoaches = isExpanded ? coaches : coaches.slice(0, 6);
+  const visibleCoaches = coaches.slice(0, 6);
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 768px)');
@@ -158,22 +159,13 @@ export function Coaches() {
 
         {coaches.length > 6 && (
           <div className="mt-12 flex justify-center">
-            {isExpanded ? (
-              <a
-                href="#coaches"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-8 text-white transition-colors hover:bg-white/10"
-              >
-                Back to Top of Coaches
-              </a>
-            ) : (
-              <button
-                type="button"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-8 text-white transition-colors hover:bg-white/10"
-                onClick={() => setIsExpanded(true)}
-              >
-                View More
-              </button>
-            )}
+            <button
+              type="button"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-8 text-white transition-colors hover:bg-white/10"
+              onClick={() => setLocation("/coaches")}
+            >
+              View More
+            </button>
           </div>
         )}
       </div>

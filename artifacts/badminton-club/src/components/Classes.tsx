@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Users, IndianRupee, User, ChevronRight, AlertCircle } from 'lucide-react';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useGetClasses } from '@workspace/api-client-react';
 import { fallbackClasses } from '@/lib/fallback-data';
+import { slugify } from '@/lib/content';
 
 const levelImages: Record<string, string> = {
   Beginner: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=600&q=80",
@@ -15,15 +17,40 @@ const levelImages: Record<string, string> = {
 
 export function Classes() {
   const { data, isLoading, error } = useGetClasses();
+  const [, setLocation] = useLocation();
   const [filter, setFilter] = useState<string>('All');
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const classes = Array.isArray(data) ? data : fallbackClasses;
 
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced', 'Elite'];
   const filteredClasses = classes.filter(c => filter === 'All' || c.level === filter);
-  const baseClasses = filteredClasses.slice(0, 9);
-  const extraClasses = filteredClasses.slice(9);
+  const previewClasses = useMemo(() => {
+    if (filter !== 'All') {
+      return filteredClasses.slice(0, 6);
+    }
+
+    const grouped = levels.slice(1).map((level) =>
+      filteredClasses.filter((cls) => cls.level === level)
+    );
+    const mixed: typeof filteredClasses = [];
+    let round = 0;
+
+    while (mixed.length < 6 && grouped.some((group) => group[round])) {
+      for (const group of grouped) {
+        if (group[round]) {
+          mixed.push(group[round]);
+        }
+
+        if (mixed.length === 6) {
+          break;
+        }
+      }
+
+      round += 1;
+    }
+
+    return mixed;
+  }, [filter, filteredClasses]);
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -39,6 +66,10 @@ export function Classes() {
     if (max <= 4) return { text: "Limited", color: "text-destructive" };
     if (max <= 6) return { text: "Few spots", color: "text-yellow-500" };
     return { text: "Available", color: "text-emerald-500" };
+  };
+
+  const openProgramFromHome = (slug: string) => {
+    setLocation(`/programs/${slug}`);
   };
 
   useEffect(() => {
@@ -83,10 +114,7 @@ export function Classes() {
             {levels.map((level) => (
               <button
                 key={level}
-                onClick={() => {
-                  setFilter(level);
-                  setIsExpanded(false);
-                }}
+                onClick={() => setFilter(level)}
                 className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${
                   filter === level 
                     ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(0,240,255,0.4)] scale-105' 
@@ -116,7 +144,7 @@ export function Classes() {
         <div className="flex flex-col gap-12">
           <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
-              {baseClasses.map((cls) => {
+              {previewClasses.map((cls) => {
                 const spots = getSpotsIndicator(cls.maxStudents);
                 return (
                   <motion.div
@@ -204,7 +232,11 @@ export function Classes() {
                         </div>
                       </div>
 
-                      <Button variant="default" className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn">
+                      <Button
+                        variant="default"
+                        className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn"
+                        onClick={() => openProgramFromHome(slugify(cls.name))}
+                      >
                         Learn More
                         <ChevronRight className="ml-2 w-4 h-4 md:group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
@@ -215,129 +247,15 @@ export function Classes() {
             </AnimatePresence>
           </motion.div>
 
-          {isExpanded && extraClasses.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="overflow-hidden"
-            >
-              <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {extraClasses.map((cls) => {
-                    const spots = getSpotsIndicator(cls.maxStudents);
-                    return (
-                      <motion.div
-                        layout
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileInView={
-                          isDesktop
-                            ? undefined
-                            : {
-                                scale: 1.015,
-                                borderColor: 'rgba(0, 240, 255, 0.5)',
-                                boxShadow: '0 10px 40px -10px rgba(0,240,255,0.2)',
-                              }
-                        }
-                        viewport={{ once: false, amount: 0.7 }}
-                        exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.3 }}
-                        key={cls.id}
-                        className="bg-card border border-white/10 rounded-[2rem] overflow-hidden group transition-all duration-500 md:hover:border-primary/50 md:hover:shadow-[0_10px_40px_-10px_rgba(0,240,255,0.2)] md:hover:-translate-y-2 flex flex-col h-full"
-                      >
-                        <div className="relative h-48 overflow-hidden flex-shrink-0">
-                          <motion.img
-                            src={levelImages[cls.level] || levelImages.default}
-                            alt={cls.level}
-                            initial={isDesktop ? undefined : { scale: 1 }}
-                            whileInView={isDesktop ? undefined : { scale: 1.05 }}
-                            viewport={{ once: false, amount: 0.7 }}
-                            transition={{ duration: 0.45, ease: 'easeOut' }}
-                            className="block w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-
-                          <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                            <div className={`px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider backdrop-blur-md ${getLevelColor(cls.level)}`}>
-                              {cls.level}
-                            </div>
-                            <div className="bg-background/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 flex items-center">
-                              <IndianRupee className="w-4 h-4 text-primary mr-0.5" />
-                              <span className="font-bold text-white">{cls.price}</span>
-                              <span className="text-xs text-white/50 ml-1">fee</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="relative z-10 -mt-px bg-card p-8 pt-4 flex flex-col flex-grow">
-                          <h3 className="text-2xl font-black mb-3 text-white">{cls.name}</h3>
-                          <p className="text-white/60 text-sm mb-8 flex-grow line-clamp-2 font-light">
-                            {cls.description}
-                          </p>
-
-                          <div className="space-y-4 mb-8">
-                            <div className="flex items-center text-sm font-medium text-white/80">
-                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 md:group-hover:bg-primary/20 transition-colors">
-                                <Clock className="w-5 h-5 text-primary" />
-                              </div>
-                              <div>
-                                <div className="text-white">{cls.schedule}</div>
-                                <div className="text-white/40 text-xs">{cls.duration}</div>
-                              </div>
-                            </div>
-                            <div className="flex items-center text-sm font-medium text-white/80">
-                              <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mr-4 md:group-hover:bg-secondary/20 transition-colors">
-                                <User className="w-5 h-5 text-secondary" />
-                              </div>
-                              <div>
-                                <div className="text-white">{cls.coachName}</div>
-                                <div className="text-white/40 text-xs">Program Lead</div>
-                              </div>
-                            </div>
-                            <div className="flex items-center text-sm font-medium text-white/80">
-                              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 md:group-hover:bg-white/10 transition-colors">
-                                <Users className="w-5 h-5 text-white/70" />
-                              </div>
-                              <div className="flex-1 flex justify-between items-center">
-                                <div>
-                                  <div className="text-white">Max {cls.maxStudents} Students</div>
-                                  <div className="text-white/40 text-xs">Per session</div>
-                                </div>
-                                <div className={`flex items-center text-xs font-bold ${spots.color}`}>
-                                  <AlertCircle className="w-3 h-3 mr-1" />
-                                  {spots.text}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <Button variant="default" className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn">
-                            Learn More
-                            <ChevronRight className="ml-2 w-4 h-4 md:group-hover/btn:translate-x-1 transition-transform" />
-                          </Button>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-              </motion.div>
-            </motion.div>
-          )}
-
-          {filteredClasses.length > 9 && (
+          {filteredClasses.length > previewClasses.length && (
             <div className="flex justify-center">
-              {isExpanded ? (
-                <Button variant="outline" className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10" asChild>
-                  <a href="#classes">Back to Top of Programs</a>
-                </Button>
-              ) : (
-                <Button
-                  variant="outline"
-                  className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
-                  onClick={() => setIsExpanded(true)}
-                >
-                  View More
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
+                onClick={() => setLocation("/programs")}
+              >
+                View More
+              </Button>
             </div>
           )}
         </div>
