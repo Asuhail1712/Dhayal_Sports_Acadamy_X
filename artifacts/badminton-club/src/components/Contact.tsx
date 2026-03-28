@@ -10,7 +10,7 @@ const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || '';
 const fallbackApiBaseUrl = 'https://dhayal-sports-acadamy-x-api.onrender.com';
 const localApiBaseUrl = 'http://127.0.0.1:3001';
 const fallbackEnquiryEmail =
-  import.meta.env.VITE_ENQUIRY_TO?.trim() || 'asuhail1712@gmail.com';
+  import.meta.env.VITE_ENQUIRY_TO?.trim() || 'businesscoridoor@gmail.com';
 
 const apiBaseCandidates = Array.from(
   new Set(
