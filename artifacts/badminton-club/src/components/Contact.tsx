@@ -9,6 +9,8 @@ import { useToast } from '@/hooks/use-toast';
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || '';
 const fallbackApiBaseUrl = 'https://dhayal-sports-acadamy-x-api.onrender.com';
 const localApiBaseUrl = 'http://127.0.0.1:3001';
+const fallbackEnquiryEmail =
+  import.meta.env.VITE_ENQUIRY_TO?.trim() || 'asuhail1712@gmail.com';
 
 const apiBaseCandidates = Array.from(
   new Set(
@@ -59,6 +61,27 @@ function NeonShuttlecockLoader() {
 export function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const openMailFallback = (payload: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    message: string;
+  }) => {
+    const subject = `Dayal Sports Academy enquiry from ${payload.firstName} ${payload.lastName}`;
+    const body = [
+      `First Name: ${payload.firstName}`,
+      `Last Name: ${payload.lastName}`,
+      `Email: ${payload.email}`,
+      '',
+      'Message:',
+      payload.message,
+    ].join('\n');
+
+    window.location.href = `mailto:${encodeURIComponent(
+      fallbackEnquiryEmail,
+    )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -121,10 +144,15 @@ export function Contact() {
           ? error.message
           : "Unable to send enquiry right now. Please try again.";
 
+      openMailFallback(payload);
+
       toast({
-        title: "Enquiry Failed",
-        description,
-        variant: "destructive",
+        title: "Email App Opened",
+        description:
+          description === "Unable to send enquiry right now. Please try again."
+            ? "We opened your email app with the enquiry prefilled as a fallback."
+            : `We opened your email app because the direct send failed: ${description}`,
+        variant: "default",
       });
     } finally {
       setIsSubmitting(false);
