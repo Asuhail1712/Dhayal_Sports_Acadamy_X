@@ -1,30 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const brandLogos = [
-  {
-    name: 'Yonex',
-    domain: 'yonex.com',
-  },
-  {
-    name: 'Li-Ning',
-    domain: 'lining.com',
-  },
-  {
-    name: 'Victor',
-    domain: 'victorsport.com',
-  },
-  {
-    name: 'Ashaway',
-    domain: 'ashawayusa.com',
-  },
-];
-
-const institutionalPartners = [
-  'AJ Stadium',
-  'Youth Sports Hub',
-  'Campus League',
-  'Nutrition Lab',
+const logoBrands = [
+  { name: 'Yonex', domain: 'yonex.com' },
+  { name: 'Victor', domain: 'victorsport.com' },
+  { name: 'Li-Ning', domain: 'lining.com' },
+  { name: 'Ashaway', domain: 'ashawayusa.com' },
+  { name: 'Babolat', domain: 'babolat.com' },
+  { name: 'Wilson', domain: 'wilson.com' },
+  { name: 'Head', domain: 'head.com' },
+  { name: 'Adidas', domain: 'adidas.com' },
 ];
 
 const highlights = [
@@ -34,7 +19,7 @@ const highlights = [
     description:
       'Showcase partner schools, training hubs, and youth development collaborations in a more executive visual format.',
     image:
-      'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1200&q=85',
+      'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=85',
     accent: 'from-primary/50 via-primary/12 to-transparent',
   },
   {
@@ -43,26 +28,28 @@ const highlights = [
     description:
       'Present sports brands, nutrition partners, and event collaborators with a layout that feels closer to a sponsorship deck.',
     image:
-      'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200&q=85',
+      'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1600&q=85',
     accent: 'from-secondary/45 via-secondary/10 to-transparent',
   },
 ];
 
-function BrandLogoTile({
+function PartnerLogo({
   item,
-  index,
+  priority = false,
 }: {
-  item: (typeof brandLogos)[number];
-  index: number;
+  item: (typeof logoBrands)[number];
+  priority?: boolean;
 }) {
   const [logoSrc, setLogoSrc] = React.useState(
-    `https://logo.clearbit.com/${item.domain}`
+    `https://logo.clearbit.com/${item.domain}?size=256`
   );
   const [showWordmark, setShowWordmark] = React.useState(false);
 
   const handleLogoError = () => {
     if (logoSrc.includes('clearbit')) {
-      setLogoSrc(`https://www.google.com/s2/favicons?sz=128&domain=${item.domain}`);
+      setLogoSrc(
+        `https://www.google.com/s2/favicons?sz=256&domain=${item.domain}`
+      );
       return;
     }
 
@@ -70,47 +57,48 @@ function BrandLogoTile({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.4, delay: index * 0.04 }}
-      className="group flex min-h-[88px] items-center justify-center px-6 py-5 text-center transition-all duration-300 hover:-translate-y-1"
-    >
-      <div className="flex flex-col items-center gap-3">
-        {showWordmark ? (
-          <div className="flex h-10 items-center justify-center px-3 text-xl font-black tracking-[-0.05em] text-white/86 transition-all duration-300 group-hover:scale-[1.04] group-hover:text-white">
+    <div className="group flex min-w-[220px] items-center justify-center rounded-[1.5rem] border border-white/8 bg-white/[0.02] px-8 py-7 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:bg-white/[0.045]">
+      {showWordmark ? (
+        <div className="text-center">
+          <div className="text-[1.7rem] font-black tracking-[-0.06em] text-white/92 transition-transform duration-300 group-hover:scale-[1.03]">
             {item.name}
           </div>
-        ) : (
-          <img
-            src={logoSrc}
-            alt={item.name}
-            className="h-10 w-auto max-w-[140px] object-contain brightness-110 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:saturate-100 group-hover:invert-0"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={handleLogoError}
-          />
-        )}
-        <div className="text-[0.72rem] uppercase tracking-[0.28em] text-white/34 transition-colors duration-300 group-hover:text-primary/70">
-          {item.name}
         </div>
-      </div>
-    </motion.div>
+      ) : (
+        <img
+          src={logoSrc}
+          alt={item.name}
+          className="h-14 w-auto max-w-[160px] object-contain brightness-125 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:brightness-100 group-hover:saturate-100 group-hover:invert-0"
+          loading={priority ? 'eager' : 'lazy'}
+          referrerPolicy="no-referrer"
+          onError={handleLogoError}
+        />
+      )}
+    </div>
   );
 }
 
-function InstitutionChip({ name, index }: { name: string; index: number }) {
+function LogoRail({ reverse = false }: { reverse?: boolean }) {
+  const railItems = [...logoBrands, ...logoBrands];
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.35, delay: index * 0.04 }}
-      className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-white/72 backdrop-blur-xl transition-all duration-300 hover:border-primary/25 hover:bg-white/[0.05] hover:text-white"
-    >
-      {name}
-    </motion.div>
+    <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
+      <div
+        className={`flex w-max gap-5 ${
+          reverse ? 'animate-[marquee-reverse_34s_linear_infinite]' : 'animate-[marquee_34s_linear_infinite]'
+        }`}
+      >
+        {railItems.map((item, index) => (
+          <PartnerLogo
+            key={`${item.name}-${index}`}
+            item={item}
+            priority={index < logoBrands.length}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -141,15 +129,15 @@ function HighlightCard({
 
       <div className="relative flex min-h-[360px] flex-col justify-end p-6 md:min-h-[420px] md:p-8">
         <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-white/[0.04] px-4 py-2 backdrop-blur-md">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+          <span className="flex h-2.5 w-2.5 rounded-full bg-primary" />
           <span className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
             {item.eyebrow}
           </span>
         </div>
-        <h3 className="max-w-md text-2xl md:text-4xl font-black leading-[1.02] tracking-[-0.04em] text-white">
+        <h3 className="max-w-md text-2xl font-black leading-[1.02] tracking-[-0.04em] text-white md:text-4xl">
           {item.title}
         </h3>
-        <p className="mt-4 max-w-md text-sm md:text-base leading-relaxed text-white/68">
+        <p className="mt-4 max-w-md text-sm leading-relaxed text-white/68 md:text-base">
           {item.description}
         </p>
       </div>
@@ -159,10 +147,13 @@ function HighlightCard({
 
 export function Partners() {
   return (
-    <section id="partners" className="relative z-10 overflow-hidden border-t border-white/5 py-24">
+    <section
+      id="partners"
+      className="relative z-10 overflow-hidden border-t border-white/5 py-24"
+    >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[12%] top-20 h-44 w-44 rounded-full bg-primary/10 blur-[100px]" />
-        <div className="absolute right-[10%] bottom-10 h-56 w-56 rounded-full bg-secondary/10 blur-[120px]" />
+        <div className="absolute bottom-10 right-[10%] h-56 w-56 rounded-full bg-secondary/10 blur-[120px]" />
       </div>
 
       <div className="container relative mx-auto px-4 md:px-6">
@@ -176,11 +167,12 @@ export function Partners() {
           <div className="text-[0.72rem] font-bold uppercase tracking-[0.3em] text-primary/85">
             Our Partners
           </div>
-          <h2 className="mt-3 text-3xl md:text-5xl font-black leading-tight text-white">
+          <h2 className="mt-3 text-3xl font-black leading-tight text-white md:text-5xl">
             Built for <span className="text-gradient">schools and brands</span>
           </h2>
-          <p className="mt-4 text-sm md:text-base leading-relaxed text-white/60">
-            A cleaner partner section to present institutional collaborations, sponsor brands, and ecosystem support in a more premium way.
+          <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
+            A cleaner partner section to present institutional collaborations,
+            sponsor brands, and ecosystem support in a more premium way.
           </p>
         </motion.div>
 
@@ -194,29 +186,21 @@ export function Partners() {
           <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="text-[0.65rem] uppercase tracking-[0.28em] text-white/30">
-                Partner Wall
+                Brand Carousel
               </div>
-              <h3 className="mt-1 text-xl md:text-2xl font-black text-white">
-                Selected schools and brands
+              <h3 className="mt-1 text-xl font-black text-white md:text-2xl">
+                Recognized performance brands
               </h3>
             </div>
             <div className="max-w-sm text-sm leading-relaxed text-white/42 md:text-right">
-              Real brand marks below, with a lighter institutional strip and no boxed listing feel.
+              A moving logo showcase feels cleaner, more premium, and far less
+              like a boxed listing.
             </div>
           </div>
 
-          <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.015] px-4 py-4 md:px-6 md:py-5">
-            <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2 xl:grid-cols-4">
-              {brandLogos.map((logo, index) => (
-                <BrandLogoTile key={logo.name} item={logo} index={index} />
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3 border-t border-white/8 pt-6">
-            {institutionalPartners.map((partner, index) => (
-              <InstitutionChip key={partner} name={partner} index={index} />
-            ))}
+          <div className="space-y-5">
+            <LogoRail />
+            <LogoRail reverse />
           </div>
         </div>
       </div>
