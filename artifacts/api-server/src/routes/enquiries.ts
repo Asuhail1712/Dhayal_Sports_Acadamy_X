@@ -59,10 +59,14 @@ router.post("/enquiries", async (req, res) => {
   try {
     const payload = validatePayload(req.body);
     const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
-    const port = Number(process.env.SMTP_PORT?.trim() || "465");
-    const secure = process.env.SMTP_SECURE
+    const requestedPort = Number(process.env.SMTP_PORT?.trim() || "465");
+    const requestedSecure = process.env.SMTP_SECURE
       ? process.env.SMTP_SECURE === "true"
-      : port === 465;
+      : requestedPort === 465;
+    const isGmailHost = /(^|\.)gmail\.com$/i.test(host);
+    const port = isGmailHost && requestedPort === 465 ? 587 : requestedPort;
+    const secure =
+      isGmailHost && requestedPort === 465 ? false : requestedSecure;
 
     const user = readRequiredEnv("SMTP_USER");
     const pass = readRequiredEnv("SMTP_PASS");
@@ -71,10 +75,14 @@ router.post("/enquiries", async (req, res) => {
     const smtpTarget = await resolveSmtpTarget(host);
 
     const transporter = nodemailer.createTransport({
-      host: smtpTarget.connectHost,
+      host: secure ? smtpTarget.connectHost : host,
       port,
       secure,
       auth: { user, pass },
+      requireTLS: !secure,
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
       tls: {
         servername: smtpTarget.servername,
       },

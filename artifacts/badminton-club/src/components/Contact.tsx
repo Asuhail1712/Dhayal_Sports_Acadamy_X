@@ -6,9 +6,19 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 
-const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL?.trim() ||
-  (import.meta.env.DEV ? 'http://127.0.0.1:3001' : '');
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || '';
+const fallbackApiBaseUrl = 'https://dhayal-sports-acadamy-x-api.onrender.com';
+const localApiBaseUrl = 'http://127.0.0.1:3001';
+
+const apiBaseCandidates = Array.from(
+  new Set(
+    [
+      configuredApiBaseUrl,
+      import.meta.env.DEV ? localApiBaseUrl : '',
+      fallbackApiBaseUrl,
+    ].filter(Boolean),
+  ),
+);
 
 function NeonShuttlecockLoader() {
   return (
@@ -64,20 +74,39 @@ export function Contact() {
     };
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/enquiries`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      let lastError: Error | null = null;
+      let delivered = false;
 
-      const data = (await response.json().catch(() => null)) as
-        | { message?: string }
-        | null;
+      for (const apiBaseUrl of apiBaseCandidates) {
+        try {
+          const response = await fetch(`${apiBaseUrl}/api/enquiries`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
 
-      if (!response.ok) {
-        throw new Error(data?.message || "Unable to send enquiry");
+          const data = (await response.json().catch(() => null)) as
+            | { message?: string }
+            | null;
+
+          if (!response.ok) {
+            throw new Error(data?.message || "Unable to send enquiry");
+          }
+
+          delivered = true;
+          break;
+        } catch (error) {
+          lastError =
+            error instanceof Error
+              ? error
+              : new Error("Unable to send enquiry");
+        }
+      }
+
+      if (!delivered) {
+        throw lastError || new Error("Unable to send enquiry");
       }
 
       toast({
