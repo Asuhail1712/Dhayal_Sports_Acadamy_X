@@ -55,6 +55,20 @@ function BrandLogoTile({
   item: (typeof brandLogos)[number];
   index: number;
 }) {
+  const [logoSrc, setLogoSrc] = React.useState(
+    `https://logo.clearbit.com/${item.domain}`
+  );
+  const [showWordmark, setShowWordmark] = React.useState(false);
+
+  const handleLogoError = () => {
+    if (logoSrc.includes('clearbit')) {
+      setLogoSrc(`https://www.google.com/s2/favicons?sz=128&domain=${item.domain}`);
+      return;
+    }
+
+    setShowWordmark(true);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -64,13 +78,20 @@ function BrandLogoTile({
       className="group flex min-h-[88px] items-center justify-center px-6 py-5 text-center transition-all duration-300 hover:-translate-y-1"
     >
       <div className="flex flex-col items-center gap-3">
-        <img
-          src={`https://logo.clearbit.com/${item.domain}`}
-          alt={item.name}
-          className="h-10 w-auto max-w-[140px] object-contain brightness-110 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:saturate-100 group-hover:invert-0"
-          loading="lazy"
-          referrerPolicy="no-referrer"
-        />
+        {showWordmark ? (
+          <div className="flex h-10 items-center justify-center px-3 text-xl font-black tracking-[-0.05em] text-white/86 transition-all duration-300 group-hover:scale-[1.04] group-hover:text-white">
+            {item.name}
+          </div>
+        ) : (
+          <img
+            src={logoSrc}
+            alt={item.name}
+            className="h-10 w-auto max-w-[140px] object-contain brightness-110 contrast-125 saturate-0 invert transition-all duration-300 group-hover:scale-[1.04] group-hover:saturate-100 group-hover:invert-0"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={handleLogoError}
+          />
+        )}
         <div className="text-[0.72rem] uppercase tracking-[0.28em] text-white/34 transition-colors duration-300 group-hover:text-primary/70">
           {item.name}
         </div>
