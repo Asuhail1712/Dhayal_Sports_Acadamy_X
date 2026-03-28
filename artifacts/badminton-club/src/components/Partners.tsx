@@ -85,7 +85,7 @@ function HighlightCard({
       </div>
 
       <div className="relative flex min-h-[360px] flex-col justify-end p-6 md:min-h-[420px] md:p-8">
-        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-background/55 px-4 py-2 backdrop-blur-md">
+        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-background/40 px-4 py-2 backdrop-blur-md">
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary" />
           <span className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
             {item.eyebrow}
@@ -209,8 +209,8 @@ export function Partners() {
               </h3>
             </div>
             <div className="max-w-md text-sm leading-relaxed text-white/42 md:text-right">
-              Showcasing the equipment, retail, and performance brands that
-              align with the academy environment and support player development.
+              Featuring equipment and performance brands that support the
+              academy environment and player development.
             </div>
           </div>
 
