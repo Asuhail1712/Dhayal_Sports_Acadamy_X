@@ -4,6 +4,7 @@ import { Star, Award, Users } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { useGetCoaches } from '@workspace/api-client-react';
 import { fallbackCoaches } from '@/lib/fallback-data';
+import { startRouteTransition } from '@/hooks/use-scroll-restoration';
 
 const coachImages = [
   "https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=400&q=80",
@@ -174,8 +175,10 @@ export function Coaches() {
             <button
               type="button"
               className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-8 text-white transition-colors hover:bg-white/10"
+              onPointerDown={() => startRouteTransition("/coaches")}
               onClick={() => {
                 normalizeHomeHistoryEntry();
+                startRouteTransition("/coaches");
                 setLocation("/coaches");
               }}
             >

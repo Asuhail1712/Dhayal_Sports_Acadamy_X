@@ -1,10 +1,12 @@
 import React from 'react';
 import { Instagram, Twitter, Facebook } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { startRouteTransition } from '@/hooks/use-scroll-restoration';
 
 export function Footer() {
   const [location, setLocation] = useLocation();
-  const toHomeAnchor = (hash: string) => (location === '/' ? hash : `/${hash}`);
+  const isHomeLocation = window.location.pathname === '/';
+  const toHomeAnchor = (hash: string) => (isHomeLocation ? hash : `/${hash}`);
   const normalizeHomeHistoryEntry = (href: string) => {
     const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
 
@@ -23,12 +25,31 @@ export function Footer() {
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
+    const isHomeHashNavigation =
+      window.location.pathname === '/' &&
+      (href.startsWith('#') || href.startsWith('/#'));
+
+    if (isHomeHashNavigation) {
+      event.preventDefault();
+      const hash = href.startsWith('/#') ? href.slice(1) : href;
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}${hash}`,
+      );
+      const targetId = hash.slice(1);
+      const target = targetId ? document.getElementById(targetId) : null;
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
     if (!href.startsWith('/')) {
       return;
     }
 
     event.preventDefault();
     normalizeHomeHistoryEntry(href);
+    startRouteTransition(href);
     setLocation(href);
   };
 
@@ -39,6 +60,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <a
               href={toHomeAnchor('#home')}
+              onPointerDown={() => startRouteTransition(toHomeAnchor('#home'))}
               onClick={(event) => navigateClientSide(event, toHomeAnchor('#home'))}
               className="flex items-center gap-2 mb-4"
             >
@@ -56,11 +78,11 @@ export function Footer() {
           <div>
             <h4 className="text-white font-bold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-white/50">
-              <li><a href={toHomeAnchor('#about')} onClick={(event) => navigateClientSide(event, toHomeAnchor('#about'))} className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href={toHomeAnchor('#classes')} onClick={(event) => navigateClientSide(event, toHomeAnchor('#classes'))} className="hover:text-primary transition-colors">Training Solutions</a></li>
-              <li><a href={toHomeAnchor('#coaches')} onClick={(event) => navigateClientSide(event, toHomeAnchor('#coaches'))} className="hover:text-primary transition-colors">Our Team</a></li>
-              <li><a href="/blogs" onClick={(event) => navigateClientSide(event, "/blogs")} className="hover:text-primary transition-colors">Blogs</a></li>
-              <li><a href={toHomeAnchor('#contact')} onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))} className="hover:text-primary transition-colors">Contact</a></li>
+              <li><a href={toHomeAnchor('#about')} onPointerDown={() => startRouteTransition(toHomeAnchor('#about'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#about'))} className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href={toHomeAnchor('#classes')} onPointerDown={() => startRouteTransition(toHomeAnchor('#classes'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#classes'))} className="hover:text-primary transition-colors">Training Solutions</a></li>
+              <li><a href={toHomeAnchor('#coaches')} onPointerDown={() => startRouteTransition(toHomeAnchor('#coaches'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#coaches'))} className="hover:text-primary transition-colors">Our Team</a></li>
+              <li><a href="/blogs" onPointerDown={() => startRouteTransition("/blogs")} onClick={(event) => navigateClientSide(event, "/blogs")} className="hover:text-primary transition-colors">Blogs</a></li>
+              <li><a href={toHomeAnchor('#contact')} onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))} className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
           

@@ -6,6 +6,7 @@ import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
 import { fallbackClasses } from "@/lib/fallback-data";
 import { slugify } from "@/lib/content";
+import { startRouteTransition } from "@/hooks/use-scroll-restoration";
 
 const levelImages: Record<string, string> = {
   Beginner: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=600&q=80",
@@ -45,6 +46,11 @@ export default function Programs() {
     () => fallbackClasses.filter((program) => filter === "All" || program.level === filter),
     [filter]
   );
+  const openProgram = (slug: string) => {
+    const href = `/programs/${slug}`;
+    startRouteTransition(href);
+    setLocation(href);
+  };
 
   return (
     <PageShell className="pb-20">
@@ -166,7 +172,8 @@ export default function Programs() {
                     <Button
                       variant="default"
                       className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary"
-                      onClick={() => setLocation(`/programs/${slugify(program.name)}`)}
+                      onPointerDown={() => startRouteTransition(`/programs/${slugify(program.name)}`)}
+                      onClick={() => openProgram(slugify(program.name))}
                     >
                       Learn More
                       <ChevronRight className="ml-2 w-4 h-4" />

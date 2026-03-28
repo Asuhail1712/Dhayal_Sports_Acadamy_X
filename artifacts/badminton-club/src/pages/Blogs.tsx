@@ -4,12 +4,15 @@ import { useLocation } from "wouter";
 import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/content";
+import { startRouteTransition } from "@/hooks/use-scroll-restoration";
 
 export default function Blogs() {
   const [, setLocation] = useLocation();
 
   const openFromListing = (slug: string) => {
-    setLocation(`/blogs/${slug}`);
+    const href = `/blogs/${slug}`;
+    startRouteTransition(href);
+    setLocation(href);
   };
 
   return (
@@ -74,6 +77,7 @@ export default function Blogs() {
                   <Button
                     variant="default"
                     className="mt-6 h-11 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary"
+                    onPointerDown={() => startRouteTransition(`/blogs/${post.slug}`)}
                     onClick={() => openFromListing(post.slug)}
                   >
                     Read Article

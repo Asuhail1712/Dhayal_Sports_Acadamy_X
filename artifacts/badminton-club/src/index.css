@@ -198,7 +198,6 @@ body[data-route-transition="active"] .route-transition-app {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.22s ease, visibility 0.22s ease;
 }
 
 .route-transition-overlay.is-visible {
@@ -206,11 +205,21 @@ body[data-route-transition="active"] .route-transition-app {
   visibility: visible;
 }
 
+.route-transition-overlay.is-hiding,
+.route-transition-overlay.is-hiding .route-transition-overlay__backdrop,
+.route-transition-overlay.is-hiding .route-transition-overlay__panel {
+  transition: opacity 0.12s ease;
+}
+
+.route-transition-overlay.is-hiding {
+  opacity: 0;
+  visibility: visible;
+}
+
 .route-transition-overlay__backdrop {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 0.22s ease;
 }
 
 .route-transition-overlay__panel {
@@ -229,17 +238,22 @@ body[data-route-transition="active"] .route-transition-app {
     0 0 60px rgba(0, 240, 255, 0.1);
   overflow: hidden;
   opacity: 0;
-  transform: translateY(8px) scale(0.98);
-  transition: opacity 0.22s ease, transform 0.22s ease;
 }
 
 .route-transition-overlay.is-visible .route-transition-overlay__backdrop {
   opacity: 1;
 }
 
+.route-transition-overlay.is-hiding .route-transition-overlay__backdrop {
+  opacity: 0;
+}
+
 .route-transition-overlay.is-visible .route-transition-overlay__panel {
   opacity: 1;
-  transform: translateY(0) scale(1);
+}
+
+.route-transition-overlay.is-hiding .route-transition-overlay__panel {
+  opacity: 0;
 }
 
 .route-transition-overlay__panel::before {

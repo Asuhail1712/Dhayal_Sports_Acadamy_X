@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 
 const ROUTE_TRANSITION_START = "dhayal:route-transition-start";
 const ROUTE_TRANSITION_COMPLETE = "dhayal:route-transition-complete";
+let pendingLoaderRouteKey: string | null = null;
+const POP_LOADER_DURATION_MS = 800;
 
 type NavigationType = "PUSH" | "REPLACE" | "POP";
 
@@ -20,6 +22,41 @@ function getRouteKeyFromUrl(url: string | URL | null | undefined) {
       : new URL(url.toString(), window.location.origin);
 
   return `${resolvedUrl.pathname}${resolvedUrl.search}`;
+}
+
+function shouldSkipLoaderForUrl(url: string | URL | null | undefined) {
+  if (!url) {
+    return false;
+  }
+
+  const resolvedUrl =
+    typeof url === "string"
+      ? new URL(url, window.location.origin)
+      : new URL(url.toString(), window.location.origin);
+
+  return resolvedUrl.pathname === "/" && Boolean(resolvedUrl.hash);
+}
+
+export function startRouteTransition(url: string, options?: { fixedDuration?: number }) {
+  const nextRouteKey = getRouteKeyFromUrl(url);
+
+  if (
+    nextRouteKey === getRouteKey() ||
+    shouldSkipLoaderForUrl(url) ||
+    pendingLoaderRouteKey === nextRouteKey
+  ) {
+    return;
+  }
+
+  pendingLoaderRouteKey = nextRouteKey;
+  window.dispatchEvent(
+    new CustomEvent(ROUTE_TRANSITION_START, {
+      detail:
+        typeof options?.fixedDuration === "number"
+          ? { fixedDuration: options.fixedDuration }
+          : undefined,
+    }),
+  );
 }
 
 function withInstantScroll(action: () => void) {
@@ -68,9 +105,15 @@ export function useScrollRestoration(location: string) {
       const nextRouteKey = getRouteKeyFromUrl(url);
       navigationTypeRef.current = "PUSH";
 
-      if (nextRouteKey !== currentRouteKeyRef.current) {
+      if (
+        nextRouteKey !== currentRouteKeyRef.current &&
+        !shouldSkipLoaderForUrl(url) &&
+        pendingLoaderRouteKey !== nextRouteKey
+      ) {
         window.dispatchEvent(new CustomEvent(ROUTE_TRANSITION_START));
       }
+
+      pendingLoaderRouteKey = null;
 
       return originalPushState(state, unused, url);
     };
@@ -79,9 +122,15 @@ export function useScrollRestoration(location: string) {
       const nextRouteKey = getRouteKeyFromUrl(url);
       navigationTypeRef.current = "REPLACE";
 
-      if (nextRouteKey !== currentRouteKeyRef.current) {
+      if (
+        nextRouteKey !== currentRouteKeyRef.current &&
+        !shouldSkipLoaderForUrl(url) &&
+        pendingLoaderRouteKey !== nextRouteKey
+      ) {
         window.dispatchEvent(new CustomEvent(ROUTE_TRANSITION_START));
       }
+
+      pendingLoaderRouteKey = null;
 
       return originalReplaceState(state, unused, url);
     };
@@ -90,7 +139,7 @@ export function useScrollRestoration(location: string) {
       navigationTypeRef.current = "POP";
       window.dispatchEvent(
         new CustomEvent(ROUTE_TRANSITION_START, {
-          detail: { fixedDuration: 620 },
+          detail: { fixedDuration: POP_LOADER_DURATION_MS },
         }),
       );
     };

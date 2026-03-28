@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useGetClasses } from '@workspace/api-client-react';
 import { fallbackClasses } from '@/lib/fallback-data';
 import { slugify } from '@/lib/content';
+import { startRouteTransition } from '@/hooks/use-scroll-restoration';
 
 const levelImages: Record<string, string> = {
   Beginner: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=600&q=80",
@@ -90,7 +91,9 @@ export function Classes() {
 
   const openProgramFromHome = (slug: string) => {
     normalizeHomeHistoryEntry();
-    setLocation(`/programs/${slug}`);
+    const href = `/programs/${slug}`;
+    startRouteTransition(href);
+    setLocation(href);
   };
 
   useEffect(() => {
@@ -256,6 +259,7 @@ export function Classes() {
                       <Button
                         variant="default"
                         className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn"
+                        onPointerDown={() => startRouteTransition(`/programs/${slugify(cls.name)}`)}
                         onClick={() => openProgramFromHome(slugify(cls.name))}
                       >
                         Learn More
@@ -273,8 +277,10 @@ export function Classes() {
               <Button
                 variant="outline"
                 className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
+                onPointerDown={() => startRouteTransition("/programs")}
                 onClick={() => {
                   normalizeHomeHistoryEntry();
+                  startRouteTransition("/programs");
                   setLocation("/programs");
                 }}
               >

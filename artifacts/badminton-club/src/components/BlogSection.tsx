@@ -3,6 +3,7 @@ import { CalendarDays, ChevronRight } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/content";
+import { startRouteTransition } from "@/hooks/use-scroll-restoration";
 
 export function BlogSection() {
   const [, setLocation] = useLocation();
@@ -22,7 +23,9 @@ export function BlogSection() {
 
   const openFromHome = (slug: string) => {
     normalizeHomeHistoryEntry();
-    setLocation(`/blogs/${slug}`);
+    const href = `/blogs/${slug}`;
+    startRouteTransition(href);
+    setLocation(href);
   };
 
   return (
@@ -96,6 +99,7 @@ export function BlogSection() {
                 <Button
                   variant="default"
                   className="mt-6 h-11 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn"
+                  onPointerDown={() => startRouteTransition(`/blogs/${post.slug}`)}
                   onClick={() => openFromHome(post.slug)}
                 >
                   Read Article
@@ -111,8 +115,10 @@ export function BlogSection() {
             <Button
               variant="outline"
               className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
+              onPointerDown={() => startRouteTransition("/blogs")}
               onClick={() => {
                 normalizeHomeHistoryEntry();
+                startRouteTransition("/blogs");
                 setLocation("/blogs");
               }}
             >

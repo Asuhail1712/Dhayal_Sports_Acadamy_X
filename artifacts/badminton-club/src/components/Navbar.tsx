@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
+import { startRouteTransition } from '@/hooks/use-scroll-restoration';
 
 export function Navbar() {
   const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isHomeLocation = window.location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,7 +19,7 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toHomeAnchor = (hash: string) => (location === '/' ? hash : `/${hash}`);
+  const toHomeAnchor = (hash: string) => (isHomeLocation ? hash : `/${hash}`);
   const normalizeHomeHistoryEntry = (href: string) => {
     const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
 
@@ -36,6 +38,25 @@ export function Navbar() {
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
+    const isHomeHashNavigation =
+      window.location.pathname === '/' &&
+      (href.startsWith('#') || href.startsWith('/#'));
+
+    if (isHomeHashNavigation) {
+      event.preventDefault();
+      setMobileMenuOpen(false);
+      const hash = href.startsWith('/#') ? href.slice(1) : href;
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}${hash}`,
+      );
+      const targetId = hash.slice(1);
+      const target = targetId ? document.getElementById(targetId) : null;
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
     if (!href.startsWith('/')) {
       setMobileMenuOpen(false);
       return;
@@ -44,6 +65,7 @@ export function Navbar() {
     event.preventDefault();
     setMobileMenuOpen(false);
     normalizeHomeHistoryEntry(href);
+    startRouteTransition(href);
     setLocation(href);
   };
 
@@ -53,7 +75,7 @@ export function Navbar() {
     { name: 'Classes', href: toHomeAnchor('#classes') },
     { name: 'Coaches', href: toHomeAnchor('#coaches') },
     { name: 'Partners', href: toHomeAnchor('#partners') },
-    { name: 'Blogs', href: location === '/' ? '#blogs' : '/blogs' },
+    { name: 'Blogs', href: isHomeLocation ? '#blogs' : '/blogs' },
   ];
 
   return (
@@ -70,6 +92,7 @@ export function Navbar() {
           {/* Logo */}
           <a
             href={toHomeAnchor('#home')}
+            onPointerDown={() => startRouteTransition(toHomeAnchor('#home'))}
             onClick={(event) => navigateClientSide(event, toHomeAnchor('#home'))}
             className="flex items-center gap-2 z-10 group -ml-2 md:ml-0"
           >
@@ -86,6 +109,7 @@ export function Navbar() {
               <motion.a
                 key={link.name}
                 href={link.href}
+                onPointerDown={() => startRouteTransition(link.href)}
                 onClick={(event) => navigateClientSide(event, link.href)}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
@@ -104,6 +128,7 @@ export function Navbar() {
             <Button variant="neon" size="sm" asChild>
               <a
                 href={toHomeAnchor('#contact')}
+                onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))}
                 onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
               >
                 Join Club
@@ -134,6 +159,7 @@ export function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
+                onPointerDown={() => startRouteTransition(link.href)}
                 onClick={(event) => navigateClientSide(event, link.href)}
                 className="text-lg font-medium text-white/80 hover:text-white hover:pl-2 transition-all"
               >
@@ -151,6 +177,7 @@ export function Navbar() {
             <Button variant="neon" className="w-full" asChild>
               <a
                 href={toHomeAnchor('#contact')}
+                onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))}
                 onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
               >
                 Join Club Now
