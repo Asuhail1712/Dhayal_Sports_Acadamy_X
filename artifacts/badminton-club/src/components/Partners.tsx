@@ -202,16 +202,15 @@ export function Partners() {
           <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="text-[0.65rem] uppercase tracking-[0.28em] text-white/30">
-                Brand Carousel
+                Partner Brands
               </div>
               <h3 className="mt-1 text-xl font-black text-white md:text-2xl">
-                Recognized performance brands
+                Trusted brands in training and performance
               </h3>
             </div>
             <div className="max-w-md text-sm leading-relaxed text-white/42 md:text-right">
-              A cleaner, higher-quality logo wall built only from your local
-              partner assets, with no boxed listing feel and no faded carousel
-              edges.
+              Showcasing the equipment, retail, and performance brands that
+              align with the academy environment and support player development.
             </div>
           </div>
 
