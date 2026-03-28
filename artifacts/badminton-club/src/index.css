@@ -171,13 +171,11 @@
 }
 
 .route-transition-app {
-  transition: filter 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
-  will-change: filter, transform, opacity;
+  transition: opacity 0.28s ease;
+  will-change: opacity;
 }
 
 body[data-route-transition="active"] .route-transition-app {
-  filter: blur(18px);
-  transform: scale(1.01);
   opacity: 0.42;
 }
 
@@ -202,8 +200,10 @@ body[data-route-transition="active"] .route-transition-app {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
-    rgba(5, 10, 18, 0.3);
+    radial-gradient(circle at top, rgba(0, 240, 255, 0.12), transparent 42%),
+    rgba(5, 10, 18, 0.22);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
   opacity: 0;
   transition: opacity 0.22s ease;
 }
