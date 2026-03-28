@@ -180,17 +180,23 @@
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  background:
-    radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
-    rgba(5, 10, 18, 0.18);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  isolation: isolate;
   transition: opacity 0.22s ease, visibility 0.22s ease;
 }
 
 .route-transition-overlay.is-visible {
   opacity: 1;
   visibility: visible;
+}
+
+.route-transition-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
+    rgba(5, 10, 18, 0.2);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 }
 
 .route-transition-overlay__panel {
