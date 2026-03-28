@@ -28,7 +28,6 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
       <Route path="/blogs" component={Blogs} />
       <Route path="/blogs/:slug">
         {(params) => <BlogDetail slug={params.slug} />}
@@ -50,13 +49,34 @@ function ScrollManager() {
   return null;
 }
 
+function AppContent() {
+  const [location] = useLocation();
+  const isHomeRoute = location === "/" || location.startsWith("/#");
+
+  return (
+    <div className="route-transition-app">
+      <div
+        className={isHomeRoute ? "block" : "hidden"}
+        aria-hidden={!isHomeRoute}
+      >
+        <Home />
+      </div>
+
+      {!isHomeRoute ? <Router /> : null}
+    </div>
+  );
+}
+
 function RouteTransitionOverlay() {
   const [visible, setVisible] = useState(false);
+  const visibleRef = useRef(false);
   const startedAtRef = useRef(0);
   const hideTimeoutRef = useRef<number | null>(null);
   const forceHideTimeoutRef = useRef<number | null>(null);
+  const fixedDurationRef = useRef<number | null>(null);
 
   useEffect(() => {
+    visibleRef.current = visible;
     document.body.dataset.routeTransition = visible ? "active" : "idle";
   }, [visible]);
 
@@ -73,19 +93,44 @@ function RouteTransitionOverlay() {
       }
     };
 
-    const handleStart = () => {
+    const hideOverlay = () => {
+      visibleRef.current = false;
+      fixedDurationRef.current = null;
+      setVisible(false);
+      window.dispatchEvent(new CustomEvent("dhayal:route-transition-hidden"));
+    };
+
+    const handleStart = (event: Event) => {
       clearTimers();
       startedAtRef.current = performance.now();
+      const customEvent = event as CustomEvent<{ fixedDuration?: number }>;
+      fixedDurationRef.current =
+        typeof customEvent.detail?.fixedDuration === "number"
+          ? customEvent.detail.fixedDuration
+          : null;
+      visibleRef.current = true;
       setVisible(true);
 
+      const fixedDuration = fixedDurationRef.current;
+      if (fixedDuration !== null) {
+        forceHideTimeoutRef.current = window.setTimeout(() => {
+          hideOverlay();
+          forceHideTimeoutRef.current = null;
+        }, fixedDuration);
+        return;
+      }
+
       forceHideTimeoutRef.current = window.setTimeout(() => {
-        setVisible(false);
-        window.dispatchEvent(new CustomEvent("dhayal:route-transition-hidden"));
+        hideOverlay();
         forceHideTimeoutRef.current = null;
       }, 520);
     };
 
     const handleComplete = () => {
+      if (fixedDurationRef.current !== null) {
+        return;
+      }
+
       const elapsed = performance.now() - startedAtRef.current;
       const remaining = Math.max(0, 890 - elapsed);
 
@@ -94,13 +139,12 @@ function RouteTransitionOverlay() {
         forceHideTimeoutRef.current = null;
       }
 
-      if (!visible) {
+      if (!visibleRef.current) {
         return;
       }
 
       hideTimeoutRef.current = window.setTimeout(() => {
-        setVisible(false);
-        window.dispatchEvent(new CustomEvent("dhayal:route-transition-hidden"));
+        hideOverlay();
         hideTimeoutRef.current = null;
       }, remaining);
     };
@@ -113,7 +157,7 @@ function RouteTransitionOverlay() {
       window.removeEventListener("dhayal:route-transition-start", handleStart);
       window.removeEventListener("dhayal:route-transition-complete", handleComplete);
     };
-  }, [visible]);
+  }, []);
 
   return (
     <div
@@ -140,9 +184,7 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <ScrollManager />
-          <div className="route-transition-app">
-            <Router />
-          </div>
+          <AppContent />
           <RouteTransitionOverlay />
         </WouterRouter>
         <Toaster />
