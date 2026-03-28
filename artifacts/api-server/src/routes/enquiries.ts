@@ -1,4 +1,5 @@
 import { Router, type IRouter } from "express";
+import { lookup } from "node:dns/promises";
 import nodemailer from "nodemailer";
 
 const router: IRouter = Router();
@@ -36,6 +37,24 @@ function validatePayload(body: unknown): EnquiryPayload {
   return { firstName, lastName, email, message };
 }
 
+async function resolveSmtpTarget(host: string): Promise<{
+  connectHost: string;
+  servername: string;
+}> {
+  try {
+    const resolved = await lookup(host, { family: 4 });
+    return {
+      connectHost: resolved.address,
+      servername: host,
+    };
+  } catch {
+    return {
+      connectHost: host,
+      servername: host,
+    };
+  }
+}
+
 router.post("/enquiries", async (req, res) => {
   try {
     const payload = validatePayload(req.body);
@@ -49,12 +68,16 @@ router.post("/enquiries", async (req, res) => {
     const pass = readRequiredEnv("SMTP_PASS");
     const from = process.env.SMTP_FROM?.trim() || user;
     const to = process.env.ENQUIRY_TO?.trim() || "asuhail1712@gmail.com";
+    const smtpTarget = await resolveSmtpTarget(host);
 
     const transporter = nodemailer.createTransport({
-      host,
+      host: smtpTarget.connectHost,
       port,
       secure,
       auth: { user, pass },
+      tls: {
+        servername: smtpTarget.servername,
+      },
     });
 
     await transporter.sendMail({
