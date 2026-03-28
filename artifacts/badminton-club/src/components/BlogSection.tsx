@@ -8,15 +8,34 @@ export function BlogSection() {
   const [, setLocation] = useLocation();
   const featuredPosts = blogPosts.slice(0, 3);
 
+  const normalizeHomeHistoryEntry = () => {
+    if (window.location.pathname !== "/" || !window.location.hash) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${window.location.pathname}${window.location.search}`,
+    );
+  };
+
   const openFromHome = (slug: string) => {
+    normalizeHomeHistoryEntry();
     setLocation(`/blogs/${slug}`);
   };
 
   return (
-    <section id="blogs" className="relative z-10 py-24">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(0,240,255,0.07),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(194,76,255,0.07),transparent_40%)]" />
+    <section id="blogs" className="relative z-10 overflow-hidden py-24">
+      <div className="absolute inset-0 z-0 opacity-[0.03] blur-[2px] pointer-events-none mix-blend-screen">
+        <img
+          src={`${import.meta.env.BASE_URL}images/court-texture.png`}
+          alt="Texture"
+          className="h-full w-full object-cover"
+        />
+      </div>
 
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container relative z-10 mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +111,10 @@ export function BlogSection() {
             <Button
               variant="outline"
               className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
-              onClick={() => setLocation("/blogs")}
+              onClick={() => {
+                normalizeHomeHistoryEntry();
+                setLocation("/blogs");
+              }}
             >
               View More
             </Button>

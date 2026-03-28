@@ -16,7 +16,15 @@ const levelImages: Record<string, string> = {
 };
 
 export function Classes() {
-  const { data, isLoading, error } = useGetClasses();
+  const { data, isLoading, error } = useGetClasses({
+    query: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  });
   const [, setLocation] = useLocation();
   const [filter, setFilter] = useState<string>('All');
   const [isDesktop, setIsDesktop] = useState(false);
@@ -68,7 +76,20 @@ export function Classes() {
     return { text: "Available", color: "text-emerald-500" };
   };
 
+  const normalizeHomeHistoryEntry = () => {
+    if (window.location.pathname !== '/' || !window.location.hash) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      '',
+      `${window.location.pathname}${window.location.search}`,
+    );
+  };
+
   const openProgramFromHome = (slug: string) => {
+    normalizeHomeHistoryEntry();
     setLocation(`/programs/${slug}`);
   };
 
@@ -252,7 +273,10 @@ export function Classes() {
               <Button
                 variant="outline"
                 className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
-                onClick={() => setLocation("/programs")}
+                onClick={() => {
+                  normalizeHomeHistoryEntry();
+                  setLocation("/programs");
+                }}
               >
                 View More
               </Button>

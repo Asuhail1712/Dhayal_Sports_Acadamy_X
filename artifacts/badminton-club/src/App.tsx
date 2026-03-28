@@ -1,8 +1,9 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 import Home from "./pages/Home";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
@@ -14,7 +15,11 @@ import NotFound from "./pages/not-found";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       retry: false,
     },
   },
@@ -40,143 +45,92 @@ function Router() {
 
 function ScrollManager() {
   const [location] = useLocation();
-  const initializedRef = useRef(false);
-  const currentRouteKeyRef = useRef("");
-  const navigationTypeRef = useRef<"PUSH" | "REPLACE" | "POP">("PUSH");
-  const scrollFrameRef = useRef<number | null>(null);
-
-  const withInstantScroll = (action: () => void) => {
-    const root = document.documentElement;
-    const body = document.body;
-    const previousRootBehavior = root.style.scrollBehavior;
-    const previousBodyBehavior = body.style.scrollBehavior;
-
-    root.style.scrollBehavior = "auto";
-    body.style.scrollBehavior = "auto";
-    action();
-    root.style.scrollBehavior = previousRootBehavior;
-    body.style.scrollBehavior = previousBodyBehavior;
-  };
-
-  const getRouteKey = () =>
-    `${window.location.pathname}${window.location.search}${window.location.hash}`;
-
-  const getStorageKey = (routeKey: string) => `scroll:${routeKey}`;
-
-  const saveScroll = (routeKey: string, top: number = window.scrollY) => {
-    sessionStorage.setItem(getStorageKey(routeKey), String(top));
-  };
-
-  const restoreScroll = (routeKey: string) => {
-    const raw = sessionStorage.getItem(getStorageKey(routeKey));
-    const top = raw === null ? 0 : Number(raw);
-
-    withInstantScroll(() => {
-      window.scrollTo(0, Number.isFinite(top) ? top : 0);
-    });
-  };
-
-  const scrollToTopInstant = () => {
-    withInstantScroll(() => {
-      window.scrollTo(0, 0);
-    });
-  };
-
-  const scrollToHashTarget = (hash: string) => {
-    const id = hash.replace(/^#/, "");
-    if (!id) return false;
-
-    const element = document.getElementById(id);
-    if (!element) return false;
-
-    withInstantScroll(() => {
-      element.scrollIntoView({ block: "start" });
-    });
-
-    return true;
-  };
-
-  useEffect(() => {
-    window.history.scrollRestoration = "manual";
-    currentRouteKeyRef.current = getRouteKey();
-
-    const originalPushState = window.history.pushState.bind(window.history);
-    const originalReplaceState = window.history.replaceState.bind(window.history);
-
-    window.history.pushState = function pushState(state, unused, url) {
-      saveScroll(currentRouteKeyRef.current);
-      navigationTypeRef.current = "PUSH";
-      return originalPushState(state, unused, url);
-    };
-
-    window.history.replaceState = function replaceState(state, unused, url) {
-      saveScroll(currentRouteKeyRef.current);
-      navigationTypeRef.current = "REPLACE";
-      return originalReplaceState(state, unused, url);
-    };
-
-    const handlePopState = () => {
-      saveScroll(currentRouteKeyRef.current);
-      navigationTypeRef.current = "POP";
-    };
-
-    const handleScroll = () => {
-      if (scrollFrameRef.current !== null) {
-        cancelAnimationFrame(scrollFrameRef.current);
-      }
-
-      scrollFrameRef.current = requestAnimationFrame(() => {
-        saveScroll(currentRouteKeyRef.current);
-      });
-    };
-
-    const handlePageHide = () => {
-      saveScroll(currentRouteKeyRef.current);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("pagehide", handlePageHide);
-
-    return () => {
-      if (scrollFrameRef.current !== null) {
-        cancelAnimationFrame(scrollFrameRef.current);
-      }
-
-      window.history.pushState = originalPushState;
-      window.history.replaceState = originalReplaceState;
-      window.history.scrollRestoration = "auto";
-      window.removeEventListener("popstate", handlePopState);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("pagehide", handlePageHide);
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    const currentRouteKey = getRouteKey();
-
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      currentRouteKeyRef.current = currentRouteKey;
-      if (!scrollToHashTarget(window.location.hash)) {
-        scrollToTopInstant();
-      }
-      return;
-    }
-
-    if (navigationTypeRef.current === "POP") {
-      restoreScroll(currentRouteKey);
-    } else if (!scrollToHashTarget(window.location.hash)) {
-      scrollToTopInstant();
-    } else {
-      saveScroll(currentRouteKey);
-    }
-
-    currentRouteKeyRef.current = currentRouteKey;
-    navigationTypeRef.current = "REPLACE";
-  }, [location]);
+  useScrollRestoration(location);
 
   return null;
+}
+
+function RouteTransitionOverlay() {
+  const [visible, setVisible] = useState(false);
+  const startedAtRef = useRef(0);
+  const hideTimeoutRef = useRef<number | null>(null);
+  const forceHideTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    document.body.dataset.routeTransition = visible ? "active" : "idle";
+  }, [visible]);
+
+  useEffect(() => {
+    const clearTimers = () => {
+      if (hideTimeoutRef.current !== null) {
+        window.clearTimeout(hideTimeoutRef.current);
+        hideTimeoutRef.current = null;
+      }
+
+      if (forceHideTimeoutRef.current !== null) {
+        window.clearTimeout(forceHideTimeoutRef.current);
+        forceHideTimeoutRef.current = null;
+      }
+    };
+
+    const handleStart = () => {
+      clearTimers();
+      startedAtRef.current = performance.now();
+      setVisible(true);
+
+      forceHideTimeoutRef.current = window.setTimeout(() => {
+        setVisible(false);
+        window.dispatchEvent(new CustomEvent("dhayal:route-transition-hidden"));
+        forceHideTimeoutRef.current = null;
+      }, 520);
+    };
+
+    const handleComplete = () => {
+      const elapsed = performance.now() - startedAtRef.current;
+      const remaining = Math.max(0, 890 - elapsed);
+
+      if (forceHideTimeoutRef.current !== null) {
+        window.clearTimeout(forceHideTimeoutRef.current);
+        forceHideTimeoutRef.current = null;
+      }
+
+      if (!visible) {
+        return;
+      }
+
+      hideTimeoutRef.current = window.setTimeout(() => {
+        setVisible(false);
+        window.dispatchEvent(new CustomEvent("dhayal:route-transition-hidden"));
+        hideTimeoutRef.current = null;
+      }, remaining);
+    };
+
+    window.addEventListener("dhayal:route-transition-start", handleStart);
+    window.addEventListener("dhayal:route-transition-complete", handleComplete);
+
+    return () => {
+      clearTimers();
+      window.removeEventListener("dhayal:route-transition-start", handleStart);
+      window.removeEventListener("dhayal:route-transition-complete", handleComplete);
+    };
+  }, [visible]);
+
+  return (
+    <div
+      className={`route-transition-overlay ${visible ? "is-visible" : ""}`}
+      aria-hidden={!visible}
+    >
+      <div className="route-transition-overlay__panel">
+        <div className="route-transition-overlay__aura" />
+        <div className="route-transition-overlay__core">
+          <div className="route-transition-overlay__spinner" />
+          <div className="route-transition-overlay__spinner route-transition-overlay__spinner--secondary" />
+          <div className="route-transition-overlay__dot" />
+        </div>
+        <div className="route-transition-overlay__label">Loading</div>
+      </div>
+    </div>
+  );
 }
 
 function App() {
@@ -185,6 +139,7 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <ScrollManager />
+          <RouteTransitionOverlay />
           <Router />
         </WouterRouter>
         <Toaster />

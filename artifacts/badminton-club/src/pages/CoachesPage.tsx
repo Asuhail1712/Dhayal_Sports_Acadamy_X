@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { Award, Star, Users } from "lucide-react";
+import { motion } from "framer-motion";
 import { PageShell } from "@/components/PageShell";
 import { fallbackCoaches } from "@/lib/fallback-data";
 
@@ -12,9 +12,16 @@ const coachImages = [
 
 export default function CoachesPage() {
   return (
-    <PageShell className="pt-32 pb-20">
-      <section className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-20">
+    <PageShell className="pb-20">
+      <section className="relative z-10 overflow-hidden">
+        <div className="container relative z-10 mx-auto px-4 md:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
+        >
           <h1 className="text-3xl font-black text-white md:text-5xl">
             MEET THE <span className="text-secondary">TEAM</span>
           </h1>
@@ -22,15 +29,16 @@ export default function CoachesPage() {
             Former champions, specialists, and support professionals named in the
             proposal drive the academy model.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {fallbackCoaches.map((coach, index) => (
             <motion.div
               key={coach.id}
               initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: index * 0.05 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col sm:flex-row glass-panel rounded-[2rem] overflow-hidden group transition-all duration-500 md:hover:border-secondary/30 md:hover:shadow-[0_10px_40px_-10px_rgba(176,38,255,0.2)]"
             >
               <div className="relative h-64 sm:h-auto sm:w-2/5 overflow-hidden flex-shrink-0">
@@ -94,7 +102,8 @@ export default function CoachesPage() {
                   <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
-                      animate={{ width: "85%" }}
+                      whileInView={{ width: "85%" }}
+                      viewport={{ once: true }}
                       transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
                       className="h-full bg-gradient-to-r from-secondary/50 to-secondary rounded-full"
                     />
@@ -103,6 +112,7 @@ export default function CoachesPage() {
               </div>
             </motion.div>
           ))}
+        </div>
         </div>
       </section>
     </PageShell>

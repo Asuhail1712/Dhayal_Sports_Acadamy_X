@@ -5,7 +5,7 @@ import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 
 export function Navbar() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -18,6 +18,34 @@ export function Navbar() {
   }, []);
 
   const toHomeAnchor = (hash: string) => (location === '/' ? hash : `/${hash}`);
+  const normalizeHomeHistoryEntry = (href: string) => {
+    const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
+
+    if (window.location.pathname !== '/' || !window.location.hash || !isLeavingHomeForRoute) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      '',
+      `${window.location.pathname}${window.location.search}`,
+    );
+  };
+
+  const navigateClientSide = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    if (!href.startsWith('/')) {
+      setMobileMenuOpen(false);
+      return;
+    }
+
+    event.preventDefault();
+    setMobileMenuOpen(false);
+    normalizeHomeHistoryEntry(href);
+    setLocation(href);
+  };
 
   const navLinks = [
     { name: 'Home', href: toHomeAnchor('#home') },
@@ -40,7 +68,11 @@ export function Navbar() {
         }`}>
           
           {/* Logo */}
-          <a href={toHomeAnchor('#home')} className="flex items-center gap-2 z-10 group -ml-2 md:ml-0">
+          <a
+            href={toHomeAnchor('#home')}
+            onClick={(event) => navigateClientSide(event, toHomeAnchor('#home'))}
+            className="flex items-center gap-2 z-10 group -ml-2 md:ml-0"
+          >
             <img
               src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}
               alt="Dayal Sports Academy"
@@ -54,6 +86,7 @@ export function Navbar() {
               <motion.a
                 key={link.name}
                 href={link.href}
+                onClick={(event) => navigateClientSide(event, link.href)}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
                 className="group relative rounded-full px-3 py-2 text-sm font-medium text-white/70 transition-colors hover:text-white"
@@ -69,7 +102,12 @@ export function Navbar() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4 z-10">
             <Button variant="neon" size="sm" asChild>
-              <a href={toHomeAnchor('#contact')}>Join Club</a>
+              <a
+                href={toHomeAnchor('#contact')}
+                onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
+              >
+                Join Club
+              </a>
             </Button>
           </div>
 
@@ -96,7 +134,7 @@ export function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(event) => navigateClientSide(event, link.href)}
                 className="text-lg font-medium text-white/80 hover:text-white hover:pl-2 transition-all"
               >
                 {link.name}
@@ -111,7 +149,12 @@ export function Navbar() {
               />
             </div>
             <Button variant="neon" className="w-full" asChild>
-              <a href={toHomeAnchor('#contact')} onClick={() => setMobileMenuOpen(false)}>Join Club Now</a>
+              <a
+                href={toHomeAnchor('#contact')}
+                onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
+              >
+                Join Club Now
+              </a>
             </Button>
           </motion.div>
         )}

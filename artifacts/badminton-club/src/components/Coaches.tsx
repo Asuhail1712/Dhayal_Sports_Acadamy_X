@@ -27,6 +27,18 @@ export function Coaches() {
     return () => mediaQuery.removeEventListener('change', sync);
   }, []);
 
+  const normalizeHomeHistoryEntry = () => {
+    if (window.location.pathname !== '/' || !window.location.hash) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      '',
+      `${window.location.pathname}${window.location.search}`,
+    );
+  };
+
   return (
     <section id="coaches" className="py-24 relative z-10 overflow-hidden">
       {/* Background texture */}
@@ -162,7 +174,10 @@ export function Coaches() {
             <button
               type="button"
               className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-8 text-white transition-colors hover:bg-white/10"
-              onClick={() => setLocation("/coaches")}
+              onClick={() => {
+                normalizeHomeHistoryEntry();
+                setLocation("/coaches");
+              }}
             >
               View More
             </button>

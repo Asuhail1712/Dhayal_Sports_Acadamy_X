@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { AlertCircle, Clock, IndianRupee, User, Users } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { getProgramBySlug } from "@/lib/content";
@@ -22,23 +23,38 @@ export default function ProgramDetail({ slug }: { slug: string }) {
 
   if (!program) {
     return (
-      <PageShell className="pt-32 pb-20">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="rounded-[2rem] border border-white/10 bg-card/60 p-10 text-center backdrop-blur-md">
+      <PageShell className="pb-20">
+        <section className="relative z-10 overflow-hidden">
+          <div className="container relative z-10 mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-[2rem] border border-white/10 bg-card/60 p-10 text-center backdrop-blur-md"
+          >
             <h1 className="text-3xl font-black text-white">Program not found</h1>
             <p className="mt-4 text-white/60">
               The training solution you opened is not available.
             </p>
+          </motion.div>
           </div>
-        </div>
+        </section>
       </PageShell>
     );
   }
 
   return (
-    <PageShell className="pt-32 pb-20">
-      <section className="container mx-auto px-4 md:px-6">
-        <div className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/70 backdrop-blur-md">
+    <PageShell className="pb-20">
+      <section className="relative z-10 overflow-hidden">
+        <div className="container relative z-10 mx-auto px-4 md:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-90px" }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/70 backdrop-blur-md"
+        >
           <div className="relative h-[320px] overflow-hidden md:h-[460px]">
             <img
               src={program.heroImage}
@@ -91,10 +107,16 @@ export default function ProgramDetail({ slug }: { slug: string }) {
               <p className="mt-2 text-sm text-white/50">Session capacity</p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.45, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md"
+          >
             <h2 className="text-2xl font-black text-white">Program Overview</h2>
             <div className="mt-6 space-y-5 text-white/70">
               {program.overview.map((paragraph) => (
@@ -103,10 +125,16 @@ export default function ProgramDetail({ slug }: { slug: string }) {
                 </p>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           <div className="space-y-8">
-            <div className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-70px" }}
+              transition={{ duration: 0.45, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md"
+            >
               <h2 className="text-2xl font-black text-white">What’s Included</h2>
               <ul className="mt-6 space-y-4">
                 {program.inclusions.map((item) => (
@@ -116,9 +144,15 @@ export default function ProgramDetail({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-70px" }}
+              transition={{ duration: 0.45, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-[2rem] border border-white/10 bg-card/60 p-8 backdrop-blur-md"
+            >
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-primary" />
                 <h2 className="text-2xl font-black text-white">Expected Outcomes</h2>
@@ -131,8 +165,9 @@ export default function ProgramDetail({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
+        </div>
         </div>
       </section>
     </PageShell>

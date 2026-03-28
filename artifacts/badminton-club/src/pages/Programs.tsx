@@ -47,11 +47,16 @@ export default function Programs() {
   );
 
   return (
-    <PageShell className="pt-32 pb-20">
-      <section className="relative z-10">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-16">
+    <PageShell className="pb-20">
+      <section className="relative z-10 overflow-hidden">
+        <div className="container relative z-10 mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-16"
+          >
             <h1 className="text-3xl font-black text-white md:text-5xl">
               TRAINING <span className="text-primary">SOLUTIONS</span>
             </h1>
@@ -60,7 +65,13 @@ export default function Programs() {
               assessments, and player development pathways.
             </p>
 
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10 flex flex-wrap justify-center gap-3"
+            >
               {levels.map((level) => (
                 <button
                   key={level}
@@ -74,8 +85,8 @@ export default function Programs() {
                   {level}
                 </button>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPrograms.map((program, index) => {
@@ -85,8 +96,9 @@ export default function Programs() {
                 <motion.div
                   key={program.id}
                   initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: index * 0.04 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   className="bg-card border border-white/10 rounded-[2rem] overflow-hidden group transition-all duration-500 md:hover:border-primary/50 md:hover:shadow-[0_10px_40px_-10px_rgba(0,240,255,0.2)] md:hover:-translate-y-2 flex flex-col h-full"
                 >
                   <div className="relative h-48 overflow-hidden flex-shrink-0">

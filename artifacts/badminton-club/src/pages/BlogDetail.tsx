@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { CalendarDays } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { getBlogBySlug } from "@/lib/content";
@@ -7,23 +8,38 @@ export default function BlogDetail({ slug }: { slug: string }) {
 
   if (!post) {
     return (
-      <PageShell className="pt-32 pb-20">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="rounded-[2rem] border border-white/10 bg-card/60 p-10 text-center backdrop-blur-md">
+      <PageShell className="pb-20">
+        <section className="relative z-10 overflow-hidden">
+          <div className="container relative z-10 mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="rounded-[2rem] border border-white/10 bg-card/60 p-10 text-center backdrop-blur-md"
+          >
             <h1 className="text-3xl font-black text-white">Article not found</h1>
             <p className="mt-4 text-white/60">
               The blog entry you opened is not available.
             </p>
+          </motion.div>
           </div>
-        </div>
+        </section>
       </PageShell>
     );
   }
 
   return (
-    <PageShell className="pt-32 pb-20">
-      <article className="container mx-auto px-4 md:px-6">
-        <div className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/70 backdrop-blur-md">
+    <PageShell className="pb-20">
+      <section className="relative z-10 overflow-hidden">
+        <article className="container relative z-10 mx-auto px-4 md:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-90px" }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/70 backdrop-blur-md"
+        >
           <div className="relative h-[320px] overflow-hidden md:h-[440px]">
             <img
               src={post.image}
@@ -48,14 +64,21 @@ export default function BlogDetail({ slug }: { slug: string }) {
             <h1 className="text-3xl font-black leading-tight text-white md:text-5xl">
               {post.title}
             </h1>
-            <div className="mt-8 space-y-6 text-base leading-8 text-white/72">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-8 space-y-6 text-base leading-8 text-white/72"
+            >
               {post.body.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-            </div>
+            </motion.div>
           </div>
-        </div>
-      </article>
+        </motion.div>
+        </article>
+      </section>
     </PageShell>
   );
 }
