@@ -130,6 +130,15 @@
 }
 
 @layer utilities {
+  #about,
+  #classes,
+  #coaches,
+  #partners,
+  #blogs,
+  #contact {
+    scroll-margin-top: 3.25rem;
+  }
+
   .glass-panel {
     background: rgba(255,255,255,0.04); 
     backdrop-filter: blur(20px); 
@@ -176,7 +185,7 @@
 }
 
 body[data-route-transition="active"] .route-transition-app {
-  opacity: 0.42;
+  opacity: 1;
 }
 
 .route-transition-overlay {
@@ -187,50 +196,26 @@ body[data-route-transition="active"] .route-transition-app {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  opacity: 0;
   visibility: hidden;
-  isolation: isolate;
-  transition: visibility 0.22s ease;
+  background:
+    radial-gradient(circle at top, rgba(0, 240, 255, 0.1), transparent 42%),
+    rgba(5, 10, 18, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: opacity 0.22s ease, visibility 0.22s ease;
 }
 
 .route-transition-overlay.is-visible {
+  opacity: 1;
   visibility: visible;
 }
 
 .route-transition-overlay__backdrop {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at top, rgba(0, 240, 255, 0.12), transparent 42%),
-    rgba(5, 10, 18, 0.22);
-  backdrop-filter: blur(24px) saturate(120%);
-  -webkit-backdrop-filter: blur(24px) saturate(120%);
   opacity: 0;
   transition: opacity 0.22s ease;
-}
-
-.route-transition-overlay__backdrop::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.18), transparent 18%),
-    radial-gradient(circle at 82% 12%, rgba(0, 240, 255, 0.1), transparent 20%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  opacity: 0.9;
-  pointer-events: none;
-}
-
-.route-transition-overlay__backdrop::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 18px 18px;
-  opacity: 0.14;
-  mix-blend-mode: screen;
-  pointer-events: none;
 }
 
 .route-transition-overlay__panel {
