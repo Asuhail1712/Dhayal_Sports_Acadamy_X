@@ -15,10 +15,10 @@ export function BrandLogo({ compact = false, className = '' }: BrandLogoProps) {
         <div className="brand-logo-feather absolute right-1 top-3 h-5 w-3 rounded-full" />
       </div>
       <div className="leading-none">
-        <div className={`font-display font-black italic tracking-tight text-white ${compact ? 'text-2xl' : 'text-3xl'}`}>
+        <div className={`font-display font-black italic tracking-tight text-foreground ${compact ? 'text-2xl' : 'text-3xl'}`}>
           Dayal
         </div>
-        <div className={`font-display font-extrabold italic tracking-tight text-white/95 ${compact ? 'text-lg' : 'text-2xl'}`}>
+        <div className={`font-display font-extrabold italic tracking-tight text-foreground/90 ${compact ? 'text-lg' : 'text-2xl'}`}>
           Sports Academy
         </div>
       </div>

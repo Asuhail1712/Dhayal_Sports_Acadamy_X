@@ -35,24 +35,24 @@ function NeonShuttlecockLoader() {
     >
       <defs>
         <filter id="shuttle-glow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
-          <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#EFFFFF" floodOpacity="0.7" />
-          <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#00F0FF" floodOpacity="0.85" />
+          <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#FFF1E7" floodOpacity="0.7" />
+          <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF5A00" floodOpacity="0.65" />
         </filter>
       </defs>
       <g filter="url(#shuttle-glow)" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M32 37L16 12" stroke="#F7FFFF" strokeWidth="2.5" />
-        <path d="M32 37L23 10" stroke="#F7FFFF" strokeWidth="2.5" />
-        <path d="M32 37L32 8" stroke="#F7FFFF" strokeWidth="2.5" />
-        <path d="M32 37L41 10" stroke="#F7FFFF" strokeWidth="2.5" />
-        <path d="M32 37L48 12" stroke="#F7FFFF" strokeWidth="2.5" />
-        <path d="M32 37L12 19" stroke="#F7FFFF" strokeWidth="2.1" />
-        <path d="M32 37L52 19" stroke="#F7FFFF" strokeWidth="2.1" />
-        <path d="M20 27L27 16" stroke="#B9FEFF" strokeWidth="1.5" />
-        <path d="M27 33L32 16" stroke="#B9FEFF" strokeWidth="1.5" />
-        <path d="M37 33L32 16" stroke="#B9FEFF" strokeWidth="1.5" />
-        <path d="M44 27L37 16" stroke="#B9FEFF" strokeWidth="1.5" />
-        <path d="M24 39H40" stroke="#00F0FF" strokeWidth="3" />
-        <path d="M26 39H38V48C38 50.2091 36.2091 52 34 52H30C27.7909 52 26 50.2091 26 48V39Z" stroke="#00F0FF" strokeWidth="2.8" />
+        <path d="M32 37L16 12" stroke="#FFF8EF" strokeWidth="2.5" />
+        <path d="M32 37L23 10" stroke="#FFF8EF" strokeWidth="2.5" />
+        <path d="M32 37L32 8" stroke="#FFF8EF" strokeWidth="2.5" />
+        <path d="M32 37L41 10" stroke="#FFF8EF" strokeWidth="2.5" />
+        <path d="M32 37L48 12" stroke="#FFF8EF" strokeWidth="2.5" />
+        <path d="M32 37L12 19" stroke="#FFF8EF" strokeWidth="2.1" />
+        <path d="M32 37L52 19" stroke="#FFF8EF" strokeWidth="2.1" />
+        <path d="M20 27L27 16" stroke="#FFB27A" strokeWidth="1.5" />
+        <path d="M27 33L32 16" stroke="#FFB27A" strokeWidth="1.5" />
+        <path d="M37 33L32 16" stroke="#FFB27A" strokeWidth="1.5" />
+        <path d="M44 27L37 16" stroke="#FFB27A" strokeWidth="1.5" />
+        <path d="M24 39H40" stroke="#FF5A00" strokeWidth="3" />
+        <path d="M26 39H38V48C38 50.2091 36.2091 52 34 52H30C27.7909 52 26 50.2091 26 48V39Z" stroke="#FF5A00" strokeWidth="2.8" />
       </g>
     </svg>
   );
@@ -160,7 +160,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative z-10 border-t border-white/5">
+    <section id="contact" className="relative z-10 border-t border-border bg-[#fafafa] py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-16">
           
@@ -173,38 +173,38 @@ export function Contact() {
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-4">
               Contact <span className="text-primary">Dayal Sports Academy</span>
             </h2>
-            <p className="text-white/60 text-sm md:text-base mb-8">
+            <p className="mb-8 text-sm text-muted-foreground md:text-base">
               Reach the academy team for coaching enquiries, training partnerships, camps, and player development discussions.
             </p>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 glass-panel rounded-2xl">
-                <div className="p-3 bg-primary/20 rounded-xl text-primary">
+              <div className="glass-panel flex items-start gap-4 rounded-2xl p-4">
+                <div className="rounded-xl bg-primary/12 p-3 text-primary">
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1">Location</h4>
-                  <p className="text-white/60">Unit B, 2nd Floor, Season Mansion Building<br/>No. 40-48 Tung On Street, Yau Ma Tei, Kowloon, Hong Kong</p>
+                  <h4 className="mb-1 font-bold text-foreground">Location</h4>
+                  <p className="text-muted-foreground">Unit B, 2nd Floor, Season Mansion Building<br/>No. 40-48 Tung On Street, Yau Ma Tei, Kowloon, Hong Kong</p>
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-4 glass-panel rounded-2xl">
-                <div className="p-3 bg-secondary/20 rounded-xl text-secondary">
+              <div className="glass-panel flex items-start gap-4 rounded-2xl p-4">
+                <div className="rounded-xl bg-primary/12 p-3 text-primary">
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1">Phone</h4>
-                  <p className="text-white/60">Tel: +852 2811 1502<br/>Mobile: +852 6628 5295</p>
+                  <h4 className="mb-1 font-bold text-foreground">Phone</h4>
+                  <p className="text-muted-foreground">Tel: (852) 2811 1502<br/>Mobile: (852) 6628 5295</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 glass-panel rounded-2xl">
-                <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400">
+              <div className="glass-panel flex items-start gap-4 rounded-2xl p-4">
+                <div className="rounded-xl bg-primary/12 p-3 text-primary">
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1">Email</h4>
-                  <p className="text-white/60">dayalsportsacademy@gmail.com<br/>www.dayalssportsacademy.com</p>
+                  <h4 className="mb-1 font-bold text-foreground">Email</h4>
+                  <p className="text-muted-foreground">dayalsportsacademy@gmail.com<br/>www.dayalssports.com<br/>www.yuvaayoga.com<br/>www.dayalsportsacademy.com</p>
                 </div>
               </div>
             </div>
@@ -215,51 +215,49 @@ export function Contact() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass-panel p-6 sm:p-8 md:p-10 rounded-3xl border-primary/20 relative"
+            className="glass-panel relative rounded-3xl border border-border p-6 sm:p-8 md:p-10"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl pointer-events-none" />
-            
             <h3 className="text-[2rem] sm:text-2xl font-bold mb-7 relative z-10">Send an Enquiry</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-medium text-white/80">First Name</label>
+                  <label className="text-sm font-medium text-foreground/80 sm:text-base">First Name</label>
                   <Input
                     name="firstName"
                     required
-                    className="h-11 sm:h-12 rounded-lg bg-background/50 border-white/10 px-4 py-2 text-sm sm:text-base leading-normal focus-visible:border-primary text-white placeholder:text-[12px] sm:placeholder:text-sm"
+                    className="h-11 rounded-lg border-border bg-white px-4 py-2 text-sm leading-normal text-foreground shadow-none focus-visible:border-primary focus-visible:ring-0 placeholder:text-[12px] sm:h-12 sm:text-base sm:placeholder:text-sm"
                     placeholder="Your first name"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-medium text-white/80">Last Name</label>
+                  <label className="text-sm font-medium text-foreground/80 sm:text-base">Last Name</label>
                   <Input
                     name="lastName"
                     required
-                    className="h-11 sm:h-12 rounded-lg bg-background/50 border-white/10 px-4 py-2 text-sm sm:text-base leading-normal focus-visible:border-primary text-white placeholder:text-[12px] sm:placeholder:text-sm"
+                    className="h-11 rounded-lg border-border bg-white px-4 py-2 text-sm leading-normal text-foreground shadow-none focus-visible:border-primary focus-visible:ring-0 placeholder:text-[12px] sm:h-12 sm:text-base sm:placeholder:text-sm"
                     placeholder="Your last name"
                   />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm sm:text-base font-medium text-white/80">Email Address</label>
+                <label className="text-sm font-medium text-foreground/80 sm:text-base">Email Address</label>
                 <Input
                   name="email"
                   required
                   type="email"
-                  className="h-11 sm:h-12 rounded-lg bg-background/50 border-white/10 px-4 py-2 text-sm sm:text-base leading-normal focus-visible:border-primary text-white placeholder:text-[12px] sm:placeholder:text-sm"
+                  className="h-11 rounded-lg border-border bg-white px-4 py-2 text-sm leading-normal text-foreground shadow-none focus-visible:border-primary focus-visible:ring-0 placeholder:text-[12px] sm:h-12 sm:text-base sm:placeholder:text-sm"
                   placeholder="name@example.com"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm sm:text-base font-medium text-white/80">Message</label>
+                <label className="text-sm font-medium text-foreground/80 sm:text-base">Message</label>
                 <Textarea
                   name="message"
                   required
-                  className="min-h-[140px] rounded-lg bg-background/50 border-white/10 px-4 py-3 text-sm sm:text-base leading-relaxed focus-visible:border-primary text-white placeholder:text-[12px] sm:placeholder:text-sm"
+                  className="min-h-[140px] rounded-lg border-border bg-white px-4 py-3 text-sm leading-relaxed text-foreground shadow-none focus-visible:border-primary focus-visible:ring-0 placeholder:text-[12px] sm:text-base sm:placeholder:text-sm"
                   placeholder="Tell us about your academy, facility, or partnership requirement."
                 />
               </div>

@@ -43,19 +43,19 @@ const highlights = [
     eyebrow: 'School Partners',
     title: 'Institutional collaborations for school badminton growth',
     description:
-      'Structured school tie-ups, training hubs, and youth development initiatives designed to grow badminton through institutional partnerships.',
+      'Low-impact, non-contact school badminton programs that develop motor skills, balance, coordination, alertness, focus, and progression from Little Champion to tournament teams.',
     image:
       'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=85',
-    accent: 'from-primary/50 via-primary/12 to-transparent',
+    accent: 'from-primary/60 via-primary/16 to-transparent',
   },
   {
-    eyebrow: 'Brand Partners',
-    title: 'Equipment, performance, and activation partners',
+    eyebrow: 'Academy Partners',
+    title: 'Corporate, club, academy, and education partners',
     description:
-      'A premium brand showcase for equipment, retail, and performance names that support the academy ecosystem on and off court.',
+      'Partnership opportunities for corporate wellness, sports clubs, academy networks, education groups, overseas centres, camps, and Dayal ProShop activations.',
     image:
       'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1600&q=85',
-    accent: 'from-secondary/45 via-secondary/10 to-transparent',
+    accent: 'from-secondary/55 via-secondary/12 to-transparent',
   },
 ];
 
@@ -72,7 +72,7 @@ function HighlightCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.55, delay: index * 0.08 }}
-      className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-card"
+      className="group relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
     >
       <div className="absolute inset-0">
         <img
@@ -81,11 +81,11 @@ function HighlightCard({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
         <div className={`absolute inset-0 bg-gradient-to-br ${item.accent}`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/12" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,16,0.06),rgba(8,12,16,0.12)_26%,rgba(8,12,16,0.3)_54%,rgba(8,12,16,0.78)_100%)]" />
       </div>
 
       <div className="relative flex min-h-[360px] flex-col justify-end p-6 md:min-h-[420px] md:p-8">
-        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/30 bg-background/25 px-4 py-2 backdrop-blur-md">
+        <div className="mb-4 inline-flex w-fit items-center justify-center gap-2 rounded-full border border-primary/20 bg-white/92 px-4 py-2 backdrop-blur-md">
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary" />
           <span className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
             {item.eyebrow}
@@ -111,7 +111,7 @@ function LogoPuck({
 }) {
   return (
     <div className="group flex min-w-[220px] items-center justify-center px-6 py-6 md:min-w-[260px] md:px-8">
-      <div className="flex w-full flex-col items-center gap-5 rounded-[1.8rem] border border-white/8 bg-white/[0.02] px-6 py-8 transition-all duration-300 group-hover:border-primary/20 group-hover:bg-white/[0.04]">
+      <div className="flex w-full flex-col items-center gap-5 rounded-[1.8rem] border border-border bg-white px-6 py-8 shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 group-hover:border-primary/20 group-hover:shadow-[0_20px_50px_rgba(255,90,0,0.15)]">
         <div
           className={`flex h-20 w-full items-center justify-center rounded-[1.35rem] ${logo.tint} px-8 md:h-24`}
         >
@@ -122,7 +122,7 @@ function LogoPuck({
             loading={priority ? 'eager' : 'lazy'}
           />
         </div>
-        <div className="text-[0.72rem] font-medium uppercase tracking-[0.3em] text-white/45">
+        <div className="text-[0.72rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
           {logo.name}
         </div>
       </div>
@@ -158,7 +158,7 @@ export function Partners() {
   return (
     <section
       id="partners"
-      className="relative z-10 overflow-hidden border-t border-white/5 py-24"
+      className="relative z-10 overflow-hidden border-t border-border bg-[#fafafa] py-24"
     >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[12%] top-20 h-44 w-44 rounded-full bg-primary/10 blur-[100px]" />
@@ -176,13 +176,14 @@ export function Partners() {
           <div className="text-[0.72rem] font-bold uppercase tracking-[0.3em] text-primary/85">
             Our Partners
           </div>
-          <h2 className="mt-3 text-3xl font-black leading-tight text-white md:text-5xl">
+          <h2 className="mt-3 text-3xl font-black leading-tight text-foreground md:text-5xl">
             Built for <span className="text-gradient">schools and brands</span>
           </h2>
-          <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
-            Presenting real performance and retail brands with a cleaner moving
-            logo wall, while keeping the school and institutional story in the
-            editorial feature cards above.
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
+            We collaborate with schools, sports clubs, academies, corporate
+            groups, education partners, overseas centres, camps, tourism
+            partners, and performance brands to build a complete badminton
+            ecosystem.
           </p>
         </motion.div>
 
@@ -197,20 +198,20 @@ export function Partners() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.55, delay: 0.08 }}
-          className="mt-8 rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] p-5 backdrop-blur-xl md:mt-10 md:p-8"
+          className="mt-8 rounded-[2.2rem] border border-border bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.08)] backdrop-blur-xl md:mt-10 md:p-8"
         >
           <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="text-[0.65rem] uppercase tracking-[0.28em] text-white/30">
+              <div className="text-[0.65rem] uppercase tracking-[0.28em] text-muted-foreground">
                 Partner Brands
               </div>
-              <h3 className="mt-1 text-xl font-black text-white md:text-2xl">
+              <h3 className="mt-1 text-xl font-black text-foreground md:text-2xl">
                 Trusted brands in training and performance
               </h3>
             </div>
-            <div className="max-w-md text-sm leading-[1.75] text-white/42 md:text-right">
-              Featuring equipment and performance brands that support the
-              academy environment.
+            <div className="max-w-md text-sm leading-[1.75] text-muted-foreground md:text-right">
+              Featuring equipment, retail, and performance brands that support
+              training, activation, and academy development.
             </div>
           </div>
 

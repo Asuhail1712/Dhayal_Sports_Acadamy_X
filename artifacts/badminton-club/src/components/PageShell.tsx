@@ -10,8 +10,8 @@ export function PageShell({
   className?: string;
 }) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground selection:bg-primary/30 selection:text-white">
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] blur-[2px] mix-blend-screen">
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground selection:bg-primary/20 selection:text-primary-foreground">
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.035]">
         <img
           src={`${import.meta.env.BASE_URL}images/court-texture.png`}
           alt="Texture"

@@ -10,6 +10,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isHomeLocation = window.location.pathname === '/';
+  const hasGlassNav = !isHomeLocation || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,8 +86,10 @@ export function Navbar() {
       }`}
     >
       <div className="container mx-auto px-2 md:px-6">
-        <div className={`relative flex items-center justify-between px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-all duration-300 ${
-          isScrolled ? 'bg-white/[0.04] backdrop-blur-md border border-white/10 shadow-lg' : 'bg-transparent'
+        <div className={`relative flex items-center justify-between px-4 md:px-6 py-3 md:py-4 rounded-2xl border transition-all duration-500 ease-out ${
+          hasGlassNav
+            ? 'border-white/10 bg-black/40 shadow-[0_12px_32px_rgba(0,0,0,0.18)] backdrop-blur-md'
+            : 'border-transparent bg-transparent shadow-none backdrop-blur-0'
         }`}>
           
           {/* Logo */}
@@ -113,7 +116,7 @@ export function Navbar() {
                 onClick={(event) => navigateClientSide(event, link.href)}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
-                className="group relative rounded-full px-3 py-2 text-sm font-medium text-white/70 transition-colors hover:text-white"
+                className="group relative rounded-full px-3 py-2 text-sm font-medium text-white/72 transition-colors hover:text-white"
               >
                 <span className="pointer-events-none absolute inset-0 rounded-full bg-white/[0.03] opacity-0 blur-sm transition-all duration-300 group-hover:opacity-100" />
                 <span>{link.name}</span>
@@ -125,7 +128,12 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4 z-10">
-            <Button variant="neon" size="sm" asChild>
+            <Button
+              variant="neon"
+              size="sm"
+              className={hasGlassNav ? 'bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_14px_30px_rgba(255,90,0,0.28)]' : ''}
+              asChild
+            >
               <a
                 href={toHomeAnchor('#contact')}
                 onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))}
@@ -153,7 +161,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-4 right-4 mt-2 p-6 bg-white/[0.05] backdrop-blur-md rounded-2xl flex flex-col gap-4 md:hidden border border-white/10"
+            className="absolute top-full left-4 right-4 mt-2 p-6 bg-white/96 backdrop-blur-md rounded-2xl flex flex-col gap-4 md:hidden border border-border shadow-[0_16px_40px_rgba(0,0,0,0.1)]"
           >
             {navLinks.map((link) => (
               <a
@@ -161,12 +169,12 @@ export function Navbar() {
                 href={link.href}
                 onPointerDown={() => startRouteTransition(link.href)}
                 onClick={(event) => navigateClientSide(event, link.href)}
-                className="text-lg font-medium text-white/80 hover:text-white hover:pl-2 transition-all"
+                className="text-lg font-medium text-foreground/80 hover:text-primary hover:pl-2 transition-all"
               >
                 {link.name}
               </a>
             ))}
-            <div className="h-px w-full bg-white/10 my-2" />
+            <div className="h-px w-full bg-border my-2" />
             <div className="pb-2">
               <img
                 src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}

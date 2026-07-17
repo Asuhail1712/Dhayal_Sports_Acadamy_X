@@ -1,33 +1,52 @@
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
 import { cn } from "@/lib/utils"
 
+export const buttonVariants = cva(
+  "interactive-button inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_12px_35px_rgba(255,90,0,0.28)] hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(255,90,0,0.24)]",
+        outline:
+          "border-2 border-primary bg-white text-primary hover:bg-primary hover:text-primary-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        glass:
+          "glass-panel text-foreground hover:bg-white hover:-translate-y-0.5 hover:border-primary/30",
+        neon:
+          "border-2 border-primary bg-transparent text-primary shadow-[inset_0_0_0_1px_rgba(255,90,0,0.08)] hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-[0_18px_34px_rgba(255,90,0,0.18)]",
+      },
+      size: {
+        default: "h-10 px-6 py-2",
+        sm: "h-9 rounded-lg px-4",
+        lg: "h-12 rounded-2xl px-8 text-lg",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | "glass" | "neon";
-  size?: "default" | "sm" | "lg" | "icon";
-  asChild?: boolean;
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+
     return (
-      <button
+      <Comp
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
-        className={cn(
-          "interactive-button inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
-          {
-            "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,240,255,0.28),0_0_30px_rgba(0,240,255,0.35)]": variant === "default",
-            "border border-input bg-background hover:bg-accent hover:text-accent-foreground": variant === "outline",
-            "hover:bg-white/10 hover:text-accent-foreground": variant === "ghost",
-            "glass-panel hover:bg-white/10 text-foreground border-white/20 hover:-translate-y-0.5 hover:border-[#00f0ff]/50": variant === "glass",
-            "bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 shadow-[inset_0_0_10px_rgba(0,240,255,0.2),0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[inset_0_0_20px_rgba(0,240,255,0.5),0_12px_32px_rgba(0,240,255,0.25),0_0_24px_rgba(0,240,255,0.45)]": variant === "neon",
-            "h-10 px-6 py-2": size === "default",
-            "h-9 rounded-lg px-4": size === "sm",
-            "h-12 rounded-2xl px-8 text-lg": size === "lg",
-            "h-10 w-10": size === "icon",
-          },
-          className
-        )}
         {...props}
       />
     )

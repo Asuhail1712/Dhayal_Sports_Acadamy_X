@@ -19,15 +19,15 @@ const levelImages: Record<string, string> = {
 function getLevelColor(level: string) {
   switch (level) {
     case "Beginner":
-      return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
     case "Intermediate":
-      return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      return "border-primary/20 bg-primary/10 text-primary";
     case "Advanced":
-      return "bg-secondary/20 text-secondary border-secondary/30";
+      return "border-primary/20 bg-primary/10 text-primary";
     case "Elite":
-      return "bg-primary/20 text-primary border-primary/30";
+      return "border-primary/20 bg-primary/10 text-primary";
     default:
-      return "bg-white/10 text-white border-white/20";
+      return "border-border bg-accent text-foreground";
   }
 }
 
@@ -63,10 +63,10 @@ export default function Programs() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-16"
           >
-            <h1 className="text-3xl font-black text-white md:text-5xl">
+            <h1 className="text-3xl font-black text-foreground md:text-5xl">
               TRAINING <span className="text-primary">SOLUTIONS</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-sm font-light text-white/60 md:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm text-muted-foreground md:text-base">
               Explore the academy&apos;s coaching programs, specialist services,
               assessments, and player development pathways.
             </p>
@@ -84,8 +84,8 @@ export default function Programs() {
                   onClick={() => setFilter(level)}
                   className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${
                     filter === level
-                      ? "bg-primary text-primary-foreground shadow-[0_0_20px_rgba(0,240,255,0.4)] scale-105"
-                      : "glass-panel text-white/70 hover:text-white hover:bg-white/10"
+                      ? "scale-105 bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_16px_32px_rgba(255,90,0,0.24)]"
+                      : "glass-panel text-foreground/70 hover:bg-white hover:text-foreground"
                   }`}
                 >
                   {level}
@@ -105,7 +105,7 @@ export default function Programs() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                  className="bg-card border border-white/10 rounded-[2rem] overflow-hidden group transition-all duration-500 md:hover:border-primary/50 md:hover:shadow-[0_10px_40px_-10px_rgba(0,240,255,0.2)] md:hover:-translate-y-2 flex flex-col h-full"
+                  className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-500 md:hover:-translate-y-2 md:hover:border-primary/30 md:hover:shadow-[0_20px_50px_rgba(255,90,0,0.15)]"
                 >
                   <div className="relative h-48 overflow-hidden flex-shrink-0">
                     <img
@@ -113,53 +113,59 @@ export default function Programs() {
                       alt={program.level}
                       className="block w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-
                     <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
                       <div className={`px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider backdrop-blur-md ${getLevelColor(program.level)}`}>
                         {program.level}
                       </div>
-                      <div className="bg-background/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 flex items-center">
-                        <IndianRupee className="w-4 h-4 text-primary mr-0.5" />
-                        <span className="font-bold text-white">{program.price}</span>
-                        <span className="text-xs text-white/50 ml-1">fee</span>
+                      <div className="flex items-center rounded-full border border-border bg-white/95 px-4 py-1.5 backdrop-blur-md">
+                        {program.price > 0 ? (
+                          <>
+                            <IndianRupee className="w-4 h-4 text-primary mr-0.5" />
+                            <span className="font-bold text-foreground">{program.price}</span>
+                            <span className="ml-1 text-xs text-muted-foreground">fee</span>
+                          </>
+                        ) : (
+                          <span className="text-xs font-bold uppercase tracking-wide text-primary">
+                            Contact for pricing
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   <div className="relative z-10 -mt-px bg-card p-8 pt-4 flex flex-col flex-grow">
-                    <h2 className="text-2xl font-black mb-3 text-white">{program.name}</h2>
-                    <p className="text-white/60 text-sm mb-8 flex-grow line-clamp-2 font-light">
+                    <h2 className="mb-3 text-2xl font-black text-foreground">{program.name}</h2>
+                    <p className="mb-8 flex-grow line-clamp-2 text-sm text-muted-foreground">
                       {program.description}
                     </p>
 
                     <div className="space-y-4 mb-8">
-                      <div className="flex items-center text-sm font-medium text-white/80">
+                      <div className="flex items-center text-sm font-medium text-foreground/80">
                         <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
                           <Clock className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <div className="text-white">{program.schedule}</div>
-                          <div className="text-white/40 text-xs">{program.duration}</div>
+                          <div className="text-foreground">{program.schedule}</div>
+                          <div className="text-xs text-muted-foreground">{program.duration}</div>
                         </div>
                       </div>
-                      <div className="flex items-center text-sm font-medium text-white/80">
-                        <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mr-4">
-                          <User className="w-5 h-5 text-secondary" />
+                      <div className="flex items-center text-sm font-medium text-foreground/80">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                          <User className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <div className="text-white">{program.coachName}</div>
-                          <div className="text-white/40 text-xs">Program Lead</div>
+                          <div className="text-foreground">{program.coachName}</div>
+                          <div className="text-xs text-muted-foreground">Program Lead</div>
                         </div>
                       </div>
-                      <div className="flex items-center text-sm font-medium text-white/80">
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4">
-                          <Users className="w-5 h-5 text-white/70" />
+                      <div className="flex items-center text-sm font-medium text-foreground/80">
+                        <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent">
+                          <Users className="h-5 w-5 text-foreground/70" />
                         </div>
                         <div className="flex-1 flex justify-between items-center">
                           <div>
-                            <div className="text-white">Max {program.maxStudents} Students</div>
-                            <div className="text-white/40 text-xs">Per session</div>
+                            <div className="text-foreground">Max {program.maxStudents} Students</div>
+                            <div className="text-xs text-muted-foreground">Per session</div>
                           </div>
                           <div className={`flex items-center text-xs font-bold ${spots.color}`}>
                             <AlertCircle className="w-3 h-3 mr-1" />
@@ -171,7 +177,7 @@ export default function Programs() {
 
                     <Button
                       variant="default"
-                      className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary"
+                      className="h-12 w-full rounded-xl border border-primary/30 bg-primary text-primary-foreground"
                       onPointerDown={() => startRouteTransition(`/programs/${slugify(program.name)}`)}
                       onClick={() => openProgram(slugify(program.name))}
                     >

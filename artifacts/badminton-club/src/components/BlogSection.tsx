@@ -29,8 +29,8 @@ export function BlogSection() {
   };
 
   return (
-    <section id="blogs" className="relative z-10 overflow-hidden py-24">
-      <div className="absolute inset-0 z-0 opacity-[0.03] blur-[2px] pointer-events-none mix-blend-screen">
+    <section id="blogs" className="relative z-10 overflow-hidden bg-white py-24">
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.035]">
         <img
           src={`${import.meta.env.BASE_URL}images/court-texture.png`}
           alt="Texture"
@@ -50,10 +50,10 @@ export function BlogSection() {
             <div className="text-[0.72rem] font-bold uppercase tracking-[0.3em] text-primary/85">
               Academy Journal
             </div>
-            <h2 className="mt-3 text-3xl font-black leading-tight text-white md:text-5xl">
+            <h2 className="mt-3 text-3xl font-black leading-tight text-foreground md:text-5xl">
               Stories, insight, and <span className="text-gradient">player development</span>
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
               A closer look at the academy model, school partnerships, athlete care,
               mentorship, and the systems behind better badminton development.
             </p>
@@ -68,7 +68,7 @@ export function BlogSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4, delay: index * 0.08 }}
-              className="group overflow-hidden rounded-[2rem] border border-white/10 bg-card/70 backdrop-blur-md"
+              className="group overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(255,90,0,0.15)]"
             >
               <div className="relative h-60 overflow-hidden">
                 <img
@@ -76,11 +76,10 @@ export function BlogSection() {
                   alt={post.title}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/55 to-transparent" />
               </div>
 
               <div className="p-7">
-                <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-white/45">
+                <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-muted-foreground">
                   <span>{post.category}</span>
                   <span className="h-1 w-1 rounded-full bg-primary/70" />
                   <span className="inline-flex items-center gap-1.5">
@@ -89,16 +88,16 @@ export function BlogSection() {
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-black leading-tight text-white">
+                <h3 className="text-2xl font-black leading-tight text-foreground">
                   {post.title}
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-white/60">
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                   {post.excerpt}
                 </p>
 
                 <Button
                   variant="default"
-                  className="mt-6 h-11 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn"
+                className="group/btn mt-6 h-11 rounded-xl"
                   onPointerDown={() => startRouteTransition(`/blogs/${post.slug}`)}
                   onClick={() => openFromHome(post.slug)}
                 >
@@ -114,7 +113,7 @@ export function BlogSection() {
           <div className="mt-12 flex justify-center">
             <Button
               variant="outline"
-              className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
+              className="h-12 rounded-full border-border px-8 text-foreground hover:bg-white"
               onPointerDown={() => startRouteTransition("/blogs")}
               onClick={() => {
                 normalizeHomeHistoryEntry();

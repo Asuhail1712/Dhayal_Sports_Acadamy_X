@@ -16,10 +16,10 @@ export default function BlogDetail({ slug }: { slug: string }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-[2rem] border border-white/10 bg-card/60 p-10 text-center backdrop-blur-md"
+            className="rounded-[2rem] border border-border bg-card p-10 text-center shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
           >
-            <h1 className="text-3xl font-black text-white">Article not found</h1>
-            <p className="mt-4 text-white/60">
+            <h1 className="text-3xl font-black text-foreground">Article not found</h1>
+            <p className="mt-4 text-muted-foreground">
               The blog entry you opened is not available.
             </p>
           </motion.div>
@@ -38,7 +38,7 @@ export default function BlogDetail({ slug }: { slug: string }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-90px" }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/70 backdrop-blur-md"
+          className="overflow-hidden rounded-[2.2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
         >
           <div className="relative h-[320px] overflow-hidden md:h-[440px]">
             <img
@@ -46,11 +46,10 @@ export default function BlogDetail({ slug }: { slug: string }) {
               alt={post.title}
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/45 to-transparent" />
           </div>
 
           <div className="mx-auto max-w-4xl px-6 pb-10 pt-8 md:px-10 md:pt-10">
-            <div className="mb-4 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.24em] text-white/45">
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.24em] text-muted-foreground">
               <span>{post.category}</span>
               <span className="h-1 w-1 rounded-full bg-primary/70" />
               <span className="inline-flex items-center gap-1.5">
@@ -61,7 +60,7 @@ export default function BlogDetail({ slug }: { slug: string }) {
               <span>{post.readTime}</span>
             </div>
 
-            <h1 className="text-3xl font-black leading-tight text-white md:text-5xl">
+            <h1 className="text-3xl font-black leading-tight text-foreground md:text-5xl">
               {post.title}
             </h1>
             <motion.div
@@ -69,7 +68,7 @@ export default function BlogDetail({ slug }: { slug: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8 space-y-6 text-base leading-8 text-white/72"
+              className="mt-8 space-y-6 text-base leading-8 text-foreground/78"
             >
               {post.body.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>

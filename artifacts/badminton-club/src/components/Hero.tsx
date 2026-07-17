@@ -32,11 +32,11 @@ export function Hero() {
       {/* Background Image & Overlay (Layer 1) */}
       <motion.div style={{ y: bgY, scale: bgScale }} className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1920&q=90" 
+          src={`${import.meta.env.BASE_URL}images/Hero.png`} 
           alt="Badminton Smash" 
-          className="w-full h-full object-cover object-[64%_top] sm:object-top opacity-60 -translate-y-10 sm:translate-y-0"
+          className="w-full h-full object-cover object-[64%_top] sm:object-top opacity-100 -translate-y-10 sm:translate-y-0"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/80 to-background" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.16)_28%,rgba(0,0,0,0.32)_68%,rgba(0,0,0,0.5)_100%)]" />
       </motion.div>
 
       {/* Floating Particles */}
@@ -59,9 +59,11 @@ export function Hero() {
 
       {/* Layer 3: Floating glowing orbs */}
       <motion.div style={{ y: orbsY }} className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[20%] left-[10%] w-64 h-64 rounded-full bg-primary/30 blur-[100px] animate-float" />
-        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-secondary/20 blur-[120px] animate-float-delayed" />
+        <div className="absolute top-[20%] left-[10%] w-64 h-64 rounded-full bg-primary/24 blur-[100px] animate-float" />
+        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-secondary/18 blur-[120px] animate-float-delayed" />
       </motion.div>
+
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.26)_38%,rgba(0,0,0,0.1)_72%,rgba(0,0,0,0.18)_100%)]" />
 
       {/* Main Content (Layer 4) */}
       <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4">
@@ -69,7 +71,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-white/[0.04] backdrop-blur-md border border-primary/30"
+          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-black/34 backdrop-blur-md border border-primary/30"
         >
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
           <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-primary uppercase text-center">High Performance Badminton Academy</span>
@@ -129,13 +131,13 @@ export function Hero() {
           className="text-[12px] md:text-[15px] text-white/72 mb-6 max-w-[22rem] sm:max-w-3xl md:max-w-6xl mx-auto text-center leading-[1.5] font-light px-1 sm:px-0"
         >
           <span className="block sm:hidden">
-            Dayal Sports Academy was established to promote sports and fitness through education programs, training solutions, workshops, camps, and championships, helping players grow toward national and international standards.
+            Dayal Sports Academy was established to promote sports and fitness through education programs, training solutions, workshops, camps, and championships, helping players grow toward regional, national, and international standards.
           </span>
           <span className="hidden sm:block">
             Dayal Sports Academy was established to promote sports and fitness through education programs, training solutions, workshops, camps, and championships.
           </span>
           <span className="hidden sm:block">
-            Helping players grow toward national and international standards.
+            Helping players grow toward regional, national, and international standards.
           </span>
         </motion.p>
 
@@ -145,13 +147,13 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
         >
-          <Button size="default" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 group bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] transition-all rounded-full" asChild>
+          <Button size="default" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 group rounded-full" asChild>
             <a href="#classes" className="inline-flex items-center justify-center whitespace-nowrap">
               View Programs
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </Button>
-          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full bg-white/[0.04] backdrop-blur-md border border-white/10 text-white hover:bg-white/10" asChild>
+          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full bg-white/92 text-primary border-primary shadow-[0_12px_35px_rgba(255,90,0,0.12)] hover:bg-primary hover:text-white" asChild>
             <a href="#about">
               About Academy
             </a>
@@ -178,7 +180,7 @@ export function Hero() {
         transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-20 hidden md:block"
       >
-        <div className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-2xl py-4 flex items-center justify-evenly divide-x divide-white/10">
+        <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl py-4 flex items-center justify-evenly divide-x divide-white/10">
           <div className="px-6 text-center w-1/4">
             <div className="text-2xl font-black text-white">5</div>
             <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Guinness Records</div>
@@ -188,12 +190,12 @@ export function Hero() {
             <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Mentor Visits / Year</div>
           </div>
           <div className="px-6 text-center w-1/4">
-            <div className="text-2xl font-black text-white">4</div>
+            <div className="text-2xl font-black text-white">3</div>
             <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Assessment Cycles / Year</div>
           </div>
           <div className="px-6 text-center w-1/4">
             <div className="text-2xl font-black text-white">20%</div>
-            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Dayal Member Benefit</div>
+            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Member Discount</div>
           </div>
         </div>
       </motion.div>

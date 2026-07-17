@@ -105,29 +105,29 @@ export const blogPosts: BlogPost[] = [
     readTime: "4 min read",
     publishedAt: "March 2026",
     excerpt:
-      "How structured tie-ups, coaching standards, and shared development plans create stronger long-term school badminton programs.",
+      "How low-impact school badminton programs build movement skills, focus, and a real progression pathway for young players.",
     image:
       "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1400&q=85",
     body: [
-      "A strong school partnership is more than access to courts or a visiting coach. It works when the school, coaching team, and parents all understand what development is supposed to look like across the year.",
-      "At Dayal Sports Academy, institutional work is framed around consistency: training structure, assessment rhythm, communication, and player progression. That is what turns a short-term activity into a reliable badminton pathway.",
-      "The most successful school collaborations are the ones that balance participation with ambition. Players get access to better coaching habits early, while schools gain a cleaner framework for how to grow their sports culture over time.",
+      "Badminton is a strong school sport because it is low-impact, non-contact, and adaptable for young learners. It helps children develop motor skills, balance, coordination, alertness, focus, and healthy competitive habits.",
+      "At Dayal Sports Academy, school partnerships are structured around age-appropriate progression. Young players can move from Little Champion foundations into school teams, academy tracks, and tournament preparation with clearer milestones.",
+      "The best school programs combine participation with ambition. Students get safe, enjoyable exposure to sport, while schools gain a long-term pathway for developing confident, disciplined, and competition-ready players.",
     ],
   },
   {
     slug: "why-quarterly-assessment-matters",
-    title: "Why quarterly assessment matters in player development",
+    title: "Why we assess every 3 months",
     category: "Assessment",
     readTime: "3 min read",
     publishedAt: "February 2026",
     excerpt:
-      "Regular assessment keeps player progress visible and helps coaches adjust training with more confidence.",
+      "Regular biomechanic and skill assessment keeps player progress visible and helps coaches adjust training with confidence.",
     image:
       "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1400&q=85",
     body: [
-      "Training without checkpoints can feel active without being precise. Assessments create a shared reference point for player movement, technical growth, and physical readiness.",
-      "A quarterly review model allows the academy to keep feedback practical. Coaches can adjust expectations, refine training priorities, and communicate progress more clearly to families and management.",
-      "This rhythm matters because development is rarely linear. A visible assessment cycle makes it easier to spot both growth and stagnation before either one becomes invisible inside routine.",
+      "Training without checkpoints can feel active without being precise. Every 3 months, assessment gives players, parents, and coaches a shared view of technical progress, physical readiness, and training priorities.",
+      "The academy uses biomechanic MSA assessment with posture, muscle length, anthropometry, and fitness testing support. This helps identify movement quality, flexibility, strength, balance, and readiness for higher training load.",
+      "Assessment reports are designed to be practical. Progress can be shared with families and management, helping coaches adjust training blocks before small issues become invisible inside routine.",
     ],
   },
   {
@@ -137,13 +137,13 @@ export const blogPosts: BlogPost[] = [
     readTime: "5 min read",
     publishedAt: "January 2026",
     excerpt:
-      "Elite mentors add the most value when their sessions are integrated into a larger coaching structure rather than treated as isolated visits.",
+      "Elite mentors add the most value when specialist visits are built into the larger coaching system.",
     image:
       "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1400&q=85",
     body: [
-      "Mentor visits work best when they reinforce a system that already exists. Athletes should feel like specialist input deepens the program rather than briefly interrupts it.",
-      "That is why mentor sessions at the academy connect back into the daily schedule. The goal is not just inspiration; it is transfer. Players should carry technical and tactical lessons back into regular training.",
-      "The strongest mentorship models also help the internal coaching team. Visiting experts sharpen the standard for everyone, not only the athletes attending the session.",
+      "World-class mentorship works best when it reinforces a system that already exists. Specialist visits should deepen daily training rather than feel like isolated events.",
+      "Dayal Sports Academy plans up to 6 mentor visits per year from national and international champions, covering singles, doubles, mixed doubles, grip science, tactical habits, and competition readiness.",
+      "Guidance from mentors like former World Champion Xiong Guobao helps players understand technical details at a higher level, while also sharpening the standard for the internal coaching team.",
     ],
   },
   {

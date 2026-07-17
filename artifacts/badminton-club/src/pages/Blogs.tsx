@@ -29,10 +29,10 @@ export default function Blogs() {
             <div className="text-[0.72rem] font-bold uppercase tracking-[0.3em] text-primary/85">
               Blog
             </div>
-            <h1 className="mt-3 text-4xl font-black leading-tight text-white md:text-6xl md:whitespace-nowrap">
+            <h1 className="mt-3 text-4xl font-black leading-tight text-foreground md:whitespace-nowrap md:text-6xl">
               Insights from the <span className="text-gradient">academy floor</span>
             </h1>
-            <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
               Explore how the academy approaches school partnerships, athlete care,
               mentorship, competition readiness, and long-term player growth.
             </p>
@@ -46,7 +46,7 @@ export default function Blogs() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-90px" }}
                 transition={{ duration: 0.4, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                className="group overflow-hidden rounded-[2rem] border border-white/10 bg-card/70 backdrop-blur-md"
+              className="group overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(255,90,0,0.15)]"
               >
                 <div className="relative h-64 overflow-hidden">
                   <img
@@ -54,11 +54,10 @@ export default function Blogs() {
                     alt={post.title}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/55 to-transparent" />
                 </div>
 
                 <div className="p-7">
-                  <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-white/45">
+                  <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-muted-foreground">
                     <span>{post.category}</span>
                     <span className="h-1 w-1 rounded-full bg-primary/70" />
                     <span className="inline-flex items-center gap-1.5">
@@ -67,16 +66,16 @@ export default function Blogs() {
                     </span>
                   </div>
 
-                  <h2 className="text-2xl font-black leading-tight text-white">
+                  <h2 className="text-2xl font-black leading-tight text-foreground">
                     {post.title}
                   </h2>
-                  <p className="mt-4 text-sm leading-relaxed text-white/60">
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                     {post.excerpt}
                   </p>
 
                   <Button
                     variant="default"
-                    className="mt-6 h-11 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary"
+                    className="mt-6 h-11 rounded-xl"
                     onPointerDown={() => startRouteTransition(`/blogs/${post.slug}`)}
                     onClick={() => openFromListing(post.slug)}
                   >

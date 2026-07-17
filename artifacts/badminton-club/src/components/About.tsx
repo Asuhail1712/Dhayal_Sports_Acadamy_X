@@ -3,9 +3,9 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Trophy, Users, Target, Activity } from 'lucide-react';
 
 const stats = [
-  { icon: Users, label: "Support Team Reach", value: 100000, suffix: "+" },
+  { icon: Users, label: "Coaches & Mentors", value: 12, suffix: "+" },
   { icon: Trophy, label: "Mentor Visits / Year", value: 6, suffix: "" },
-  { icon: Target, label: "Assessment Cycle", value: 4, suffix: " mo" },
+  { icon: Target, label: "Assessment Cycles / Year", value: 3, suffix: "" },
   { icon: Activity, label: "Overseas Partner Hubs", value: 3, suffix: "" },
 ];
 
@@ -49,7 +49,7 @@ export function About() {
   const photoScale = useTransform(scrollYProgress, [0, 1], [1.02, 1.12]);
 
   return (
-    <section id="about" ref={containerRef} className="pt-24 pb-12 relative z-10 overflow-hidden">
+    <section id="about" ref={containerRef} className="relative z-10 overflow-hidden bg-white pt-24 pb-12">
       {/* Marquee Strip */}
       <div className="absolute top-0 left-0 w-full bg-primary/10 border-y border-primary/20 py-3 overflow-hidden flex whitespace-nowrap z-20">
         <div className="animate-marquee inline-block text-primary/80 font-black text-sm md:text-base tracking-widest uppercase">
@@ -71,18 +71,24 @@ export function About() {
               ABOUT DAYAL<br/>
               <span className="text-gradient">SPORTS ACADEMY.</span>
             </h2>
-            <p className="text-white/60 text-sm md:text-base mb-6 leading-relaxed font-light">
-              Dayal Sports Academy was established to promote and create awareness in sports and fitness. The academy focuses on education programs, training solutions, workshops, camps, and championships that help budding players perform better and move toward national and international standards.
+            <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+              We believe that when a child develops real sportsmanship and is given the right opportunity, they can bring laurels to their country. Our goal is to build a thriving sporting ecosystem, combining scientifically proven skills training with innovative technology to enhance performance, while nurturing a grassroots love for sport.
+            </p>
+            <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+              We help players unleash their full potential by building positive relationships and competitive character across the globe, through sports exchange programs, cultural exchange programs, friendly matches, national and overseas championships, and continuous education programs.
+            </p>
+            <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+              We nurture Power plus Intelligence to make champions with global exposure.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
               <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
-                <h4 className="text-xl font-bold text-white mb-2">Leadership</h4>
-                <p className="text-sm text-white/50">Led by Dr. Yuva Dayalan, former international badminton player, world masters ranking champion, and holder of 5 Guinness World Records.</p>
+                <h4 className="mb-2 text-xl font-bold text-foreground">Founder & Head Coach</h4>
+                <p className="text-sm text-muted-foreground">Led by Dr. Yuva Dayalan, former international badminton player, Masters World Ranking Champion, and holder of 5 Guinness World Records.</p>
               </div>
-              <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
-                <h4 className="text-xl font-bold text-white mb-2">Mentorship</h4>
-                <p className="text-sm text-white/50">Guided under former world champion Xiong Guobao, with scientific grip-based training support and Asian championship experience.</p>
+              <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
+                <h4 className="mb-2 text-xl font-bold text-foreground">Overseas Mentorship</h4>
+                <p className="text-sm text-muted-foreground">Guided by former World Champion Xiong Guobao through scientific grip-based training and world-class mentorship systems.</p>
               </div>
             </div>
 
@@ -100,8 +106,8 @@ export function About() {
                   <div className="p-2 md:p-3 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors w-fit mb-3">
                     <stat.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
-                  <p className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-wider leading-tight mb-2">{stat.label}</p>
-                  <h3 className="text-2xl md:text-4xl font-black text-white">
+                  <p className="mb-2 text-[10px] font-bold uppercase leading-tight tracking-wider text-muted-foreground md:text-xs">{stat.label}</p>
+                  <h3 className="text-2xl font-black text-foreground md:text-4xl">
                     <Counter from={0} to={stat.value} suffix={stat.suffix} />
                   </h3>
                 </motion.div>
@@ -124,7 +130,6 @@ export function About() {
                 alt="Dayal Sports Academy training" 
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
             </motion.div>
           </motion.div>
 

@@ -17,15 +17,7 @@ const levelImages: Record<string, string> = {
 };
 
 export function Classes() {
-  const { data, isLoading, error } = useGetClasses({
-    query: {
-      staleTime: 5 * 60 * 1000,
-      gcTime: 30 * 60 * 1000,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  });
+  const { data, isLoading, error } = useGetClasses();
   const [, setLocation] = useLocation();
   const [filter, setFilter] = useState<string>('All');
   const [isDesktop, setIsDesktop] = useState(false);
@@ -63,11 +55,11 @@ export function Classes() {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'Beginner': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'Intermediate': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'Advanced': return 'bg-secondary/20 text-secondary border-secondary/30';
-      case 'Elite': return 'bg-primary/20 text-primary border-primary/30';
-      default: return 'bg-white/10 text-white border-white/20';
+      case 'Beginner': return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+      case 'Intermediate': return 'border-primary/20 bg-primary/10 text-primary';
+      case 'Advanced': return 'border-primary/20 bg-primary/10 text-primary';
+      case 'Elite': return 'border-primary/20 bg-primary/10 text-primary';
+      default: return 'border-border bg-accent text-foreground';
     }
   };
 
@@ -105,8 +97,8 @@ export function Classes() {
   }, []);
 
   return (
-    <section id="classes" className="py-24 relative z-10">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+    <section id="classes" className="relative z-10 bg-[#fafafa] py-24">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/8 via-background to-background" />
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16">
@@ -123,7 +115,7 @@ export function Classes() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-sm md:text-base max-w-2xl mx-auto font-light"
+            className="mx-auto max-w-2xl text-sm text-muted-foreground md:text-base"
           >
             Explore the academy's coaching programs, specialist services, assessments, and player development pathways.
           </motion.p>
@@ -141,8 +133,8 @@ export function Classes() {
                 onClick={() => setFilter(level)}
                 className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${
                   filter === level 
-                    ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(0,240,255,0.4)] scale-105' 
-                    : 'glass-panel text-white/70 hover:text-white hover:bg-white/10'
+                    ? 'scale-105 bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_16px_32px_rgba(255,90,0,0.24)]'
+                    : 'glass-panel text-foreground/70 hover:bg-white hover:text-foreground'
                 }`}
               >
                 {level}
@@ -154,7 +146,7 @@ export function Classes() {
         {isLoading && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="glass-panel h-[500px] rounded-[2rem] animate-pulse bg-white/5" />
+              <div key={i} className="glass-panel h-[500px] animate-pulse rounded-[2rem] bg-white/70" />
             ))}
           </div>
         )}
@@ -180,15 +172,15 @@ export function Classes() {
                         ? undefined
                         : {
                             scale: 1.015,
-                            borderColor: 'rgba(0, 240, 255, 0.5)',
-                            boxShadow: '0 10px 40px -10px rgba(0,240,255,0.2)',
+                            borderColor: 'rgba(255, 90, 0, 0.3)',
+                            boxShadow: '0 10px 40px -10px rgba(255,90,0,0.16)',
                           }
                     }
                     viewport={{ once: false, amount: 0.7 }}
                     exit={{ opacity: 0, scale: 0.9, y: -20 }}
                     transition={{ duration: 0.4 }}
                     key={cls.id}
-                    className="bg-card border border-white/10 rounded-[2rem] overflow-hidden group transition-all duration-500 md:hover:border-primary/50 md:hover:shadow-[0_10px_40px_-10px_rgba(0,240,255,0.2)] md:hover:-translate-y-2 flex flex-col h-full"
+                    className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-500 md:hover:-translate-y-2 md:hover:border-primary/30 md:hover:shadow-[0_20px_50px_rgba(255,90,0,0.15)]"
                   >
                     <div className="relative h-48 overflow-hidden flex-shrink-0">
                       <motion.img 
@@ -200,53 +192,59 @@ export function Classes() {
                         transition={{ duration: 0.45, ease: 'easeOut' }}
                         className="block w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                      
                       <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
                         <div className={`px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider backdrop-blur-md ${getLevelColor(cls.level)}`}>
                           {cls.level}
                         </div>
-                        <div className="bg-background/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 flex items-center">
-                          <IndianRupee className="w-4 h-4 text-primary mr-0.5" />
-                          <span className="font-bold text-white">{cls.price}</span>
-                          <span className="text-xs text-white/50 ml-1">fee</span>
+                        <div className="flex items-center rounded-full border border-border bg-white/95 px-4 py-1.5 backdrop-blur-md">
+                          {cls.price > 0 ? (
+                            <>
+                              <IndianRupee className="w-4 h-4 text-primary mr-0.5" />
+                              <span className="font-bold text-foreground">{cls.price}</span>
+                              <span className="ml-1 text-xs text-muted-foreground">fee</span>
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold uppercase tracking-wide text-primary">
+                              Contact for pricing
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     <div className="relative z-10 -mt-px bg-card p-8 pt-4 flex flex-col flex-grow">
-                      <h3 className="text-2xl font-black mb-3 text-white">{cls.name}</h3>
-                      <p className="text-white/60 text-sm mb-8 flex-grow line-clamp-2 font-light">
+                      <h3 className="mb-3 text-2xl font-black text-foreground">{cls.name}</h3>
+                      <p className="mb-8 flex-grow line-clamp-2 text-sm text-muted-foreground">
                         {cls.description}
                       </p>
 
                       <div className="space-y-4 mb-8">
-                        <div className="flex items-center text-sm font-medium text-white/80">
+                        <div className="flex items-center text-sm font-medium text-foreground/80">
                           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 md:group-hover:bg-primary/20 transition-colors">
                             <Clock className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <div className="text-white">{cls.schedule}</div>
-                            <div className="text-white/40 text-xs">{cls.duration}</div>
+                            <div className="text-foreground">{cls.schedule}</div>
+                            <div className="text-xs text-muted-foreground">{cls.duration}</div>
                           </div>
                         </div>
-                        <div className="flex items-center text-sm font-medium text-white/80">
-                          <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mr-4 md:group-hover:bg-secondary/20 transition-colors">
-                            <User className="w-5 h-5 text-secondary" />
+                        <div className="flex items-center text-sm font-medium text-foreground/80">
+                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 md:group-hover:bg-primary/20 transition-colors">
+                            <User className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <div className="text-white">{cls.coachName}</div>
-                            <div className="text-white/40 text-xs">Program Lead</div>
+                            <div className="text-foreground">{cls.coachName}</div>
+                            <div className="text-xs text-muted-foreground">Program Lead</div>
                           </div>
                         </div>
-                        <div className="flex items-center text-sm font-medium text-white/80">
-                          <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 md:group-hover:bg-white/10 transition-colors">
-                            <Users className="w-5 h-5 text-white/70" />
+                        <div className="flex items-center text-sm font-medium text-foreground/80">
+                          <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent transition-colors md:group-hover:bg-accent/75">
+                            <Users className="h-5 w-5 text-foreground/70" />
                           </div>
                           <div className="flex-1 flex justify-between items-center">
                             <div>
-                              <div className="text-white">Max {cls.maxStudents} Students</div>
-                              <div className="text-white/40 text-xs">Per session</div>
+                              <div className="text-foreground">Max {cls.maxStudents} Students</div>
+                              <div className="text-xs text-muted-foreground">Per session</div>
                             </div>
                             <div className={`flex items-center text-xs font-bold ${spots.color}`}>
                               <AlertCircle className="w-3 h-3 mr-1" />
@@ -258,7 +256,7 @@ export function Classes() {
 
                       <Button
                         variant="default"
-                        className="w-full h-12 rounded-xl bg-primary/90 text-primary-foreground border border-primary/60 shadow-[0_0_20px_rgba(0,240,255,0.22)] transition-all md:hover:bg-primary md:hover:border-primary group/btn"
+                        className="group/btn h-12 w-full rounded-xl border border-primary/30 bg-primary text-primary-foreground"
                         onPointerDown={() => startRouteTransition(`/programs/${slugify(cls.name)}`)}
                         onClick={() => openProgramFromHome(slugify(cls.name))}
                       >
@@ -276,7 +274,7 @@ export function Classes() {
             <div className="flex justify-center">
               <Button
                 variant="outline"
-                className="h-12 rounded-full border-white/15 px-8 text-white hover:bg-white/10"
+                className="h-12 rounded-full border-border px-8 text-foreground hover:bg-white"
                 onPointerDown={() => startRouteTransition("/programs")}
                 onClick={() => {
                   normalizeHomeHistoryEntry();
@@ -291,7 +289,7 @@ export function Classes() {
         </div>
         
         {!isLoading && filteredClasses.length === 0 && (
-          <div className="text-center py-12 text-white/50">
+          <div className="py-12 text-center text-muted-foreground">
             No classes found for the selected level.
           </div>
         )}

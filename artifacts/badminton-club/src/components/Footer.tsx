@@ -54,7 +54,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-white/10 bg-background/50 backdrop-blur-lg py-12 relative z-10">
+    <footer className="relative z-10 border-t border-[#242424] bg-[#181818] py-12 text-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
@@ -70,14 +70,14 @@ export function Footer() {
                 className="brand-logo-image h-14 w-auto"
               />
             </a>
-            <p className="text-white/50 max-w-sm">
+            <p className="max-w-sm text-white/68">
               Dayal Sports Academy promotes sports and fitness through coaching, assessment, workshops, camps, championship support, and holistic athlete development.
             </p>
           </div>
           
           <div>
-            <h4 className="text-white font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-white/50">
+            <h4 className="mb-4 font-bold text-white">Quick Links</h4>
+            <ul className="space-y-2 text-white/68">
               <li><a href={toHomeAnchor('#about')} onPointerDown={() => startRouteTransition(toHomeAnchor('#about'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#about'))} className="hover:text-primary transition-colors">About Us</a></li>
               <li><a href={toHomeAnchor('#classes')} onPointerDown={() => startRouteTransition(toHomeAnchor('#classes'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#classes'))} className="hover:text-primary transition-colors">Training Solutions</a></li>
               <li><a href={toHomeAnchor('#coaches')} onPointerDown={() => startRouteTransition(toHomeAnchor('#coaches'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#coaches'))} className="hover:text-primary transition-colors">Our Team</a></li>
@@ -87,22 +87,22 @@ export function Footer() {
           </div>
           
           <div>
-            <h4 className="text-white font-bold mb-4">Follow Us</h4>
+            <h4 className="mb-4 font-bold text-white">Follow Us</h4>
             <div className="flex gap-4">
-              <a href="#" className="p-2 bg-white/5 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-white/5 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-white/5 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
           </div>
         </div>
         
-        <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm">
+        <div className="border-t border-white/10 pt-8 text-center text-sm text-white/56">
           <p>&copy; {new Date().getFullYear()} Dayal Sports Academy. All rights reserved.</p>
         </div>
       </div>

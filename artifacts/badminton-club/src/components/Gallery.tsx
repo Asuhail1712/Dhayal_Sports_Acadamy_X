@@ -22,7 +22,7 @@ export function Gallery() {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-24 relative overflow-hidden bg-background z-10 border-t border-white/5">
+    <section ref={containerRef} className="relative z-10 overflow-hidden border-t border-border bg-white py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 md:items-end">
           
@@ -32,7 +32,7 @@ export function Gallery() {
             whileInView={isDesktop ? undefined : { opacity: 1 }}
             viewport={{ once: false, amount: 0.6 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="relative h-44 sm:h-64 md:h-[500px] rounded-2xl md:rounded-[2rem] overflow-hidden glass-panel border-white/10 group"
+            className="group relative h-44 overflow-hidden rounded-2xl border border-border glass-panel sm:h-64 md:h-[500px] md:rounded-[2rem]"
           >
             <motion.img
               src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&q=85"
@@ -41,9 +41,8 @@ export function Gallery() {
               whileInView={isDesktop ? undefined : { scale: 1.08 }}
               viewport={{ once: false, amount: 0.6 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="w-full h-full object-cover opacity-70 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
+              className="w-full h-full object-cover opacity-78 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
           </motion.div>
 
           <motion.div
@@ -52,7 +51,7 @@ export function Gallery() {
             whileInView={isDesktop ? undefined : { opacity: 1 }}
             viewport={{ once: false, amount: 0.6 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="relative h-52 sm:h-72 md:h-[640px] rounded-2xl md:rounded-[2rem] overflow-hidden group border border-white/5 shadow-2xl z-20"
+            className="group relative z-20 h-52 overflow-hidden rounded-2xl border border-border shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:h-72 md:h-[640px] md:rounded-[2rem]"
           >
             <motion.img
               src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=85"
@@ -63,7 +62,6 @@ export function Gallery() {
               transition={{ duration: 0.45, ease: 'easeOut' }}
               className="w-full h-full object-cover transition-transform duration-1000 md:group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-background/50 group-hover:bg-background/30 transition-colors duration-500" />
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-white text-center tracking-tighter leading-[0.95] drop-shadow-2xl">
                 DAYAL <br/><span className="text-primary text-glow">ACADEMY</span>
@@ -77,7 +75,7 @@ export function Gallery() {
             whileInView={isDesktop ? undefined : { opacity: 1 }}
             viewport={{ once: false, amount: 0.6 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="relative h-44 sm:h-64 md:h-[500px] rounded-2xl md:rounded-[2rem] overflow-hidden glass-panel border-white/10 group"
+            className="group relative h-44 overflow-hidden rounded-2xl border border-border glass-panel sm:h-64 md:h-[500px] md:rounded-[2rem]"
           >
             <motion.img
               src="https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=85"
@@ -86,9 +84,8 @@ export function Gallery() {
               whileInView={isDesktop ? undefined : { scale: 1.08 }}
               viewport={{ once: false, amount: 0.6 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="w-full h-full object-cover opacity-70 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
+              className="w-full h-full object-cover opacity-78 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
           </motion.div>
 
         </div>
