@@ -105,7 +105,7 @@ export default function CoachesPage() {
                       whileInView={{ width: "85%" }}
                       viewport={{ once: true }}
                       transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                      className="h-full rounded-full bg-[linear-gradient(135deg,#FF4D00,#FF8A00)]"
+                      className="h-full rounded-full bg-[linear-gradient(135deg,#2151A3,#00B050)]"
                     />
                   </div>
                 </div>

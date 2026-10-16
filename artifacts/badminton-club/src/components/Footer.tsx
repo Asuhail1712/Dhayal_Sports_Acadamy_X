@@ -5,8 +5,6 @@ import { startRouteTransition } from '@/hooks/use-scroll-restoration';
 
 export function Footer() {
   const [location, setLocation] = useLocation();
-  const isHomeLocation = window.location.pathname === '/';
-  const toHomeAnchor = (hash: string) => (isHomeLocation ? hash : `/${hash}`);
   const normalizeHomeHistoryEntry = (href: string) => {
     const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
 
@@ -59,9 +57,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
             <a
-              href={toHomeAnchor('#home')}
-              onPointerDown={() => startRouteTransition(toHomeAnchor('#home'))}
-              onClick={(event) => navigateClientSide(event, toHomeAnchor('#home'))}
+              href="/"
+              onPointerDown={() => startRouteTransition('/')}
+              onClick={(event) => navigateClientSide(event, '/')}
               className="flex items-center gap-2 mb-4"
             >
               <img
@@ -71,18 +69,19 @@ export function Footer() {
               />
             </a>
             <p className="max-w-sm text-white/68">
-              Dayal Sports Academy promotes sports and fitness through coaching, assessment, workshops, camps, championship support, and holistic athlete development.
+              Dayal Sports Academy builds champions through sport, science, and global exposure.
             </p>
           </div>
           
           <div>
             <h4 className="mb-4 font-bold text-white">Quick Links</h4>
             <ul className="space-y-2 text-white/68">
-              <li><a href={toHomeAnchor('#about')} onPointerDown={() => startRouteTransition(toHomeAnchor('#about'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#about'))} className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href={toHomeAnchor('#classes')} onPointerDown={() => startRouteTransition(toHomeAnchor('#classes'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#classes'))} className="hover:text-primary transition-colors">Training Solutions</a></li>
-              <li><a href={toHomeAnchor('#coaches')} onPointerDown={() => startRouteTransition(toHomeAnchor('#coaches'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#coaches'))} className="hover:text-primary transition-colors">Our Team</a></li>
+              <li><a href="/about" onPointerDown={() => startRouteTransition("/about")} onClick={(event) => navigateClientSide(event, "/about")} className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="/programs" onPointerDown={() => startRouteTransition("/programs")} onClick={(event) => navigateClientSide(event, "/programs")} className="hover:text-primary transition-colors">Training Solutions</a></li>
+              <li><a href="/coaches" onPointerDown={() => startRouteTransition("/coaches")} onClick={(event) => navigateClientSide(event, "/coaches")} className="hover:text-primary transition-colors">Our Team</a></li>
+              <li><a href="/partners" onPointerDown={() => startRouteTransition("/partners")} onClick={(event) => navigateClientSide(event, "/partners")} className="hover:text-primary transition-colors">Partners</a></li>
               <li><a href="/blogs" onPointerDown={() => startRouteTransition("/blogs")} onClick={(event) => navigateClientSide(event, "/blogs")} className="hover:text-primary transition-colors">Blogs</a></li>
-              <li><a href={toHomeAnchor('#contact')} onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))} onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))} className="hover:text-primary transition-colors">Contact</a></li>
+              <li><a href="/contact" onPointerDown={() => startRouteTransition("/contact")} onClick={(event) => navigateClientSide(event, "/contact")} className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
           
@@ -103,7 +102,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-white/10 pt-8 text-center text-sm text-white/56">
-          <p>&copy; {new Date().getFullYear()} Dayal Sports Academy. All rights reserved.</p>
+          <p>&copy; 2026 Dayal Sports Academy. All rights reserved.</p>
         </div>
       </div>
     </footer>

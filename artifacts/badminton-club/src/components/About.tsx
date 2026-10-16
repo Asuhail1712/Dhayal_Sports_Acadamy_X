@@ -3,10 +3,10 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Trophy, Users, Target, Activity } from 'lucide-react';
 
 const stats = [
-  { icon: Users, label: "Coaches & Mentors", value: 12, suffix: "+" },
-  { icon: Trophy, label: "Mentor Visits / Year", value: 6, suffix: "" },
-  { icon: Target, label: "Assessment Cycles / Year", value: 3, suffix: "" },
-  { icon: Activity, label: "Overseas Partner Hubs", value: 3, suffix: "" },
+  { icon: Trophy, label: "Guinness World Records", value: 5, suffix: "" },
+  { icon: Users, label: "Decades of World Champion Mentorship", value: 4, suffix: "+" },
+  { icon: Target, label: "Countries Travelled by Founder", value: 85, suffix: "+" },
+  { icon: Activity, label: "Partner Centres / Regions", value: 12, suffix: " / 4" },
 ];
 
 function Counter({ from, to, duration = 2, suffix = "" }: { from: number, to: number, duration?: number, suffix?: string }) {
@@ -72,23 +72,23 @@ export function About() {
               <span className="text-gradient">SPORTS ACADEMY.</span>
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
-              We believe that when a child develops real sportsmanship and is given the right opportunity, they can bring laurels to their country. Our goal is to build a thriving sporting ecosystem, combining scientifically proven skills training with innovative technology to enhance performance, while nurturing a grassroots love for sport.
+              We believe every child deserves the chance to discover sport and, with the right guidance, grow into an athlete who makes their country proud. Dayal Sports Academy builds a thriving sporting ecosystem where proven science, modern technology, and grassroots passion come together.
             </p>
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
-              We help players unleash their full potential by building positive relationships and competitive character across the globe, through sports exchange programs, cultural exchange programs, friendly matches, national and overseas championships, and continuous education programs.
+              From Chennai to Hong Kong, our players train, travel, and compete through exchange programs, friendly matches, national and overseas championships, and continuing education. We nurture power and intelligence, so every player grows with global exposure.
             </p>
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
-              We nurture Power plus Intelligence to make champions with global exposure.
+              Not a babysitting service. Every session builds skill, technique, and character.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
               <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
-                <h4 className="mb-2 text-xl font-bold text-foreground">Founder & Head Coach</h4>
-                <p className="text-sm text-muted-foreground">Led by Dr. Yuva Dayalan, former international badminton player, Masters World Ranking Champion, and holder of 5 Guinness World Records.</p>
+                <h4 className="mb-2 text-xl font-bold text-foreground">Founder and Head Coach</h4>
+                <p className="text-sm text-muted-foreground">Dr. Yuva Dayalan is a master world champion, holder of 5 Guinness World Records, creator of Badminton Yoga, and trainer of national teams.</p>
               </div>
               <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
-                <h4 className="mb-2 text-xl font-bold text-foreground">Overseas Mentorship</h4>
-                <p className="text-sm text-muted-foreground">Guided by former World Champion Xiong Guobao through scientific grip-based training and world-class mentorship systems.</p>
+                <h4 className="mb-2 text-xl font-bold text-foreground">Overseas Mentor</h4>
+                <p className="text-sm text-muted-foreground">Xiong Gubao, former world champion and the backhand king, guides our scientific grip approach and elite mentorship system.</p>
               </div>
             </div>
 

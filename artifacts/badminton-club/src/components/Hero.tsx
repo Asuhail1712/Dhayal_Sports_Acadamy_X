@@ -32,11 +32,11 @@ export function Hero() {
       {/* Background Image & Overlay (Layer 1) */}
       <motion.div style={{ y: bgY, scale: bgScale }} className="absolute inset-0 z-0">
         <img 
-          src={`${import.meta.env.BASE_URL}images/Hero.png`} 
-          alt="Badminton Smash" 
-          className="w-full h-full object-cover object-[64%_top] sm:object-top opacity-100 -translate-y-10 sm:translate-y-0"
+          src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=2200&q=90"
+          alt="Badminton players on a bright indoor court"
+          className="w-full h-full object-cover object-[64%_top] sm:object-top opacity-100 brightness-[1.02] saturate-[1.04] -translate-y-10 sm:translate-y-0"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.16)_28%,rgba(0,0,0,0.32)_68%,rgba(0,0,0,0.5)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.05)_28%,rgba(0,0,0,0.14)_68%,rgba(0,0,0,0.24)_100%)]" />
       </motion.div>
 
       {/* Floating Particles */}
@@ -63,7 +63,7 @@ export function Hero() {
         <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-secondary/18 blur-[120px] animate-float-delayed" />
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.26)_38%,rgba(0,0,0,0.1)_72%,rgba(0,0,0,0.18)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.12)_38%,rgba(0,0,0,0.04)_72%,rgba(0,0,0,0.1)_100%)]" />
 
       {/* Main Content (Layer 4) */}
       <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4">
@@ -74,7 +74,7 @@ export function Hero() {
           className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-black/34 backdrop-blur-md border border-primary/30"
         >
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-primary uppercase text-center">High Performance Badminton Academy</span>
+          <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-primary uppercase text-center">High Performance Badminton and Yoga Academy</span>
         </motion.div>
 
         <div className="mb-6">
@@ -131,13 +131,13 @@ export function Hero() {
           className="text-[12px] md:text-[15px] text-white/72 mb-6 max-w-[22rem] sm:max-w-3xl md:max-w-6xl mx-auto text-center leading-[1.5] font-light px-1 sm:px-0"
         >
           <span className="block sm:hidden">
-            Dayal Sports Academy was established to promote sports and fitness through education programs, training solutions, workshops, camps, and championships, helping players grow toward regional, national, and international standards.
+            Train under world champions. Learn through science. Compete across the globe. Dayal Sports Academy builds champions from grassroots to pro level, with scientific training, Badminton Yoga, robo feeding, and overseas exposure.
           </span>
           <span className="hidden sm:block">
-            Dayal Sports Academy was established to promote sports and fitness through education programs, training solutions, workshops, camps, and championships.
+            Train under world champions. Learn through science. Compete across the globe.
           </span>
           <span className="hidden sm:block">
-            Helping players grow toward regional, national, and international standards.
+            Dayal Sports Academy builds champions from grassroots to pro level, with scientific training, Badminton Yoga, robo feeding, and overseas exposure.
           </span>
         </motion.p>
 
@@ -149,13 +149,13 @@ export function Hero() {
         >
           <Button size="default" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 group rounded-full" asChild>
             <a href="#classes" className="inline-flex items-center justify-center whitespace-nowrap">
-              View Programs
+              Book a Free Trial
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </Button>
-          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full bg-white/92 text-primary border-primary shadow-[0_12px_35px_rgba(255,90,0,0.12)] hover:bg-primary hover:text-white" asChild>
+          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full bg-white/92 text-primary border-primary shadow-[0_12px_35px_rgba(33,81,163,0.12)] hover:bg-primary hover:text-white" asChild>
             <a href="#about">
-              About Academy
+              Explore Programs
             </a>
           </Button>
         </motion.div>

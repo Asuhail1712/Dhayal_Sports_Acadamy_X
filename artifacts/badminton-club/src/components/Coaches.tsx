@@ -59,10 +59,10 @@ export function Coaches() {
             viewport={{ once: true }}
             className="text-2xl sm:text-3xl md:text-5xl font-black mb-4"
           >
-            MEET THE <span className="text-primary">TEAM</span>
+            TRAIN WITH <span className="text-primary">CHAMPIONS</span>
           </motion.h2>
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground md:text-base">
-            Led by Dr. Yuva Dayalan, guided by former World Champion Xiong Guobao, and supported by Yoga Guru Dr. T.A. Krishnan, our team brings specialist coaching, athlete care, and global mentorship into one academy model.
+            A team led by a master world champion and guided by a former world champion. Meet the mentors behind our coaching, athlete care, and global development model.
           </p>
         </div>
 
@@ -159,7 +159,7 @@ export function Coaches() {
                       whileInView={{ width: "85%" }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                      className="h-full rounded-full bg-[linear-gradient(135deg,#FF4D00,#FF8A00)]"
+                      className="h-full rounded-full bg-[linear-gradient(135deg,#2151A3,#00B050)]"
                     />
                   </div>
                 </div>

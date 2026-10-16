@@ -24,6 +24,11 @@ export function Gallery() {
   return (
     <section ref={containerRef} className="relative z-10 overflow-hidden border-t border-border bg-white py-24">
       <div className="container mx-auto px-4 md:px-6">
+        <div className="mb-12 text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Gallery</p>
+          <h2 className="mt-3 text-3xl font-black text-foreground md:text-5xl">Life at the academy.</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">Court sessions, robo feeding, Badminton Yoga, overseas camps, school tours, tournament podiums, and the people who make the academy.</p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 md:items-end">
           
           <motion.div

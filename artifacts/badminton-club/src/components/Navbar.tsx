@@ -20,7 +20,6 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toHomeAnchor = (hash: string) => (isHomeLocation ? hash : `/${hash}`);
   const normalizeHomeHistoryEntry = (href: string) => {
     const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
 
@@ -71,12 +70,12 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { name: 'Home', href: toHomeAnchor('#home') },
-    { name: 'About', href: toHomeAnchor('#about') },
-    { name: 'Classes', href: toHomeAnchor('#classes') },
-    { name: 'Coaches', href: toHomeAnchor('#coaches') },
-    { name: 'Partners', href: toHomeAnchor('#partners') },
-    { name: 'Blogs', href: isHomeLocation ? '#blogs' : '/blogs' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Classes', href: '/programs' },
+    { name: 'Coaches', href: '/coaches' },
+    { name: 'Partners', href: '/partners' },
+    { name: 'Blogs', href: '/blogs' },
   ];
 
   return (
@@ -94,9 +93,9 @@ export function Navbar() {
           
           {/* Logo */}
           <a
-            href={toHomeAnchor('#home')}
-            onPointerDown={() => startRouteTransition(toHomeAnchor('#home'))}
-            onClick={(event) => navigateClientSide(event, toHomeAnchor('#home'))}
+            href="/"
+            onPointerDown={() => startRouteTransition('/')}
+            onClick={(event) => navigateClientSide(event, '/')}
             className="flex items-center gap-2 z-10 group -ml-2 md:ml-0"
           >
             <img
@@ -131,13 +130,13 @@ export function Navbar() {
             <Button
               variant="neon"
               size="sm"
-              className={hasGlassNav ? 'bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_14px_30px_rgba(255,90,0,0.28)]' : ''}
+              className={hasGlassNav ? 'bg-[linear-gradient(135deg,#2151A3,#00B050)] text-primary-foreground shadow-[0_14px_30px_rgba(33,81,163,0.28)]' : ''}
               asChild
             >
               <a
-                href={toHomeAnchor('#contact')}
-                onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))}
-                onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
+                href="/contact"
+                onPointerDown={() => startRouteTransition('/contact')}
+                onClick={(event) => navigateClientSide(event, '/contact')}
               >
                 Join Club
               </a>
@@ -184,9 +183,9 @@ export function Navbar() {
             </div>
             <Button variant="neon" className="w-full" asChild>
               <a
-                href={toHomeAnchor('#contact')}
-                onPointerDown={() => startRouteTransition(toHomeAnchor('#contact'))}
-                onClick={(event) => navigateClientSide(event, toHomeAnchor('#contact'))}
+                href="/contact"
+                onPointerDown={() => startRouteTransition('/contact')}
+                onClick={(event) => navigateClientSide(event, '/contact')}
               >
                 Join Club Now
               </a>

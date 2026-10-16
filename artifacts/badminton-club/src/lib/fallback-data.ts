@@ -196,8 +196,8 @@ export const fallbackCoaches: Coach[] = [
   },
   {
     id: 4,
-    name: "Shiny Surendaran",
-    title: "Sports Nutrition & Preventive Health Nutritionist",
+    name: "Mrs. Shiny Chandran",
+    title: "Sports Nutritionist",
     bio: "Provides sports nutrition guidance with experience supporting cricket, squash, kabaddi, and badminton athletes.",
     specialties: [
       "Sports Nutrition",
@@ -217,9 +217,9 @@ export const fallbackCoaches: Coach[] = [
   },
   {
     id: 5,
-    name: "Dr. T.A. Krishnan",
-    title: "Yoga Guru",
-    bio: "An 85-year-old traditional lineage yoga guru guiding wellbeing, flexibility, lung capacity, and injury-reduction modules for player health.",
+    name: "Bishmachari Dr. T.A. Krishnan",
+    title: "Yoga Mentor",
+    bio: "Yoga guru with eight decades of experience guiding yoga and Badminton Yoga programs for focus, flexibility, recovery, and player wellbeing.",
     specialties: ["Yoga", "Flexibility", "Lung Capacity", "Wellbeing"],
     experience: "85+ years legacy",
     achievements: [

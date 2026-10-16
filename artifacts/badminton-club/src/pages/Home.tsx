@@ -9,6 +9,12 @@ import { Partners } from '@/components/Partners';
 import { BlogSection } from '@/components/BlogSection';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import { TrustStrip } from '@/components/TrustStrip';
+import { SupportTeam } from '@/components/SupportTeam';
+import { Camps } from '@/components/Camps';
+import { Network } from '@/components/Network';
+import { JoinUs } from '@/components/JoinUs';
+import { Faq } from '@/components/Faq';
 
 export default function Home() {
   return (
@@ -16,12 +22,18 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <TrustStrip />
         <About />
         <Classes />
         <Coaches />
+        <SupportTeam />
+        <Camps />
+        <Network />
         <Gallery />
         <Partners />
+        <JoinUs />
         <BlogSection />
+        <Faq />
         <Contact />
       </main>
       <Footer />

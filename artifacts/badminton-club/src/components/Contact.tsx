@@ -35,8 +35,8 @@ function NeonShuttlecockLoader() {
     >
       <defs>
         <filter id="shuttle-glow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
-          <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#FFF1E7" floodOpacity="0.7" />
-          <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF5A00" floodOpacity="0.65" />
+          <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#E8F0FF" floodOpacity="0.7" />
+          <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#2151A3" floodOpacity="0.65" />
         </filter>
       </defs>
       <g filter="url(#shuttle-glow)" strokeLinecap="round" strokeLinejoin="round">
@@ -51,8 +51,8 @@ function NeonShuttlecockLoader() {
         <path d="M27 33L32 16" stroke="#FFB27A" strokeWidth="1.5" />
         <path d="M37 33L32 16" stroke="#FFB27A" strokeWidth="1.5" />
         <path d="M44 27L37 16" stroke="#FFB27A" strokeWidth="1.5" />
-        <path d="M24 39H40" stroke="#FF5A00" strokeWidth="3" />
-        <path d="M26 39H38V48C38 50.2091 36.2091 52 34 52H30C27.7909 52 26 50.2091 26 48V39Z" stroke="#FF5A00" strokeWidth="2.8" />
+        <path d="M24 39H40" stroke="#2151A3" strokeWidth="3" />
+        <path d="M26 39H38V48C38 50.2091 36.2091 52 34 52H30C27.7909 52 26 50.2091 26 48V39Z" stroke="#2151A3" strokeWidth="2.8" />
       </g>
     </svg>
   );
@@ -171,10 +171,10 @@ export function Contact() {
             viewport={{ once: true }}
           >
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-4">
-              Contact <span className="text-primary">Dayal Sports Academy</span>
+              Talk to a <span className="text-primary">coach.</span>
             </h2>
             <p className="mb-8 text-sm text-muted-foreground md:text-base">
-              Reach the academy team for coaching enquiries, training partnerships, camps, and player development discussions.
+              Ask about classes, camps, partnerships, or tournaments. WhatsApp gets the fastest reply.
             </p>
 
             <div className="space-y-6">

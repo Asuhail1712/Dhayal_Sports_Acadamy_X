@@ -10,14 +10,14 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_12px_35px_rgba(255,90,0,0.28)] hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(255,90,0,0.24)]",
+          "bg-[linear-gradient(135deg,#2151A3,#00B050)] text-primary-foreground shadow-[0_12px_35px_rgba(33,81,163,0.28)] hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(0,176,80,0.24)]",
         outline:
           "border-2 border-primary bg-white text-primary hover:bg-primary hover:text-primary-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         glass:
           "glass-panel text-foreground hover:bg-white hover:-translate-y-0.5 hover:border-primary/30",
         neon:
-          "border-2 border-primary bg-transparent text-primary shadow-[inset_0_0_0_1px_rgba(255,90,0,0.08)] hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-[0_18px_34px_rgba(255,90,0,0.18)]",
+          "border-2 border-primary bg-transparent text-primary shadow-[inset_0_0_0_1px_rgba(33,81,163,0.08)] hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-[0_18px_34px_rgba(0,176,80,0.18)]",
       },
       size: {
         default: "h-10 px-6 py-2",

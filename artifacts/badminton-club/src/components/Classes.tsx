@@ -108,7 +108,7 @@ export function Classes() {
             viewport={{ once: true }}
             className="text-2xl sm:text-3xl md:text-5xl font-black mb-4"
           >
-            TRAINING <span className="text-primary">SOLUTIONS</span>
+            A PATHWAY <span className="text-primary">FOR EVERY PLAYER</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -117,7 +117,7 @@ export function Classes() {
             transition={{ delay: 0.1 }}
             className="mx-auto max-w-2xl text-sm text-muted-foreground md:text-base"
           >
-            Explore the academy's coaching programs, specialist services, assessments, and player development pathways.
+            From the first grip to the pro circuit. Choose a pathway built around your age, goals, and level.
           </motion.p>
 
           <motion.div 
@@ -133,7 +133,7 @@ export function Classes() {
                 onClick={() => setFilter(level)}
                 className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${
                   filter === level 
-                    ? 'scale-105 bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_16px_32px_rgba(255,90,0,0.24)]'
+                    ? 'scale-105 bg-[linear-gradient(135deg,#2151A3,#00B050)] text-primary-foreground shadow-[0_16px_32px_rgba(33,81,163,0.24)]'
                     : 'glass-panel text-foreground/70 hover:bg-white hover:text-foreground'
                 }`}
               >
@@ -205,7 +205,7 @@ export function Classes() {
                             </>
                           ) : (
                             <span className="text-xs font-bold uppercase tracking-wide text-primary">
-                              Contact for pricing
+                              Enquire
                             </span>
                           )}
                         </div>

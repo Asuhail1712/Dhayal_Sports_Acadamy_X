@@ -11,6 +11,9 @@ import BlogDetail from "./pages/BlogDetail";
 import Programs from "./pages/Programs";
 import ProgramDetail from "./pages/ProgramDetail";
 import CoachesPage from "./pages/CoachesPage";
+import AboutPage from "./pages/AboutPage";
+import PartnersPage from "./pages/PartnersPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/not-found";
 
 const queryClient = new QueryClient({
@@ -38,6 +41,9 @@ function Router() {
         {(params) => <ProgramDetail slug={params.slug} />}
       </Route>
       <Route path="/coaches" component={CoachesPage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/partners" component={PartnersPage} />
+      <Route path="/contact" component={ContactPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -191,7 +197,7 @@ function RouteTransitionOverlay() {
         className="route-transition-overlay__backdrop"
         style={{
           background:
-            "radial-gradient(circle at top, rgba(255, 90, 0, 0.12), transparent 42%), rgba(255, 255, 255, 0.45)",
+            "radial-gradient(circle at top, rgba(33, 81, 163, 0.12), transparent 42%), rgba(255, 255, 255, 0.45)",
           backdropFilter: "blur(28px)",
           WebkitBackdropFilter: "blur(28px)",
         }}

@@ -210,8 +210,7 @@ export function Partners() {
               </h3>
             </div>
             <div className="max-w-md text-sm leading-[1.75] text-muted-foreground md:text-right">
-              Featuring equipment, retail, and performance brands that support
-              training, activation, and academy development.
+              Partner academies, schools, clubs, and education groups that support training, exchange, camps, and academy development.
             </div>
           </div>
 

@@ -84,7 +84,7 @@ export default function Programs() {
                   onClick={() => setFilter(level)}
                   className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${
                     filter === level
-                      ? "scale-105 bg-[linear-gradient(135deg,#FF4D00,#FF8A00)] text-primary-foreground shadow-[0_16px_32px_rgba(255,90,0,0.24)]"
+                      ? "scale-105 bg-[linear-gradient(135deg,#2151A3,#00B050)] text-primary-foreground shadow-[0_16px_32px_rgba(33,81,163,0.24)]"
                       : "glass-panel text-foreground/70 hover:bg-white hover:text-foreground"
                   }`}
                 >
