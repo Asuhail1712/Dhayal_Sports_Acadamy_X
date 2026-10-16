@@ -66,19 +66,19 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.12)_38%,rgba(0,0,0,0.04)_72%,rgba(0,0,0,0.1)_100%)]" />
 
       {/* Main Content (Layer 4) */}
-      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4 rounded-[2rem] bg-black/20 px-5 py-8 shadow-[0_18px_70px_rgba(0,0,0,0.22)] backdrop-blur-[2px] sm:px-8 md:py-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-black/34 backdrop-blur-md border border-primary/30"
+          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-black/52 backdrop-blur-md border border-primary/45 shadow-[0_8px_24px_rgba(0,0,0,0.24)]"
         >
           <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-primary uppercase text-center">High Performance Badminton and Yoga Academy</span>
+          <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-white uppercase text-center drop-shadow-[0_2px_6px_rgba(0,0,0,0.65)]">High Performance Badminton and Yoga Academy</span>
         </motion.div>
 
         <div className="mb-6">
-          <h1 className="sm:hidden text-center font-black tracking-[-0.04em] leading-[0.86]">
+          <h1 className="sm:hidden text-center font-black tracking-[-0.04em] leading-[0.86] drop-shadow-[0_4px_14px_rgba(0,0,0,0.78)]">
             <motion.span
               initial={{ opacity: 0, y: 50, rotateX: -90 }}
               animate={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -108,7 +108,7 @@ export function Hero() {
             </motion.span>
           </h1>
 
-          <h1 className="hidden sm:flex max-w-[22rem] sm:max-w-none text-[4rem] sm:text-6xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-[-0.04em] text-center flex-wrap justify-center gap-x-2 sm:gap-x-3">
+          <h1 className="hidden sm:flex max-w-[22rem] sm:max-w-none text-[4rem] sm:text-6xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-[-0.04em] text-center flex-wrap justify-center gap-x-2 sm:gap-x-3 drop-shadow-[0_4px_14px_rgba(0,0,0,0.78)]">
             {words.map((word, i) => (
               <motion.span
                 key={i}
@@ -128,7 +128,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-[12px] md:text-[15px] text-white/72 mb-6 max-w-[22rem] sm:max-w-3xl md:max-w-6xl mx-auto text-center leading-[1.5] font-light px-1 sm:px-0"
+          className="text-[12px] md:text-[15px] text-white/90 mb-6 max-w-[22rem] sm:max-w-3xl md:max-w-6xl mx-auto text-center leading-[1.5] font-light px-1 sm:px-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
         >
           <span className="block sm:hidden">
             Train under world champions. Learn through science. Compete across the globe. Dayal Sports Academy builds champions from grassroots to pro level, with scientific training, Badminton Yoga, robo feeding, and overseas exposure.
