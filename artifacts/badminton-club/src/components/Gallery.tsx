@@ -1,99 +1,228 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "wouter";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Expand } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { SectionIntro, TextLink, ease } from "@/components/Design";
 
-export function Gallery() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+const photos = [
+  {
+    id: "team",
+    title: "A shared ambition",
+    category: "Training",
+    src: import.meta.env.BASE_URL + "images/hero.jpeg",
+    alt: "The Dayal Academy badminton team",
+  },
+  {
+    id: "rally",
+    title: "Every rally. Every day.",
+    category: "Training",
+    src: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1400&q=85",
+    alt: "Badminton players during a match",
+  },
+  {
+    id: "movement",
+    title: "Built for movement",
+    category: "Training",
+    src: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=1000&q=85",
+    alt: "Athletic conditioning and performance training",
+  },
+  {
+    id: "court",
+    title: "Where progress happens",
+    category: "Training",
+    src: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=1400&q=85",
+    alt: "A badminton court and sports facilities",
+  },
+  {
+    id: "training",
+    title: "The work behind the game",
+    category: "Training",
+    src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1000&q=85",
+    alt: "Strength and conditioning training",
+  },
+];
+const categories = [
+  "All",
+  "Training",
+  "Camps",
+  "Tournaments",
+  "Yoga",
+  "ProShop",
+];
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [220, -220]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [40, -420]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [140, -140]);
-
+export function Gallery({ preview = false }: { preview?: boolean }) {
+  const [category, setCategory] = useState("All");
+  const [selected, setSelected] = useState<string | null>(null);
+  const [location] = useLocation();
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
-    const sync = () => setIsDesktop(mediaQuery.matches);
-    sync();
-    mediaQuery.addEventListener('change', sync);
-    return () => mediaQuery.removeEventListener('change', sync);
-  }, []);
+    setSelected(null);
+  }, [location]);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const reduced = useReducedMotion();
+  const visible = photos.filter(
+    (photo) => category === "All" || photo.category === category,
+  );
+  const index = visible.findIndex((photo) => photo.id === selected);
+  const photo = index >= 0 ? visible[index] : null;
+  const step = (direction: number) =>
+    setSelected(
+      visible[(index + direction + visible.length) % visible.length].id,
+    );
 
   return (
-    <section ref={containerRef} className="relative z-10 overflow-hidden border-t border-border bg-white py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Gallery</p>
-          <h2 className="mt-3 text-3xl font-black text-foreground md:text-5xl">Life at the academy.</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">Court sessions, robo feeding, Badminton Yoga, overseas camps, school tours, tournament podiums, and the people who make the academy.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 md:items-end">
-          
-          <motion.div
-            style={isDesktop ? { y: y1 } : undefined}
-            initial={isDesktop ? undefined : { opacity: 0.9 }}
-            whileInView={isDesktop ? undefined : { opacity: 1 }}
-            viewport={{ once: false, amount: 0.6 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="group relative h-44 overflow-hidden rounded-2xl border border-border glass-panel sm:h-64 md:h-[500px] md:rounded-[2rem]"
+    <section id="gallery" className="section-shell gallery-section">
+      <div className="site-container">
+        <SectionIntro
+          dark
+          heading={preview ? "h2" : "h1"}
+          label="Inside Dayal"
+          title={
+            <>
+              Life at
+              <br />
+              <em>the academy.</em>
+            </>
+          }
+          description="Training, camps, tournaments and everything in between."
+          action={
+            preview && <TextLink href="/gallery">View Full Gallery</TextLink>
+          }
+        />
+        {!preview && (
+          <div
+            className="gallery-filters"
+            role="group"
+            aria-label="Filter gallery"
           >
-            <motion.img
-              src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&q=85"
-              alt="Badminton Action"
-              initial={isDesktop ? undefined : { scale: 1 }}
-              whileInView={isDesktop ? undefined : { scale: 1.08 }}
-              viewport={{ once: false, amount: 0.6 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="w-full h-full object-cover opacity-78 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
-            />
-          </motion.div>
-
-          <motion.div
-            style={isDesktop ? { y: y2 } : undefined}
-            initial={isDesktop ? undefined : { opacity: 0.9 }}
-            whileInView={isDesktop ? undefined : { opacity: 1 }}
-            viewport={{ once: false, amount: 0.6 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="group relative z-20 h-52 overflow-hidden rounded-2xl border border-border shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:h-72 md:h-[640px] md:rounded-[2rem]"
+            {categories.map((item) => (
+              <button
+                key={item}
+                onClick={() => setCategory(item)}
+                aria-pressed={category === item}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        )}
+        {visible.length === 0 && (
+          <p className="gallery-empty" role="status">
+            Photos for {category} have not been published yet. Select Training
+            to explore the current collection.
+          </p>
+        )}
+        <motion.div layout className="gallery-grid">
+          <AnimatePresence mode="popLayout">
+            {visible.map((item, i) => (
+              <motion.button
+                type="button"
+                className="gallery-tile"
+                key={item.id}
+                layout
+                initial={reduced ? false : { opacity: 0, scale: 0.94, y: 25 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.65, delay: i * 0.04, ease }}
+                onClick={(event) => {
+                  triggerRef.current = event.currentTarget;
+                  setSelected(item.id);
+                }}
+                aria-label={"Open image: " + item.title}
+              >
+                <img src={item.src} alt={item.alt} loading="lazy" />
+                <div className="gallery-caption">
+                  <div>
+                    <small>{item.category}</small>
+                    <strong>{item.title}</strong>
+                  </div>
+                  <Expand size={20} />
+                </div>
+              </motion.button>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+        <p className="gallery-media-note">
+          Training collection includes illustrative photography.
+        </p>
+        <Dialog
+          open={photo !== null}
+          onOpenChange={(value) => {
+            if (!value) setSelected(null);
+          }}
+        >
+          <DialogContent
+            className="max-h-[calc(100dvh_-_24px)] w-[calc(100%_-_32px)] max-w-5xl overflow-y-auto rounded-3xl border-white/60 bg-white/95 p-4 pt-12 backdrop-blur-xl sm:rounded-3xl sm:p-6 sm:pt-12"
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              triggerRef.current?.focus();
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight") {
+                event.preventDefault();
+                step(1);
+              }
+              if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                step(-1);
+              }
+            }}
           >
-            <motion.img
-              src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=85"
-              alt="Badminton Match"
-              initial={isDesktop ? undefined : { scale: 1 }}
-              whileInView={isDesktop ? undefined : { scale: 1.08 }}
-              viewport={{ once: false, amount: 0.6 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="w-full h-full object-cover transition-transform duration-1000 md:group-hover:scale-105"
-            />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-white text-center tracking-tighter leading-[0.95] drop-shadow-2xl">
-                DAYAL <br/><span className="text-primary text-glow">ACADEMY</span>
-              </h2>
-            </div>
-          </motion.div>
-
-          <motion.div
-            style={isDesktop ? { y: y3 } : undefined}
-            initial={isDesktop ? undefined : { opacity: 0.9 }}
-            whileInView={isDesktop ? undefined : { opacity: 1 }}
-            viewport={{ once: false, amount: 0.6 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="group relative h-44 overflow-hidden rounded-2xl border border-border glass-panel sm:h-64 md:h-[500px] md:rounded-[2rem]"
-          >
-            <motion.img
-              src="https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=85"
-              alt="Badminton Court"
-              initial={isDesktop ? undefined : { scale: 1 }}
-              whileInView={isDesktop ? undefined : { scale: 1.08 }}
-              viewport={{ once: false, amount: 0.6 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="w-full h-full object-cover opacity-78 transition-all duration-500 filter grayscale group-hover:opacity-100 group-hover:grayscale-0 md:group-hover:scale-105"
-            />
-          </motion.div>
-
-        </div>
+            <DialogTitle className="sr-only">
+              {photo?.title ?? "Academy gallery"}
+            </DialogTitle>
+            <DialogDescription className="sr-only">
+              Academy photo gallery. Use the left and right arrow keys to
+              navigate between images.
+            </DialogDescription>
+            {photo && (
+              <>
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={photo.id}
+                    className="gallery-modal-image"
+                    src={photo.src}
+                    alt={photo.alt}
+                    initial={reduced ? false : { opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </AnimatePresence>
+                <div className="gallery-modal-footer">
+                  <div>
+                    <p className="text-sm font-semibold">{photo.title}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {photo.category} / {index + 1} of {visible.length}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => step(-1)}
+                      aria-label="Previous photo"
+                      disabled={visible.length < 2}
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+                    <button
+                      onClick={() => step(1)}
+                      aria-label="Next photo"
+                      disabled={visible.length < 2}
+                    >
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

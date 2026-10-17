@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { MotionConfig } from "framer-motion";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,6 +15,9 @@ import CoachesPage from "./pages/CoachesPage";
 import AboutPage from "./pages/AboutPage";
 import PartnersPage from "./pages/PartnersPage";
 import ContactPage from "./pages/ContactPage";
+import CampsToursPage from "./pages/CampsToursPage";
+import GalleryPage from "./pages/GalleryPage";
+import JoinUsPage from "./pages/JoinUsPage";
 import NotFound from "./pages/not-found";
 
 const queryClient = new QueryClient({
@@ -44,6 +48,9 @@ function Router() {
       <Route path="/about" component={AboutPage} />
       <Route path="/partners" component={PartnersPage} />
       <Route path="/contact" component={ContactPage} />
+      <Route path="/camps-tours" component={CampsToursPage} />
+      <Route path="/gallery" component={GalleryPage} />
+      <Route path="/join-us" component={JoinUsPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -75,7 +82,7 @@ function AppContent() {
 }
 
 function RouteTransitionOverlay() {
-  const LOADER_DURATION_MS = 930;
+  const LOADER_DURATION_MS = 360;
   const FADE_OUT_DURATION_MS = 120;
   const [visible, setVisible] = useState(false);
   const [isHiding, setIsHiding] = useState(false);
@@ -184,7 +191,10 @@ function RouteTransitionOverlay() {
     return () => {
       clearTimers();
       window.removeEventListener("dhayal:route-transition-start", handleStart);
-      window.removeEventListener("dhayal:route-transition-complete", handleComplete);
+      window.removeEventListener(
+        "dhayal:route-transition-complete",
+        handleComplete,
+      );
     };
   }, []);
 
@@ -219,11 +229,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <ScrollManager />
-          <AppContent />
-          <RouteTransitionOverlay />
-        </WouterRouter>
+        <MotionConfig reducedMotion="user">
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <ScrollManager />
+            <AppContent />
+            <RouteTransitionOverlay />
+          </WouterRouter>
+        </MotionConfig>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>

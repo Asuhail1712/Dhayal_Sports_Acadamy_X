@@ -1,4 +1,4 @@
-import { fallbackClasses } from "@/lib/fallback-data";
+import { academyPrograms } from "@/lib/academy-content";
 
 export function slugify(value: string) {
   return value
@@ -17,73 +17,18 @@ const programImagesByLevel: Record<string, string> = {
     "https://images.unsplash.com/photo-1590075865003-e48277faa558?w=1400&q=85",
   Elite:
     "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=1400&q=85",
-  default:
-    "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=1400&q=85",
 };
 
-const levelAudience: Record<string, string> = {
-  Beginner:
-    "Players beginning structured badminton training and families looking for a disciplined development environment.",
-  Intermediate:
-    "Players ready for higher training load, periodic assessment, and deeper specialist support around performance and recovery.",
-  Advanced:
-    "Competitive athletes who need event-specific mentoring, technical refinement, and supporting fitness systems.",
-  Elite:
-    "High-commitment players aiming for tournament pathways, advanced equipment integration, and specialist input around competition.",
-};
-
-const levelOutcome: Record<string, string> = {
-  Beginner:
-    "Stronger training habits, cleaner fundamentals, and a clear transition into performance-led academy routines.",
-  Intermediate:
-    "Better movement quality, structured performance reviews, and integrated support across assessment, medicine, and nutrition.",
-  Advanced:
-    "Sharper event-specific preparation, improved match intelligence, and a more rounded training ecosystem around the athlete.",
-  Elite:
-    "Higher competition readiness, stronger exposure opportunities, and a more complete pathway around serious performance goals.",
-};
-
-export type ProgramDetail = {
-  id: number;
-  slug: string;
-  name: string;
-  level: string;
-  description: string;
-  schedule: string;
-  duration: string;
-  maxStudents: number;
-  price: number;
-  coachName: string;
-  heroImage: string;
-  overview: string[];
-  inclusions: string[];
-  outcomes: string[];
-};
-
-export const programDetails: ProgramDetail[] = fallbackClasses.map((program) => ({
+export const programDetails = academyPrograms.map((program) => ({
   ...program,
-  slug: slugify(program.name),
-  heroImage: programImagesByLevel[program.level] || programImagesByLevel.default,
-  overview: [
-    `${program.name} is part of the academy's ${program.level.toLowerCase()} pathway and is structured around ${program.schedule.toLowerCase()} delivery.`,
-    `${program.description} The format is planned for ${program.duration.toLowerCase()} under the supervision of ${program.coachName}.`,
-    `Within the Dayal Sports Academy framework, this program is designed to build a stronger connection between technical learning, match readiness, and athlete support.`,
-  ],
-  inclusions: [
-    `${program.schedule} scheduling format`,
-    `${program.duration} development cycle`,
-    `Lead coaching oversight from ${program.coachName}`,
-    `Capacity planning for up to ${program.maxStudents} athletes`,
-  ],
-  outcomes: [
-    levelAudience[program.level] || levelAudience.Beginner,
-    levelOutcome[program.level] || levelOutcome.Beginner,
-    "A clearer development track that connects daily training with measurable athlete progress.",
-  ],
+  heroImage: programImagesByLevel[program.level],
 }));
+export type ProgramDetail = (typeof programDetails)[number];
 
 export function getProgramBySlug(slug: string) {
-  return programDetails.find((program) => program.slug === slug);
+  return programDetails.find(
+    (program) => program.slug === slug || program.legacySlugs.includes(slug),
+  );
 }
 
 export type BlogPost = {
@@ -143,7 +88,7 @@ export const blogPosts: BlogPost[] = [
     body: [
       "World-class mentorship works best when it reinforces a system that already exists. Specialist visits should deepen daily training rather than feel like isolated events.",
       "Dayal Sports Academy plans up to 6 mentor visits per year from national and international champions, covering singles, doubles, mixed doubles, grip science, tactical habits, and competition readiness.",
-      "Guidance from mentors like former World Champion Xiong Guobao helps players understand technical details at a higher level, while also sharpening the standard for the internal coaching team.",
+      "Guidance from mentors like former World Champion Xiong Gubao helps players understand technical details at a higher level, while also sharpening the standard for the internal coaching team.",
     ],
   },
   {

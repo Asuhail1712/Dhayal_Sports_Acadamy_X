@@ -1,198 +1,156 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
-import { useLocation } from 'wouter';
-import { Button } from '@/components/ui/button';
-import { startRouteTransition } from '@/hooks/use-scroll-restoration';
+import { useEffect, useId, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { SiteLink, ease } from "@/components/Design";
+
+import { navigation as links, whatsappUrl } from "@/lib/academy-content";
 
 export function Navbar() {
-  const [location, setLocation] = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isHomeLocation = window.location.pathname === '/';
-  const hasGlassNav = !isHomeLocation || isScrolled;
+  const [location] = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  const reduced = useReducedMotion();
+  const glass = location !== "/" || scrolled;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    setOpen(false);
+  }, [location]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
 
-  const normalizeHomeHistoryEntry = (href: string) => {
-    const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
-
-    if (window.location.pathname !== '/' || !window.location.hash || !isLeavingHomeForRoute) {
-      return;
-    }
-
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${window.location.pathname}${window.location.search}`,
-    );
-  };
-
-  const navigateClientSide = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    const isHomeHashNavigation =
-      window.location.pathname === '/' &&
-      (href.startsWith('#') || href.startsWith('/#'));
-
-    if (isHomeHashNavigation) {
-      event.preventDefault();
-      setMobileMenuOpen(false);
-      const hash = href.startsWith('/#') ? href.slice(1) : href;
-      window.history.replaceState(
-        window.history.state,
-        '',
-        `${window.location.pathname}${window.location.search}${hash}`,
-      );
-      const targetId = hash.slice(1);
-      const target = targetId ? document.getElementById(targetId) : null;
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
-    if (!href.startsWith('/')) {
-      setMobileMenuOpen(false);
-      return;
-    }
-
-    event.preventDefault();
-    setMobileMenuOpen(false);
-    normalizeHomeHistoryEntry(href);
-    startRouteTransition(href);
-    setLocation(href);
-  };
-
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Classes', href: '/programs' },
-    { name: 'Coaches', href: '/coaches' },
-    { name: 'Partners', href: '/partners' },
-    { name: 'Blogs', href: '/blogs' },
-  ];
-
+  const active = (href: string) =>
+    href === "/" ? location === "/" : location.startsWith(href);
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'py-2 md:py-4' : 'py-3 md:py-6'
-      }`}
-    >
-      <div className="container mx-auto px-2 md:px-6">
-        <div className={`relative flex items-center justify-between px-4 md:px-6 py-3 md:py-4 rounded-2xl border transition-all duration-500 ease-out ${
-          hasGlassNav
-            ? 'border-white/10 bg-black/40 shadow-[0_12px_32px_rgba(0,0,0,0.18)] backdrop-blur-md'
-            : 'border-transparent bg-transparent shadow-none backdrop-blur-0'
-        }`}>
-          
-          {/* Logo */}
-          <a
+    <header className="site-nav">
+      <div className="site-container">
+        <div
+          className={"nav-shell " + (glass || open ? "nav-shell--glass" : "")}
+        >
+          <SiteLink
             href="/"
-            onPointerDown={() => startRouteTransition('/')}
-            onClick={(event) => navigateClientSide(event, '/')}
-            className="flex items-center gap-2 z-10 group -ml-2 md:ml-0"
+            className="nav-logo"
+            aria-label="Dayal Sports Academy home"
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}
-              alt="Dayal Sports Academy"
-              className="brand-logo-image h-12 w-auto md:h-14"
+              src={import.meta.env.BASE_URL + "images/dayal-logo.png"}
+              alt="Dayal"
+              width="142"
+              height="47"
             />
-          </a>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.name}
+          </SiteLink>
+          <nav className="nav-links" aria-label="Main navigation">
+            {links.map((link) => (
+              <SiteLink
                 href={link.href}
-                onPointerDown={() => startRouteTransition(link.href)}
-                onClick={(event) => navigateClientSide(event, link.href)}
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-                className="group relative rounded-full px-3 py-2 text-sm font-medium text-white/72 transition-colors hover:text-white"
+                key={link.href}
+                aria-current={active(link.href) ? "page" : undefined}
+                className={
+                  "nav-link " + (active(link.href) ? "nav-link--active" : "")
+                }
               >
-                <span className="pointer-events-none absolute inset-0 rounded-full bg-white/[0.03] opacity-0 blur-sm transition-all duration-300 group-hover:opacity-100" />
-                <span>{link.name}</span>
-                <span className="pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-all duration-300 group-hover:scale-x-100 group-hover:opacity-100" />
-                <span className="pointer-events-none absolute inset-x-4 -bottom-1 h-4 scale-x-0 bg-primary/20 blur-md opacity-0 transition-all duration-300 group-hover:scale-x-100 group-hover:opacity-100" />
-              </motion.a>
+                {active(link.href) && (
+                  <motion.span
+                    className="nav-link-active"
+                    layoutId={"nav-active-" + id}
+                    transition={{ type: "spring", stiffness: 350, damping: 32 }}
+                  />
+                )}
+                <span>{link.label}</span>
+              </SiteLink>
             ))}
           </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4 z-10">
+          <div className="nav-desktop-cta">
             <Button
-              variant="neon"
-              size="sm"
-              className={hasGlassNav ? 'bg-[linear-gradient(135deg,#2151A3,#00B050)] text-primary-foreground shadow-[0_14px_30px_rgba(33,81,163,0.28)]' : ''}
               asChild
+              variant="green"
+              size="sm"
+              className="h-10 gap-4 rounded-full px-5 text-[11px]"
             >
-              <a
-                href="/contact"
-                onPointerDown={() => startRouteTransition('/contact')}
-                onClick={(event) => navigateClientSide(event, '/contact')}
-              >
-                Join Club
+              <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+                Book a Trial
+                <ArrowUpRight size={14} />
               </a>
             </Button>
           </div>
-
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-white/80 hover:text-white z-10"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          <button
+            className="nav-mobile-toggle"
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-expanded={open}
+            aria-controls={"mobile-" + id}
+            onClick={() => setOpen((value) => !value)}
           >
-            {mobileMenuOpen ? <X /> : <Menu />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              id={"mobile-" + id}
+              aria-label="Mobile navigation"
+              className="mobile-nav"
+              initial={reduced ? false : { opacity: 0, height: 0, y: -10 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -10 }}
+              transition={{ duration: reduced ? 0 : 0.4, ease }}
+            >
+              {links.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={reduced ? false : { opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.045, duration: 0.3 }}
+                >
+                  <SiteLink
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active(link.href) ? "page" : undefined}
+                  >
+                    {link.label}
+                    <ArrowUpRight size={18} />
+                  </SiteLink>
+                </motion.div>
+              ))}
+              <Button
+                asChild
+                variant="green"
+                className="mt-5 w-full rounded-full"
+              >
+                <a
+                  href={whatsappUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                >
+                  Book a Trial
+                  <ArrowUpRight className="ml-3" size={16} />
+                </a>
+              </Button>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-4 right-4 mt-2 p-6 bg-white/96 backdrop-blur-md rounded-2xl flex flex-col gap-4 md:hidden border border-border shadow-[0_16px_40px_rgba(0,0,0,0.1)]"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onPointerDown={() => startRouteTransition(link.href)}
-                onClick={(event) => navigateClientSide(event, link.href)}
-                className="text-lg font-medium text-foreground/80 hover:text-primary hover:pl-2 transition-all"
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="h-px w-full bg-border my-2" />
-            <div className="pb-2">
-              <img
-                src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}
-                alt="Dayal Sports Academy"
-                className="brand-logo-image h-14 w-auto"
-              />
-            </div>
-            <Button variant="neon" className="w-full" asChild>
-              <a
-                href="/contact"
-                onPointerDown={() => startRouteTransition('/contact')}
-                onClick={(event) => navigateClientSide(event, '/contact')}
-              >
-                Join Club Now
-              </a>
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 }

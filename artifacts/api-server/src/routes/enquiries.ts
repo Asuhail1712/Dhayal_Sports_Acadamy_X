@@ -8,6 +8,8 @@ type EnquiryPayload = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
+  interest: string;
   message: string;
 };
 
@@ -22,7 +24,7 @@ function readRequiredEnv(name: string): string {
   return value;
 }
 
-function validatePayload(body: unknown): EnquiryPayload {
+export function validatePayload(body: unknown): EnquiryPayload {
   if (!body || typeof body !== "object") {
     throw new Error("Invalid request body");
   }
@@ -31,13 +33,37 @@ function validatePayload(body: unknown): EnquiryPayload {
   const firstName = String(payload.firstName ?? "").trim();
   const lastName = String(payload.lastName ?? "").trim();
   const email = String(payload.email ?? "").trim();
+  const phone = String(payload.phone ?? "").trim();
+  const interest = String(payload.interest ?? "").trim();
   const message = String(payload.message ?? "").trim();
 
   if (!firstName || !lastName || !email || !message) {
     throw new Error("All enquiry fields are required");
   }
 
-  return { firstName, lastName, email, message };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("A valid email address is required");
+  }
+  if (phone && !/^[+0-9() .-]{7,30}$/.test(phone)) {
+    throw new Error("A valid WhatsApp number is required");
+  }
+
+  // Optional for compatibility with forms deployed before the final copy update.
+  return { firstName, lastName, email, phone, interest, message };
+}
+
+export function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character]!,
+  );
 }
 
 async function resolveSmtpTarget(host: string): Promise<{
@@ -70,13 +96,16 @@ async function sendViaGoogleScript(payload: EnquiryPayload): Promise<void> {
     body: JSON.stringify({
       name: `${payload.firstName} ${payload.lastName}`.trim(),
       email: payload.email,
-      phone: "",
+      phone: payload.phone,
+      interest: payload.interest,
       message: payload.message,
     }),
   });
 
   const text = await response.text();
-  const data = text ? (JSON.parse(text) as { status?: string; error?: string }) : {};
+  const data = text
+    ? (JSON.parse(text) as { status?: string; error?: string })
+    : {};
 
   if (!response.ok || data.status === "error") {
     throw new Error(data.error || "Google Script delivery failed");
@@ -114,7 +143,6 @@ router.post("/enquiries", async (req, res) => {
       host: smtpTarget.connectHost,
       port,
       secure,
-      family: 4,
       auth: { user, pass },
       requireTLS: !secure,
       connectionTimeout: 15000,
@@ -140,11 +168,11 @@ router.post("/enquiries", async (req, res) => {
       ].join("\n"),
       html: `
         <h2>New Dayal Sports Academy enquiry</h2>
-        <p><strong>First Name:</strong> ${payload.firstName}</p>
-        <p><strong>Last Name:</strong> ${payload.lastName}</p>
-        <p><strong>Email:</strong> ${payload.email}</p>
+        <p><strong>First Name:</strong> ${escapeHtml(payload.firstName)}</p>
+        <p><strong>Last Name:</strong> ${escapeHtml(payload.lastName)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
         <p><strong>Message:</strong></p>
-        <p>${payload.message.replace(/\n/g, "<br />")}</p>
+        <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
       `,
     });
 

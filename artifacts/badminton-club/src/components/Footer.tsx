@@ -1,109 +1,85 @@
-import React from 'react';
-import { Instagram, Twitter, Facebook } from 'lucide-react';
-import { useLocation } from 'wouter';
-import { startRouteTransition } from '@/hooks/use-scroll-restoration';
+import { ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Reveal, SiteLink } from "@/components/Design";
+
+const links = [
+  ["About the academy", "/about"],
+  ["Our programs", "/programs"],
+  ["Meet the team", "/coaches"],
+  ["Camps & Tours", "/camps-tours"],
+  ["Our partners", "/partners"],
+  ["Gallery", "/gallery"],
+  ["Join Us", "/join-us"],
+  ["Academy journal", "/blogs"],
+  ["Get in touch", "/contact"],
+];
 
 export function Footer() {
-  const [location, setLocation] = useLocation();
-  const normalizeHomeHistoryEntry = (href: string) => {
-    const isLeavingHomeForRoute = href.startsWith('/') && !href.startsWith('/#');
-
-    if (window.location.pathname !== '/' || !window.location.hash || !isLeavingHomeForRoute) {
-      return;
-    }
-
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${window.location.pathname}${window.location.search}`,
-    );
-  };
-
-  const navigateClientSide = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    const isHomeHashNavigation =
-      window.location.pathname === '/' &&
-      (href.startsWith('#') || href.startsWith('/#'));
-
-    if (isHomeHashNavigation) {
-      event.preventDefault();
-      const hash = href.startsWith('/#') ? href.slice(1) : href;
-      window.history.replaceState(
-        window.history.state,
-        '',
-        `${window.location.pathname}${window.location.search}${hash}`,
-      );
-      const targetId = hash.slice(1);
-      const target = targetId ? document.getElementById(targetId) : null;
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
-    if (!href.startsWith('/')) {
-      return;
-    }
-
-    event.preventDefault();
-    normalizeHomeHistoryEntry(href);
-    startRouteTransition(href);
-    setLocation(href);
-  };
-
   return (
-    <footer className="relative z-10 border-t border-[#242424] bg-[#181818] py-12 text-white">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div className="md:col-span-2">
-            <a
-              href="/"
-              onPointerDown={() => startRouteTransition('/')}
-              onClick={(event) => navigateClientSide(event, '/')}
-              className="flex items-center gap-2 mb-4"
-            >
+    <footer className="site-footer">
+      <div className="site-container">
+        <Reveal className="footer-top">
+          <h2>
+            Your next level
+            <br />
+            <em>starts here.</em>
+          </h2>
+          <Button
+            asChild
+            variant="green"
+            className="h-12 gap-6 rounded-full px-7 text-xs"
+          >
+            <SiteLink href="/contact">
+              Let's get on court
+              <ArrowUpRight size={17} />
+            </SiteLink>
+          </Button>
+        </Reveal>
+        <div className="footer-main">
+          <div className="footer-brand">
+            <SiteLink href="/" aria-label="Dayal Sports Academy home">
               <img
-                src={`${import.meta.env.BASE_URL}images/dayal-logo.png`}
+                src={import.meta.env.BASE_URL + "images/dayal-logo.png"}
                 alt="Dayal Sports Academy"
-                className="brand-logo-image h-14 w-auto"
               />
-            </a>
-            <p className="max-w-sm text-white/68">
-              Dayal Sports Academy builds champions through sport, science, and global exposure.
+            </SiteLink>
+            <p>
+              Dayal Sports Academy builds champions through sport, science and
+              global exposure.
             </p>
           </div>
-          
           <div>
-            <h4 className="mb-4 font-bold text-white">Quick Links</h4>
-            <ul className="space-y-2 text-white/68">
-              <li><a href="/about" onPointerDown={() => startRouteTransition("/about")} onClick={(event) => navigateClientSide(event, "/about")} className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="/programs" onPointerDown={() => startRouteTransition("/programs")} onClick={(event) => navigateClientSide(event, "/programs")} className="hover:text-primary transition-colors">Training Solutions</a></li>
-              <li><a href="/coaches" onPointerDown={() => startRouteTransition("/coaches")} onClick={(event) => navigateClientSide(event, "/coaches")} className="hover:text-primary transition-colors">Our Team</a></li>
-              <li><a href="/partners" onPointerDown={() => startRouteTransition("/partners")} onClick={(event) => navigateClientSide(event, "/partners")} className="hover:text-primary transition-colors">Partners</a></li>
-              <li><a href="/blogs" onPointerDown={() => startRouteTransition("/blogs")} onClick={(event) => navigateClientSide(event, "/blogs")} className="hover:text-primary transition-colors">Blogs</a></li>
-              <li><a href="/contact" onPointerDown={() => startRouteTransition("/contact")} onClick={(event) => navigateClientSide(event, "/contact")} className="hover:text-primary transition-colors">Contact</a></li>
-            </ul>
+            <p className="footer-label">Explore the academy</p>
+            <nav className="footer-links" aria-label="Footer navigation">
+              {links.map(([label, href]) => (
+                <SiteLink key={href} href={href}>
+                  {label}
+                </SiteLink>
+              ))}
+            </nav>
           </div>
-          
-          <div>
-            <h4 className="mb-4 font-bold text-white">Follow Us</h4>
-            <div className="flex gap-4">
-              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="rounded-full bg-white/8 p-2 text-white/72 transition-colors hover:bg-primary/20 hover:text-primary">
-                <Facebook className="w-5 h-5" />
-              </a>
-            </div>
+          <div className="footer-contact">
+            <p className="footer-label">Start a conversation</p>
+            <a href="mailto:dayalsportsacademy@gmail.com">
+              dayalsportsacademy@gmail.com
+            </a>
+            <br />
+            <a href="tel:+85266285295">+852 6628 5295</a>
+            <p className="mt-5 text-[10px] leading-relaxed text-[#8ca1bc]">
+              Hong Kong / China / Malaysia / India
+            </p>
           </div>
         </div>
-        
-        <div className="border-t border-white/10 pt-8 text-center text-sm text-white/56">
-          <p>&copy; 2026 Dayal Sports Academy. All rights reserved.</p>
+        <div className="footer-bottom">
+          <p>
+            &copy; {new Date().getFullYear()} Dayal Sports Academy. All rights
+            reserved.
+          </p>
+          <p>Power. Intelligence. Possibility.</p>
         </div>
+      </div>
+      <div className="footer-wordmark" aria-hidden="true">
+        DAYAL
       </div>
     </footer>
   );

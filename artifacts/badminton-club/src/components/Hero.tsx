@@ -1,215 +1,151 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ArrowDown, ArrowRight, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CountUp, SiteLink, ease } from "@/components/Design";
+
+import { academyStats as stats, whatsappUrl } from "@/lib/academy-content";
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
+    target: ref,
+    offset: ["start start", "end start"],
   });
-
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0px", "420px"]);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
-  const abstractY = useTransform(scrollYProgress, [0, 1], ["0px", "-240px"]);
-  const orbsY = useTransform(scrollYProgress, [0, 1], ["0px", "-120px"]);
-
-  const words = "POWER PLUS INTELLIGENCE".split(" ");
-
-  // Generate particles
-  const particles = Array.from({ length: 15 }).map((_, i) => ({
-    id: i,
-    size: Math.random() * 4 + 2,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    delay: `${Math.random() * 5}s`,
-    duration: `${Math.random() * 10 + 10}s`
-  }));
+  const y = useTransform(scrollYProgress, [0, 1], [0, 160]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   return (
-    <section id="home" ref={containerRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      {/* Background Image & Overlay (Layer 1) */}
-      <motion.div style={{ y: bgY, scale: bgScale }} className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=2200&q=90"
-          alt="Badminton players on a bright indoor court"
-          className="w-full h-full object-cover object-[64%_top] sm:object-top opacity-100 brightness-[1.02] saturate-[1.04] -translate-y-10 sm:translate-y-0"
+    <section ref={ref} id="home" className="hero-section">
+      <motion.div
+        className="hero-backdrop"
+        style={reduced ? undefined : { y, scale }}
+      >
+        <img
+          src={import.meta.env.BASE_URL + "images/hero.jpeg"}
+          alt="The Dayal Academy badminton team on court"
+          fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.05)_28%,rgba(0,0,0,0.14)_68%,rgba(0,0,0,0.24)_100%)]" />
       </motion.div>
-
-      {/* Floating Particles */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {particles.map(p => (
-          <div
-            key={p.id}
-            className="absolute bg-primary rounded-full blur-[1px]"
-            style={{
-              width: p.size,
-              height: p.size,
-              left: p.left,
-              top: p.top,
-              animation: `particle-drift ${p.duration} linear infinite`,
-              animationDelay: p.delay,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Layer 3: Floating glowing orbs */}
-      <motion.div style={{ y: orbsY }} className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[20%] left-[10%] w-64 h-64 rounded-full bg-primary/24 blur-[100px] animate-float" />
-        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-secondary/18 blur-[120px] animate-float-delayed" />
-      </motion.div>
-
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.12)_38%,rgba(0,0,0,0.04)_72%,rgba(0,0,0,0.1)_100%)]" />
-
-      {/* Main Content (Layer 4) */}
-      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mt-10 sm:mt-4 rounded-[2rem] bg-black/20 px-5 py-8 shadow-[0_18px_70px_rgba(0,0,0,0.22)] backdrop-blur-[2px] sm:px-8 md:py-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-4 inline-flex max-w-[18rem] items-center justify-center gap-2 px-3 sm:max-w-none sm:px-4 py-2 rounded-full bg-black/52 backdrop-blur-md border border-primary/45 shadow-[0_8px_24px_rgba(0,0,0,0.24)]"
-        >
-          <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[8px] leading-none sm:text-sm font-medium tracking-[0.16em] text-white uppercase text-center drop-shadow-[0_2px_6px_rgba(0,0,0,0.65)]">High Performance Badminton and Yoga Academy</span>
-        </motion.div>
-
-        <div className="mb-6">
-          <h1 className="sm:hidden text-center font-black tracking-[-0.04em] leading-[0.86] drop-shadow-[0_4px_14px_rgba(0,0,0,0.78)]">
-            <motion.span
-              initial={{ opacity: 0, y: 50, rotateX: -90 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ duration: 0.8, delay: 0, ease: "easeOut" }}
-              className="block text-[3.2rem] text-white"
-              style={{ transformOrigin: "bottom" }}
-            >
-              POWER
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 50, rotateX: -90 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="mt-2 block text-[3.2rem] text-white"
-              style={{ transformOrigin: "bottom" }}
-            >
-              PLUS
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 50, rotateX: -90 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="mt-2 block text-[2.95rem] text-gradient"
-              style={{ transformOrigin: "bottom" }}
-            >
-              INTELLIGENCE
-            </motion.span>
-          </h1>
-
-          <h1 className="hidden sm:flex max-w-[22rem] sm:max-w-none text-[4rem] sm:text-6xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-[-0.04em] text-center flex-wrap justify-center gap-x-2 sm:gap-x-3 drop-shadow-[0_4px_14px_rgba(0,0,0,0.78)]">
-            {words.map((word, i) => (
+      <div className="site-container hero-content">
+        <div className="hero-copy">
+          <motion.div
+            className="eyebrow hero-eyebrow"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span />
+            <div>
+              High Performance Badminton
+              <br />
+              and Yoga Academy
+            </div>
+          </motion.div>
+          <h1 className="hero-heading" aria-label="Power Plus Intelligence">
+            {["POWER", "PLUS", "INTELLIGENCE"].map((word, i) => (
               <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 50, rotateX: -90 }}
-                animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ duration: 0.8, delay: i * 0.2, ease: "easeOut" }}
-                className={i === 2 ? "text-gradient" : "text-white"}
-                style={{ transformOrigin: "bottom" }}
+                key={word}
+                className={i === 2 ? "hero-highlight" : ""}
+                initial={
+                  reduced ? false : { clipPath: "inset(0% -12% 100% -12%)" }
+                }
+                animate={{
+                  clipPath: "inset(-18% -12% -20% -12%)",
+                  transitionEnd: { clipPath: "none" },
+                }}
+                transition={{ duration: 1, delay: 0.1 + i * 0.12, ease }}
               >
-                {word}
+                <motion.span
+                  initial={reduced ? false : { y: "115%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, delay: 0.1 + i * 0.12, ease }}
+                >
+                  {word}
+                </motion.span>
               </motion.span>
             ))}
           </h1>
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.8, ease }}
+          >
+            <p className="hero-description">
+              <span>Train under world champions. Learn through science. </span>
+              <span>Compete across the globe. Dayal Sports Academy </span>
+              <span>
+                builds champions from grassroots to pro level, with
+                scientific{" "}
+              </span>
+              <span>
+                training, Badminton Yoga, robo feeding and overseas exposure.
+              </span>
+            </p>
+            <div className="hero-buttons">
+              <Button
+                asChild
+                variant="green"
+                className="h-12 gap-5 rounded-full px-6 text-xs"
+              >
+                <a
+                  href={whatsappUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book a Trial
+                  <ArrowRight size={16} />
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="hero-secondary h-12 rounded-full px-6 text-xs"
+              >
+                <SiteLink href="/programs">Explore Programs</SiteLink>
+              </Button>
+            </div>
+            <a className="hero-scroll" href="#about">
+              <ArrowDown size={14} />
+              Discover the academy
+            </a>
+          </motion.div>
         </div>
-
-        <motion.p 
-          initial={{ opacity: 0, y: 30 }}
+        <motion.div
+          className="hero-photo-note"
+          initial={reduced ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-[12px] md:text-[15px] text-white/90 mb-6 max-w-[22rem] sm:max-w-3xl md:max-w-6xl mx-auto text-center leading-[1.5] font-light px-1 sm:px-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+          transition={{ duration: 0.9, delay: 0.8, ease }}
         >
-          <span className="block sm:hidden">
-            Train under world champions. Learn through science. Compete across the globe. Dayal Sports Academy builds champions from grassroots to pro level, with scientific training, Badminton Yoga, robo feeding, and overseas exposure.
-          </span>
-          <span className="hidden sm:block">
-            Train under world champions. Learn through science. Compete across the globe.
-          </span>
-          <span className="hidden sm:block">
-            Dayal Sports Academy builds champions from grassroots to pro level, with scientific training, Badminton Yoga, robo feeding, and overseas exposure.
-          </span>
-        </motion.p>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
-        >
-          <Button size="default" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 group rounded-full" asChild>
-            <a href="#classes" className="inline-flex items-center justify-center whitespace-nowrap">
-              Book a Free Trial
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </Button>
-          <Button size="default" variant="outline" className="w-full sm:w-auto text-[15px] sm:text-base h-11 px-7 rounded-full bg-white/92 text-primary border-primary shadow-[0_12px_35px_rgba(33,81,163,0.12)] hover:bg-primary hover:text-white" asChild>
-            <a href="#about">
-              Explore Programs
-            </a>
-          </Button>
+          <div className="icon-tile">
+            <Trophy size={21} />
+          </div>
+          <div>
+            <strong>World champion mentorship.</strong>
+            <small>Extraordinary people. A shared ambition.</small>
+          </div>
         </motion.div>
       </div>
-
-      {/* Layer 2: Abstract Element / Shuttlecock */}
-      <motion.div 
-        style={{ y: abstractY }}
-        className="absolute bottom-0 right-0 max-w-lg opacity-40 z-0 pointer-events-none"
-      >
-        <img 
-          src={`${import.meta.env.BASE_URL}images/abstract-shuttlecock.png`} 
-          alt="" 
-          className="w-full h-full object-contain blur-[2px]"
-        />
-      </motion.div>
-
-      {/* Stat Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-20 hidden md:block"
-      >
-        <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl py-4 flex items-center justify-evenly divide-x divide-white/10">
-          <div className="px-6 text-center w-1/4">
-            <div className="text-2xl font-black text-white">5</div>
-            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Guinness Records</div>
+      <div className="site-container hero-stats">
+        <p className="hero-stats-caption">
+          A stronger game.
+          <br />A bigger possibility.
+        </p>
+        {stats.map((stat) => (
+          <div className="hero-stat" key={stat.label}>
+            <strong>
+              <CountUp value={stat.value} suffix={stat.suffix} />
+            </strong>
+            <small>{stat.label}</small>
           </div>
-          <div className="px-6 text-center w-1/4">
-            <div className="text-2xl font-black text-white">6</div>
-            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Mentor Visits / Year</div>
-          </div>
-          <div className="px-6 text-center w-1/4">
-            <div className="text-2xl font-black text-white">3</div>
-            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Assessment Cycles / Year</div>
-          </div>
-          <div className="px-6 text-center w-1/4">
-            <div className="text-2xl font-black text-white">20%</div>
-            <div className="text-xs text-white/50 uppercase tracking-wider mt-1">Member Discount</div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-24 md:bottom-32 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center text-white/40 animate-bounce-slow"
-      >
-        <span className="text-xs uppercase tracking-widest mb-2 font-medium">Scroll</span>
-        <ArrowDown className="w-5 h-5" />
-      </motion.div>
+        ))}
+      </div>
     </section>
   );
 }

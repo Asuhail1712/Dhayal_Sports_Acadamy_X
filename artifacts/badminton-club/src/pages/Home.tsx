@@ -1,20 +1,20 @@
-import React from 'react';
-import { Navbar } from '@/components/Navbar';
-import { Hero } from '@/components/Hero';
-import { About } from '@/components/About';
-import { Classes } from '@/components/Classes';
-import { Coaches } from '@/components/Coaches';
-import { Gallery } from '@/components/Gallery';
-import { Partners } from '@/components/Partners';
-import { BlogSection } from '@/components/BlogSection';
-import { Contact } from '@/components/Contact';
-import { Footer } from '@/components/Footer';
-import { TrustStrip } from '@/components/TrustStrip';
-import { SupportTeam } from '@/components/SupportTeam';
-import { Camps } from '@/components/Camps';
-import { Network } from '@/components/Network';
-import { JoinUs } from '@/components/JoinUs';
-import { Faq } from '@/components/Faq';
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Classes } from "@/components/Classes";
+import { Coaches } from "@/components/Coaches";
+import { Gallery } from "@/components/Gallery";
+import { Partners } from "@/components/Partners";
+import { Contact } from "@/components/Contact";
+import { Footer } from "@/components/Footer";
+import { TrustStrip } from "@/components/TrustStrip";
+import { SupportTeam } from "@/components/SupportTeam";
+import { Camps } from "@/components/Camps";
+import { JoinUs } from "@/components/JoinUs";
+import { Faq } from "@/components/Faq";
+import { UniqueTraining } from "@/components/UniqueTraining";
+import { ProShop } from "@/components/ProShop";
+import { Testimonials } from "@/components/Testimonials";
 
 export default function Home() {
   return (
@@ -24,15 +24,16 @@ export default function Home() {
         <Hero />
         <TrustStrip />
         <About />
+        <UniqueTraining />
         <Classes />
         <Coaches />
         <SupportTeam />
         <Camps />
-        <Network />
-        <Gallery />
         <Partners />
+        <ProShop />
+        <Gallery preview />
+        <Testimonials />
         <JoinUs />
-        <BlogSection />
         <Faq />
         <Contact />
       </main>
