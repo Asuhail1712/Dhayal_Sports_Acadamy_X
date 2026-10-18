@@ -1,8 +1,11 @@
 import { useLayoutEffect, useRef } from "react";
-import { ArrowUpRight, Award } from "lucide-react";
+import { ArrowUpRight, Award, Medal, Globe2, MapPin } from "lucide-react";
+import type { CardMotif } from "@/components/CardArtwork";
 import { CountUp, GlassCard, Reveal, SiteLink } from "@/components/Design";
 
 import { academyStats as stats, story } from "@/lib/academy-content";
+const metricArtwork: CardMotif[] = ["trophy", "medal", "globe", "pins"];
+const metricIcons = [Award, Medal, Globe2, MapPin];
 
 export function About({ detailed = false }: { detailed?: boolean }) {
   const Heading = detailed ? "h1" : "h2";
@@ -46,7 +49,7 @@ export function About({ detailed = false }: { detailed?: boolean }) {
                 alt="Badminton players training on court"
                 loading="lazy"
               />
-              <GlassCard className="about-photo-tag" tilt={8}>
+              <GlassCard className="about-photo-tag" tilt={8} artwork={false}>
                 <strong>5</strong>
                 <p>
                   Guinness World Records.
@@ -100,17 +103,29 @@ export function About({ detailed = false }: { detailed?: boolean }) {
           </div>
         </div>
         <div className="metric-grid">
-          {stats.map((stat, i) => (
-            <GlassCard key={stat.label} index={i} className="metric-card">
-              <div className="icon-tile">
-                <Award size={21} />
-              </div>
-              <strong>
-                <CountUp value={stat.value} suffix={stat.suffix} />
-              </strong>
-              <p>{stat.label}</p>
-            </GlassCard>
-          ))}
+          {stats.map((stat, i) => {
+            const Icon = metricIcons[i];
+            return (
+              <GlassCard
+                key={stat.label}
+                index={i}
+                className="metric-card"
+                artwork={metricArtwork[i]}
+                artworkTitle={
+                  <strong>
+                    <CountUp value={stat.value} suffix={stat.suffix} />
+                  </strong>
+                }
+                header={
+                  <div className="icon-tile">
+                    <Icon size={21} />
+                  </div>
+                }
+              >
+                <p>{stat.label}</p>
+              </GlassCard>
+            );
+          })}
         </div>
       </div>
     </section>

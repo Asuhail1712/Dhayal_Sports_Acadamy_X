@@ -21,9 +21,20 @@ export default function JoinUsPage() {
           />
           <div className="copy-grid copy-grid--three">
             {[1, 2, 3].map((level) => (
-              <GlassCard key={level} className="copy-card" index={level - 1}>
-                <span className="pill pill--green">Coaching certification</span>
-                <h2 className="copy-card-title">Level {level}</h2>
+              <GlassCard
+                key={level}
+                className="copy-card"
+                index={level - 1}
+                artwork="education"
+                header={
+                  <span className="pill pill--green">
+                    Coaching certification
+                  </span>
+                }
+                artworkTitle={
+                  <h2 className="copy-card-title">Level {level}</h2>
+                }
+              >
                 <TextLink href="/contact?interest=Coach%20program">
                   Enquire about certification
                 </TextLink>
@@ -45,8 +56,13 @@ export default function JoinUsPage() {
           />
           <div className="copy-grid">
             {openRoles.map((role, i) => (
-              <GlassCard key={role} className="copy-card" index={i}>
-                <h2 className="copy-card-title">{role}</h2>
+              <GlassCard
+                key={role}
+                className="copy-card"
+                index={i}
+                artwork="team"
+                artworkTitle={<h2 className="copy-card-title">{role}</h2>}
+              >
                 <TextLink
                   href={whatsappUrl(
                     "Hello Dayal Sports Academy, I would like to apply for the " +

@@ -1,4 +1,5 @@
-import { ShoppingBag, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { CardIllustration } from "@/components/CardArtwork";
 import { GlassCard } from "@/components/Design";
 import { Button } from "@/components/ui/button";
 import { proShop, whatsappUrl } from "@/lib/academy-content";
@@ -7,7 +8,12 @@ export function ProShop({ detailed = false }: { detailed?: boolean }) {
   return (
     <section className="section-shell section-soft accent-green">
       <div className="site-container">
-        <GlassCard className="proshop-card">
+        <GlassCard
+          className="proshop-card"
+          artwork="shop"
+          tone="green"
+          artworkLayout="custom"
+        >
           <div>
             <div className="eyebrow">
               <span />
@@ -32,7 +38,7 @@ export function ProShop({ detailed = false }: { detailed?: boolean }) {
             </Button>
           </div>
           <div className="proshop-mark" aria-hidden="true">
-            <ShoppingBag />
+            <CardIllustration motif="shop" />
             <strong>10-50%</strong>
             <span>Products, flooring & fitness equipment</span>
           </div>

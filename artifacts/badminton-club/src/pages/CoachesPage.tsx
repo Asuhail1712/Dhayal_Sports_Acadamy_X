@@ -35,10 +35,18 @@ export default function CoachesPage() {
           <h2 className="mt-16 mb-8 text-3xl font-bold">Support team</h2>
           <div className="copy-grid copy-grid--three">
             {supportProfiles.map((person, i) => (
-              <GlassCard key={person.name} className="copy-card" index={i}>
-                <span className="pill pill--green">{person.title}</span>
-                <h3 className="copy-card-title">{person.name}</h3>
-              </GlassCard>
+              <GlassCard
+                key={person.name}
+                className="copy-card"
+                index={i}
+                artwork={i === 2 ? "globe" : "heart"}
+                header={
+                  <span className="pill pill--green">{person.title}</span>
+                }
+                artworkTitle={
+                  <h3 className="copy-card-title">{person.name}</h3>
+                }
+              />
             ))}
           </div>
         </div>

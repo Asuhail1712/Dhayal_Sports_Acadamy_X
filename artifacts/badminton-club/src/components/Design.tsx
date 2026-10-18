@@ -18,6 +18,12 @@ import {
 import { useLocation } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { startRouteTransition } from "@/hooks/use-scroll-restoration";
+import {
+  CardArtwork,
+  CardVisual,
+  type CardMotif,
+  type CardTone,
+} from "@/components/CardArtwork";
 
 export const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -73,9 +79,18 @@ export function Reveal({
     <motion.div
       className={className}
       initial={reduced ? false : { opacity: 0, y: 28, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transitionEnd: { filter: "none", willChange: "auto" },
+      }}
       viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.75, delay, ease }}
+      transition={{
+        duration: reduced ? 0 : 0.75,
+        delay: reduced ? 0 : delay,
+        ease,
+      }}
     >
       {children}
     </motion.div>
@@ -134,12 +149,22 @@ export function GlassCard({
   index = 0,
   interactive = true,
   tilt = 4,
+  artwork = "shuttlecock",
+  artworkLayout = "header",
+  artworkTitle,
+  header,
+  tone,
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   index?: number;
   interactive?: boolean;
   tilt?: number;
+  artwork?: CardMotif | false;
+  artworkLayout?: "header" | "custom";
+  artworkTitle?: ReactNode;
+  header?: ReactNode;
+  tone?: CardTone;
 }) {
   const reduced = useReducedMotion();
   const x = useMotionValue(0),
@@ -167,6 +192,11 @@ export function GlassCard({
   return (
     <motion.article
       className={`premium-card ${className}`}
+      data-card-motif={artwork || undefined}
+      data-artwork-layout={artwork ? artworkLayout : undefined}
+      data-card-tone={
+        artwork ? tone || (index % 2 ? "green" : "blue") : undefined
+      }
       onMouseMove={onMove}
       onMouseLeave={() => {
         x.set(0);
@@ -183,6 +213,10 @@ export function GlassCard({
         style={{ background: glow }}
         aria-hidden="true"
       />
+      {artwork && <CardArtwork />}
+      {artwork && artworkLayout === "header" && (
+        <CardVisual motif={artwork} header={header} title={artworkTitle} />
+      )}
       {children}
     </motion.article>
   );

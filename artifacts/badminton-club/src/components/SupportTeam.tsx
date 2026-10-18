@@ -7,6 +7,8 @@ import {
   Trophy,
 } from "lucide-react";
 import { GlassCard, SectionIntro } from "@/components/Design";
+import type { CardMotif } from "@/components/CardArtwork";
+const artwork: CardMotif[] = ["brain", "heart", "dumbbell", "heart", "yoga"];
 
 const disciplines = [
   [
@@ -53,19 +55,32 @@ export function SupportTeam() {
         />
         <div className="support-grid">
           {disciplines.map(([Icon, title, description], i) => (
-            <GlassCard key={title} index={i} className="support-card">
-              <div className="icon-tile">
-                <Icon size={22} />
-              </div>
-              <h3>{title}</h3>
+            <GlassCard
+              key={title}
+              index={i}
+              className="support-card"
+              artwork={artwork[i]}
+              artworkTitle={<h3>{title}</h3>}
+              header={
+                <div className="icon-tile">
+                  <Icon size={22} />
+                </div>
+              }
+            >
               <p>{description}</p>
             </GlassCard>
           ))}
-          <GlassCard className="support-card support-card--feature" index={5}>
-            <div className="icon-tile">
-              <Trophy size={22} />
-            </div>
-            <h3>Champion</h3>
+          <GlassCard
+            className="support-card support-card--feature"
+            index={5}
+            artwork="trophy"
+            artworkTitle={<h3>Champion</h3>}
+            header={
+              <div className="icon-tile">
+                <Trophy size={22} />
+              </div>
+            }
+          >
             <p>Teamwork and leadership, on and off the court.</p>
           </GlassCard>
         </div>

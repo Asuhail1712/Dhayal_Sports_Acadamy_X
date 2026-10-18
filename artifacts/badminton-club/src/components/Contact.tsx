@@ -3,7 +3,8 @@ import { MapPin, Phone, Mail, Send, MessageCircle } from "lucide-react";
 import { useSearch } from "wouter";
 import { enquiryInterests, whatsappUrl } from "@/lib/academy-content";
 import { buildEnquiryPayload } from "@/lib/enquiry";
-import { Reveal } from "@/components/Design";
+import { GlassCard, Reveal } from "@/components/Design";
+import { CardIllustration } from "@/components/CardArtwork";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -277,14 +278,24 @@ export function Contact({ detailed = false }: { detailed?: boolean }) {
               </div>
             </div>
           </Reveal>
-          <Reveal className="glass-panel p-6 sm:p-9" delay={0.1}>
-            <span className="pill pill--green">Your next step</span>
-            <h3 className="mt-5 text-[26px] font-semibold tracking-tight">
-              Send an enquiry.
-            </h3>
-            <p className="mt-2 text-sm font-medium leading-relaxed text-muted-foreground">
-              Tell us a little about you. We'll help you find your pathway.
-            </p>
+          <GlassCard
+            className="glass-panel p-6 sm:p-9"
+            index={1}
+            artwork="team"
+            artworkLayout="custom"
+          >
+            <div className="contact-enquiry-intro">
+              <div className="contact-enquiry-copy">
+                <span className="pill pill--green">Your next step</span>
+                <h3 className="text-[26px] font-semibold tracking-tight">
+                  Send an enquiry.
+                </h3>
+                <p className="text-sm font-medium leading-relaxed text-muted-foreground">
+                  Tell us a little about you. We'll help you find your pathway.
+                </p>
+              </div>
+              <CardIllustration motif="team" />
+            </div>
             <form key={search} onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -392,7 +403,7 @@ export function Contact({ detailed = false }: { detailed?: boolean }) {
                 )}
               </Button>
             </form>
-          </Reveal>
+          </GlassCard>
         </div>
       </div>
     </section>

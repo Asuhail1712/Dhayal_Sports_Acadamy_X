@@ -26,7 +26,12 @@ export function UniqueTraining({ detailed = false }: { detailed?: boolean }) {
           {trainingMethods.map((method, i) => {
             const Icon = icons[i];
             return (
-              <GlassCard key={method.title} index={i} className="copy-card">
+              <GlassCard
+                key={method.title}
+                index={i}
+                className="copy-card"
+                artwork={false}
+              >
                 <div className="icon-tile">
                   <Icon size={23} />
                 </div>

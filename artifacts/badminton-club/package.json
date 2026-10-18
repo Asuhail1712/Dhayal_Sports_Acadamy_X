@@ -9,7 +9,8 @@
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test:content": "node ../../scripts/test-website-copy.mjs",
-    "test:sharing": "node ../../scripts/test-sharing.mjs"
+    "test:sharing": "node ../../scripts/test-sharing.mjs",
+    "test:glass": "node ../../scripts/test-glass-css.mjs"
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.10.0",

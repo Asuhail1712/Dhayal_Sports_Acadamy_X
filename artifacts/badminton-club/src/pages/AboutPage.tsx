@@ -11,12 +11,10 @@ import {
 } from "@/lib/academy-content";
 
 export default function AboutPage() {
-  const mentors = academyCoaches
-    .slice(0, 2)
-    .map((coach, i) => ({
-      ...coach,
-      bio: i === 0 ? founderStory : mentorStory,
-    }));
+  const mentors = academyCoaches.slice(0, 2).map((coach, i) => ({
+    ...coach,
+    bio: i === 0 ? founderStory : mentorStory,
+  }));
   return (
     <PageShell>
       <About detailed />
@@ -32,8 +30,15 @@ export default function AboutPage() {
           />
           <div className="copy-grid">
             {story.learning.map((point, i) => (
-              <GlassCard className="copy-card" key={point.title} index={i}>
-                <h2 className="copy-card-title">{point.title}</h2>
+              <GlassCard
+                className="copy-card"
+                key={point.title}
+                index={i}
+                artwork={i === 0 ? "education" : "progress"}
+                artworkTitle={
+                  <h2 className="copy-card-title">{point.title}</h2>
+                }
+              >
                 <p>{point.body}</p>
               </GlassCard>
             ))}

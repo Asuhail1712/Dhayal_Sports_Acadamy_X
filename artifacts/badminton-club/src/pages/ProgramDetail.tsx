@@ -61,11 +61,18 @@ export default function ProgramDetail({ slug }: { slug: string }) {
             />
           </Reveal>
           <div className="copy-grid mt-10">
-            <GlassCard className="copy-card">
-              <div className="icon-tile">
-                <Clock3 size={22} />
-              </div>
-              <h2 className="copy-card-title">Plan your training</h2>
+            <GlassCard
+              className="copy-card"
+              artwork="progress"
+              artworkTitle={
+                <h2 className="copy-card-title">Plan your training</h2>
+              }
+              header={
+                <div className="icon-tile">
+                  <Clock3 size={22} />
+                </div>
+              }
+            >
               <p>Fees and batch timings available on request via WhatsApp.</p>
               <TextLink
                 href={whatsappUrl(
@@ -77,11 +84,19 @@ export default function ProgramDetail({ slug }: { slug: string }) {
                 Ask about {program.name}
               </TextLink>
             </GlassCard>
-            <GlassCard className="copy-card" index={1}>
-              <div className="icon-tile">
-                <Waves size={22} />
-              </div>
-              <h2 className="copy-card-title">Training built different.</h2>
+            <GlassCard
+              className="copy-card"
+              index={1}
+              artwork="racket"
+              artworkTitle={
+                <h2 className="copy-card-title">Training built different.</h2>
+              }
+              header={
+                <div className="icon-tile">
+                  <Waves size={22} />
+                </div>
+              }
+            >
               <p>
                 Explore Badminton Yoga, Robo Training, Functional Training and
                 Coordination Training.

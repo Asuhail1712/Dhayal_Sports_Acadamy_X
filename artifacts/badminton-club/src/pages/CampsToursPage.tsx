@@ -34,11 +34,18 @@ export default function CampsToursPage() {
           </h2>
           <div className="copy-grid">
             {campOptions.map((camp, i) => (
-              <GlassCard key={camp.title} className="copy-card" index={i}>
-                <span className="pill pill--green">
-                  {i === 0 ? "6 to 8 hours a day" : "Explore and enjoy"}
-                </span>
-                <h3 className="copy-card-title">{camp.title}</h3>
+              <GlassCard
+                key={camp.title}
+                className="copy-card"
+                index={i}
+                artwork={i === 0 ? "trophy" : "racket"}
+                header={
+                  <span className="pill pill--green">
+                    {i === 0 ? "6 to 8 hours a day" : "Explore and enjoy"}
+                  </span>
+                }
+                artworkTitle={<h3 className="copy-card-title">{camp.title}</h3>}
+              >
                 <p>{camp.body}</p>
                 <TextLink
                   href={whatsappUrl(
@@ -67,12 +74,21 @@ export default function CampsToursPage() {
             action={<Plane size={44} className="text-secondary" />}
           />
           <div className="copy-grid">
-            <GlassCard className="copy-card">
-              <h2 className="copy-card-title">How it works</h2>
+            <GlassCard
+              className="copy-card"
+              artwork="plane"
+              artworkTitle={<h2 className="copy-card-title">How it works</h2>}
+            >
               <p>{schoolTour.process}</p>
             </GlassCard>
-            <GlassCard className="copy-card" index={1}>
-              <h2 className="copy-card-title">What's included</h2>
+            <GlassCard
+              className="copy-card"
+              index={1}
+              artwork="globe"
+              artworkTitle={
+                <h2 className="copy-card-title">What's included</h2>
+              }
+            >
               <p>{schoolTour.included}</p>
             </GlassCard>
           </div>

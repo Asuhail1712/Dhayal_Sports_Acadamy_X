@@ -12,9 +12,14 @@ export function CoachCollection({
   return (
     <div className="coach-grid">
       {coaches.map((coach, i) => (
-        <GlassCard key={coach.id} className="coach-card" index={i}>
+        <GlassCard
+          key={coach.id}
+          className="coach-card"
+          index={i}
+          artwork={false}
+        >
           <div className="coach-monogram" aria-hidden="true">
-            <span>
+            <span className="coach-initials">
               {coach.name
                 .replace(/^(Bishmachari |Dr\. |Mrs\. |Mr\. )+/g, "")
                 .split(" ")
@@ -22,8 +27,6 @@ export function CoachCollection({
                 .map((part) => part[0])
                 .join("")}
             </span>
-            <div className="coach-orbit" />
-            <div className="coach-orbit coach-orbit--second" />
             <div className="pill">
               {i < 2 ? "World champion mentorship" : "Athlete development"}
             </div>

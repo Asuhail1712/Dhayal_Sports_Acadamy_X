@@ -1,6 +1,8 @@
 import { ArrowRight, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlassCard, Reveal, SectionIntro, SiteLink } from "@/components/Design";
+import type { CardMotif } from "@/components/CardArtwork";
+const artwork: CardMotif[] = ["trophy", "plane", "globe"];
 
 const camps = [
   [
@@ -37,9 +39,14 @@ export function Camps() {
         />
         <div className="camp-grid">
           {camps.map(([title, description], i) => (
-            <GlassCard key={title} className="camp-card" index={i}>
-              <span>0{i + 1}</span>
-              <h3>{title}</h3>
+            <GlassCard
+              key={title}
+              className="camp-card"
+              index={i}
+              artwork={artwork[i]}
+              header={<span className="camp-index">0{i + 1}</span>}
+              artworkTitle={<h3>{title}</h3>}
+            >
               <p>{description}</p>
             </GlassCard>
           ))}

@@ -76,7 +76,11 @@ export function ProgramCollection({
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.4, ease }}
             >
-              <GlassCard className="program-card h-full" index={index}>
+              <GlassCard
+                className="program-card h-full"
+                index={index}
+                artwork={false}
+              >
                 <SiteLink
                   href={"/programs/" + program.slug}
                   className="program-card-image"

@@ -1,14 +1,22 @@
-import { Reveal, SectionIntro, SiteLink, TextLink } from "@/components/Design";
+import {
+  GlassCard,
+  SectionIntro,
+  SiteLink,
+  TextLink,
+} from "@/components/Design";
 import { blogPosts, type BlogPost } from "@/lib/content";
+import { CardVisual } from "@/components/CardArtwork";
 
 export function JournalCards({ posts }: { posts: BlogPost[] }) {
   return (
     <div className="journal-grid">
       {posts.map((post, i) => (
-        <Reveal
+        <GlassCard
           key={post.slug}
           className="journal-card"
-          delay={Math.min(i * 0.07, 0.2)}
+          index={i}
+          artwork={post.category === "Athlete Care" ? "heart" : "education"}
+          artworkLayout="custom"
         >
           <SiteLink
             href={"/blogs/" + post.slug}
@@ -22,17 +30,26 @@ export function JournalCards({ posts }: { posts: BlogPost[] }) {
             />
             <span className="pill">{post.category}</span>
           </SiteLink>
-          <div className="journal-card-meta">
-            <span>{post.publishedAt}</span>
-            <span>/</span>
-            <span>{post.readTime}</span>
+          <div className="journal-card-body">
+            <CardVisual
+              motif={post.category === "Athlete Care" ? "heart" : "education"}
+              header={
+                <div className="journal-card-meta">
+                  <span>{post.publishedAt}</span>
+                  <span>/</span>
+                  <span>{post.readTime}</span>
+                </div>
+              }
+              title={
+                <h3>
+                  <SiteLink href={"/blogs/" + post.slug}>{post.title}</SiteLink>
+                </h3>
+              }
+            />
+            <p>{post.excerpt}</p>
+            <TextLink href={"/blogs/" + post.slug}>Read the story</TextLink>
           </div>
-          <h3>
-            <SiteLink href={"/blogs/" + post.slug}>{post.title}</SiteLink>
-          </h3>
-          <p>{post.excerpt}</p>
-          <TextLink href={"/blogs/" + post.slug}>Read the story</TextLink>
-        </Reveal>
+        </GlassCard>
       ))}
     </div>
   );

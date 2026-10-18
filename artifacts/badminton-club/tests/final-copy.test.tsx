@@ -27,6 +27,13 @@ import {
 import { getProgramBySlug } from "../src/lib/content";
 import { buildEnquiryPayload } from "../src/lib/enquiry";
 import { Testimonials } from "../src/components/Testimonials";
+import { GlassCard } from "../src/components/Design";
+import { cardMotifs } from "../src/components/CardArtwork";
+import { JournalCards } from "../src/components/BlogSection";
+import { ProgramCollection } from "../src/components/ProgramCollection";
+import { CoachCollection } from "../src/components/CoachCollection";
+import { UniqueTraining } from "../src/components/UniqueTraining";
+import { blogPosts } from "../src/lib/content";
 import {
   campOptions,
   schoolTour,
@@ -157,6 +164,27 @@ test("contact includes all fields, seven interests and contextual preselection",
   assert.ok(html.includes('<option value="ProShop" selected="">'));
 });
 
+test("enquiry intro groups the badge, heading and description without a tall editorial gap", () => {
+  const html = render(<ContactPage />, "/contact");
+  const intro = html.slice(
+    html.indexOf('class="contact-enquiry-intro"'),
+    html.indexOf("<form"),
+  );
+  assert.ok(intro.includes('class="contact-enquiry-copy"'));
+  assert.ok(intro.includes("Your next step"));
+  assert.ok(intro.includes("Send an enquiry."));
+  assert.ok(intro.includes("Tell us a little about you."));
+  assert.ok(intro.includes('class="card-illustration"'));
+  assert.ok(!intro.includes("card-visual-row"));
+  assert.ok(
+    intro.indexOf("Your next step") < intro.indexOf("Send an enquiry."),
+  );
+  assert.ok(
+    intro.indexOf("Send an enquiry.") <
+      intro.indexOf("Tell us a little about you."),
+  );
+});
+
 test("camps, tours, network, ProShop and coach education include all supplied detail copy", () => {
   const camps = text(render(<CampsToursPage />, "/camps-tours"));
   for (const camp of campOptions) assert.ok(camps.includes(camp.body));
@@ -186,6 +214,165 @@ test("camps, tours, network, ProShop and coach education include all supplied de
 test("testimonials stay hidden until genuine approved content is supplied", () => {
   assert.equal(render(<Testimonials />, "/"), "");
   assert.ok(!text(render(<Home />, "/")).includes("What our players say."));
+});
+
+test("all sixteen card motifs render decorative artwork without changing links or content", () => {
+  assert.equal(cardMotifs.length, 16);
+  for (const motif of cardMotifs) {
+    const html = render(
+      <GlassCard
+        artwork={motif}
+        index={1}
+        artworkTitle={<h3>Existing card content</h3>}
+      >
+        <p>Existing description</p>
+        <a href="/contact">Enquire</a>
+      </GlassCard>,
+      "/",
+    );
+    assert.ok(html.includes('data-card-motif="' + motif + '"'));
+    assert.ok(html.includes('data-card-tone="green"'));
+    assert.ok(html.includes('class="card-decoration" aria-hidden="true"'));
+    assert.ok(html.includes('focusable="false"'));
+    assert.ok(html.includes('<a href="/contact">Enquire</a>'));
+    assert.ok(!html.includes("tabindex"));
+    assert.ok(html.includes('data-artwork-layout="header"'));
+    assert.ok(html.includes('class="card-visual-row" data-has-title="true"'));
+    assert.ok(
+      html.includes('class="card-visual-title"><h3>Existing card content</h3>'),
+    );
+    assert.ok(html.includes('class="card-art-stage" aria-hidden="true"'));
+    const background = html.slice(
+      html.indexOf('class="card-decoration"'),
+      html.indexOf('class="card-visual-row"'),
+    );
+    assert.ok(!background.includes('class="card-illustration"'));
+    assert.ok(
+      html.indexOf("<h3>Existing card content") <
+        html.indexOf('class="card-illustration"'),
+    );
+    assert.ok(
+      html.indexOf('class="card-illustration"') <
+        html.indexOf("<p>Existing description</p>"),
+    );
+  }
+});
+
+test("small photo badges can opt out without losing their content", () => {
+  const html = render(
+    <GlassCard artwork={false}>Existing badge</GlassCard>,
+    "/",
+  );
+  assert.ok(html.includes("Existing badge"));
+  assert.ok(!html.includes("card-decoration"));
+  assert.ok(!html.includes("data-card-motif"));
+  assert.ok(!html.includes("card-illustration"));
+  assert.ok(!html.includes("card-visual-row"));
+});
+
+test("every decorated card has one illustration outside its background layer with a separate title column", () => {
+  for (const [path, component] of pages) {
+    const html = render(component, path);
+    assert.equal(
+      (html.match(/class="card-illustration"/g) || []).length,
+      (html.match(/data-card-motif=/g) || []).length,
+      path,
+    );
+    assert.equal(
+      (html.match(/class="card-visual-row"/g) || []).length,
+      (html.match(/data-has-title="true"/g) || []).length,
+      path + " headings must share the editorial composition",
+    );
+    for (const [, background] of html.matchAll(
+      /class="card-decoration"[^>]*>([\s\S]*?)<\/svg><\/div>/g,
+    )) {
+      assert.ok(!background.includes("card-illustration"), path);
+    }
+  }
+});
+
+test("journal cards use a padded editorial composition and coach cards keep their artwork exclusion", () => {
+  const html = render(<Home />, "/");
+  const journal = render(<JournalCards posts={blogPosts} />, "/blogs");
+  assert.equal(
+    (journal.match(/class="card-visual-row" data-has-title="true"/g) || [])
+      .length,
+    blogPosts.length,
+  );
+  assert.equal(
+    (journal.match(/class="journal-card-body"/g) || []).length,
+    blogPosts.length,
+  );
+  assert.equal(
+    (journal.match(/class="card-illustration"/g) || []).length,
+    blogPosts.length,
+  );
+  assert.equal((html.match(/class="coach-initials"/g) || []).length, 6);
+  for (const [, header] of html.matchAll(
+    /class="coach-monogram"[^>]*>([\s\S]*?)<div class="coach-info"/g,
+  )) {
+    assert.ok(header.includes('class="coach-initials"'));
+    assert.ok(!header.includes('class="card-illustration"'));
+    assert.ok(header.includes('class="pill"'));
+  }
+  assert.ok(!html.includes("coach-orbit"));
+});
+
+test("program, coach and Unique Training cards omit artwork while preserving their original visuals", () => {
+  for (const preview of [false, true]) {
+    const programs = render(
+      <ProgramCollection programs={academyPrograms} preview={preview} />,
+      "/programs",
+    );
+    const coaches = render(
+      <CoachCollection coaches={academyCoaches} preview={preview} />,
+      "/coaches",
+    );
+    const training = render(
+      <UniqueTraining detailed={!preview} />,
+      "/programs",
+    );
+    for (const html of [programs, coaches, training]) {
+      assert.ok(!html.includes("card-illustration"));
+      assert.ok(!html.includes("card-decoration"));
+      assert.ok(!html.includes("card-visual-row"));
+      assert.ok(!html.includes("card-heading-row"));
+      assert.ok(!html.includes("data-card-motif"));
+    }
+    assert.ok(programs.includes('class="program-card-image"'));
+    assert.ok(coaches.includes('class="coach-initials"'));
+    assert.equal(
+      (training.match(/class="icon-tile"/g) || []).length,
+      trainingMethods.length,
+    );
+  }
+});
+
+test("home statistics use the four requested trophy, medal, globe and location artworks", () => {
+  const html = render(<Home />, "/");
+  for (const motif of ["trophy", "medal", "globe", "pins"]) {
+    assert.match(
+      html,
+      new RegExp(
+        'class="premium-card metric-card"[^>]+data-card-motif="' + motif + '"',
+      ),
+    );
+  }
+  assert.equal(
+    (html.match(/class="premium-card metric-card"/g) || []).length,
+    4,
+  );
+  for (const [, card] of html.matchAll(
+    /<article class="premium-card metric-card"[^>]*>([\s\S]*?)<\/article>/g,
+  )) {
+    assert.ok(card.includes('class="card-visual-title"><strong>'));
+    assert.ok(card.includes('class="card-art-stage"'));
+    assert.ok(
+      card.indexOf('class="card-visual-title"') <
+        card.indexOf('class="card-art-stage"'),
+    );
+    assert.ok(card.indexOf('class="card-art-stage"') < card.indexOf("<p>"));
+  }
 });
 
 test("WhatsApp links use the existing contact and encode special characters safely", () => {

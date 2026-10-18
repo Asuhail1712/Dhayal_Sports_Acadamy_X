@@ -33,6 +33,7 @@ export function Testimonials({
             <GlassCard
               key={item.name + item.program}
               className="copy-card"
+              artwork="team"
               index={index}
             >
               <blockquote className="text-lg font-semibold leading-relaxed">
