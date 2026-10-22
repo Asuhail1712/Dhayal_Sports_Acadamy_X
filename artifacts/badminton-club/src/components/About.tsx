@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef } from "react";
 import { ArrowUpRight, Award, Medal, Globe2, MapPin } from "lucide-react";
 import type { CardMotif } from "@/components/CardArtwork";
 import { CountUp, GlassCard, Reveal, SiteLink } from "@/components/Design";
+import { PhotoCollection } from "@/components/PhotoCollection";
+import { aboutPhotos } from "@/lib/academy-media";
 
 import { academyStats as stats, story } from "@/lib/academy-content";
 const metricArtwork: CardMotif[] = ["trophy", "medal", "globe", "pins"];
@@ -44,10 +46,10 @@ export function About({ detailed = false }: { detailed?: boolean }) {
         <div className="about-layout" ref={layoutRef}>
           <div className="about-photo" ref={photoRef}>
             <Reveal className="about-photo-frame">
-              <img
-                src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1000&q=85"
-                alt="Badminton players training on court"
-                loading="lazy"
+              <PhotoCollection
+                photos={aboutPhotos}
+                label="About Dayal Sports Academy"
+                sizes="(max-width: 1023px) calc(100vw - 40px), 44vw"
               />
               <GlassCard className="about-photo-tag" tilt={8} artwork={false}>
                 <strong>5</strong>

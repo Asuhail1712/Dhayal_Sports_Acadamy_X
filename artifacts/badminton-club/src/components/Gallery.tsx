@@ -9,52 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SectionIntro, TextLink, ease } from "@/components/Design";
-
-const photos = [
-  {
-    id: "team",
-    title: "A shared ambition",
-    category: "Training",
-    src: import.meta.env.BASE_URL + "images/hero.jpeg",
-    alt: "The Dayal Academy badminton team",
-  },
-  {
-    id: "rally",
-    title: "Every rally. Every day.",
-    category: "Training",
-    src: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1400&q=85",
-    alt: "Badminton players during a match",
-  },
-  {
-    id: "movement",
-    title: "Built for movement",
-    category: "Training",
-    src: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=1000&q=85",
-    alt: "Athletic conditioning and performance training",
-  },
-  {
-    id: "court",
-    title: "Where progress happens",
-    category: "Training",
-    src: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=1400&q=85",
-    alt: "A badminton court and sports facilities",
-  },
-  {
-    id: "training",
-    title: "The work behind the game",
-    category: "Training",
-    src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1000&q=85",
-    alt: "Strength and conditioning training",
-  },
-];
-const categories = [
-  "All",
-  "Training",
-  "Camps",
-  "Tournaments",
-  "Yoga",
-  "ProShop",
-];
+import { filterGalleryPhotos, galleryCategories } from "@/lib/academy-media";
+import { PhotoFrame } from "@/components/PhotoFrame";
 
 export function Gallery({ preview = false }: { preview?: boolean }) {
   const [category, setCategory] = useState("All");
@@ -65,9 +21,7 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
   }, [location]);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const reduced = useReducedMotion();
-  const visible = photos.filter(
-    (photo) => category === "All" || photo.category === category,
-  );
+  const visible = filterGalleryPhotos(category, preview);
   const index = visible.findIndex((photo) => photo.id === selected);
   const photo = index >= 0 ? visible[index] : null;
   const step = (direction: number) =>
@@ -100,10 +54,13 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
             role="group"
             aria-label="Filter gallery"
           >
-            {categories.map((item) => (
+            {galleryCategories.map((item) => (
               <button
                 key={item}
-                onClick={() => setCategory(item)}
+                onClick={() => {
+                  setCategory(item);
+                  setSelected(null);
+                }}
                 aria-pressed={category === item}
               >
                 {item}
@@ -136,7 +93,10 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
                 }}
                 aria-label={"Open image: " + item.title}
               >
-                <img src={item.src} alt={item.alt} loading="lazy" />
+                <PhotoFrame
+                  photo={item}
+                  sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 767px) 48vw, 48vw"
+                />
                 <div className="gallery-caption">
                   <div>
                     <small>{item.category}</small>
@@ -149,7 +109,7 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
           </AnimatePresence>
         </motion.div>
         <p className="gallery-media-note">
-          Training collection includes illustrative photography.
+          Photographs from the Dayal Sports Academy collection.
         </p>
         <Dialog
           open={photo !== null}
@@ -189,6 +149,7 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
                     className="gallery-modal-image"
                     src={photo.src}
                     alt={photo.alt}
+                    style={{ objectPosition: photo.position }}
                     initial={reduced ? false : { opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}

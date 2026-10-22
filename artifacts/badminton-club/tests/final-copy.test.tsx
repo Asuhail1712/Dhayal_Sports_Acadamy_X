@@ -33,6 +33,25 @@ import { JournalCards } from "../src/components/BlogSection";
 import { ProgramCollection } from "../src/components/ProgramCollection";
 import { CoachCollection } from "../src/components/CoachCollection";
 import { UniqueTraining } from "../src/components/UniqueTraining";
+import { Gallery } from "../src/components/Gallery";
+import { PhotoCollection } from "../src/components/PhotoCollection";
+import { PhotoFrame } from "../src/components/PhotoFrame";
+import { SupportTeam } from "../src/components/SupportTeam";
+import { getStackScrollTarget } from "../src/lib/scroll-story";
+import { getCardPointer } from "../src/lib/card-pointer";
+import {
+  PHOTO_ADVANCE_MS,
+  schedulePhotoAdvance,
+} from "../src/lib/photo-playback";
+import {
+  aboutPhotos,
+  programPhotos,
+  trainingPhotos,
+  supportPhotos,
+  galleryPhotos,
+  filterGalleryPhotos,
+  getProgramPhoto,
+} from "../src/lib/academy-media";
 import { blogPosts } from "../src/lib/content";
 import {
   campOptions,
@@ -270,11 +289,12 @@ test("small photo badges can opt out without losing their content", () => {
   assert.ok(!html.includes("card-visual-row"));
 });
 
-test("every decorated card has one illustration outside its background layer with a separate title column", () => {
+test("every decorated card has one illustration or supplied portrait outside its background layer", () => {
   for (const [path, component] of pages) {
     const html = render(component, path);
     assert.equal(
-      (html.match(/class="card-illustration"/g) || []).length,
+      (html.match(/class="card-illustration"/g) || []).length +
+        (html.match(/class="card-portrait"/g) || []).length,
       (html.match(/data-card-motif=/g) || []).length,
       path,
     );
@@ -289,6 +309,470 @@ test("every decorated card has one illustration outside its background layer wit
       assert.ok(!background.includes("card-illustration"), path);
     }
   }
+});
+
+test("all 35 active academy photos are assigned only to their matching content groups", () => {
+  const photos = [
+    ...aboutPhotos,
+    ...Object.values(programPhotos).filter((photo) => photo !== undefined),
+    ...Object.values(trainingPhotos),
+    ...Object.values(supportPhotos),
+    ...galleryPhotos,
+  ];
+  assert.equal(photos.length, 35);
+  assert.equal(new Set(photos.map((photo) => photo.id)).size, 35);
+  assert.deepEqual(aboutPhotos.length, 3);
+  assert.equal(Object.keys(programPhotos).length, 6);
+  assert.equal(Object.keys(trainingPhotos).length, 4);
+  assert.equal(Object.keys(supportPhotos).length, 5);
+  for (const photo of photos) {
+    assert.ok(photo.src.startsWith("/images/academy/"));
+    assert.ok(photo.alt.length > 15);
+    assert.ok(photo.srcSet.includes("-small.webp"));
+    assert.ok(photo.width > 0 && photo.height > 0);
+    const image = readFileSync("artifacts/badminton-club/public" + photo.src);
+    assert.equal(image.toString("ascii", 0, 4), "RIFF");
+    assert.equal(image.toString("ascii", 8, 12), "WEBP");
+    assert.ok(
+      readFileSync(
+        "artifacts/badminton-club/public/images/academy/" +
+          photo.id +
+          "-small.webp",
+      ).length > 0,
+    );
+  }
+});
+
+test("six named program photos appear on cards and detail pages while other programs retain stock imagery", () => {
+  const programs = render(<Programs />, "/programs");
+  for (const program of academyPrograms) {
+    const photo = getProgramPhoto(program.slug);
+    const detail = getProgramBySlug(program.slug)!;
+    if (photo) {
+      assert.equal(detail.heroImage, photo.src);
+      assert.ok(programs.includes(photo.src));
+      assert.ok(
+        render(
+          <ProgramDetail slug={program.slug} />,
+          "/programs/" + program.slug,
+        ).includes(photo.src),
+      );
+    } else {
+      assert.ok(detail.heroImage.startsWith("https://images.unsplash.com/"));
+      assert.equal(detail.heroPhoto, undefined);
+    }
+  }
+});
+
+test("About retains its first photo and carousel controls with the two replacements in filename order", () => {
+  const about = render(
+    <PhotoCollection photos={aboutPhotos} label="About Dayal Sports Academy" />,
+    "/",
+  );
+  assert.ok(
+    about.includes('aria-label="Next About Dayal Sports Academy photo"'),
+  );
+  assert.ok(about.includes("1 / 3"));
+  assert.equal(aboutPhotos[0].id, "about-racket");
+  assert.equal(aboutPhotos[1].id, "about-newspaper-update");
+  assert.equal(aboutPhotos[2].id, "about-medal-update");
+  assert.ok(about.includes(aboutPhotos[0].src));
+  assert.ok(
+    about.includes('aria-label="Pause About Dayal Sports Academy slideshow"'),
+  );
+  assert.equal(
+    (about.match(/class="academy-photo-controls"/g) || []).length,
+    1,
+  );
+  const component = readFileSync(
+    "artifacts/badminton-club/src/components/PhotoCollection.tsx",
+    "utf8",
+  );
+  assert.ok(!component.includes("setInterval"));
+  assert.ok(component.includes("useInView(ref, { amount: 0.35 })"));
+  assert.ok(
+    component.includes(
+      "autoEnabled && visible && pageVisible && !hovered && !focused",
+    ),
+  );
+  assert.ok(component.includes("visibilitychange"));
+  assert.ok(component.includes("paused === null && !reduced"));
+  const single = render(
+    <PhotoCollection photos={aboutPhotos.slice(0, 1)} label="Single" />,
+    "/",
+  );
+  assert.ok(!single.includes("academy-photo-controls"));
+});
+
+test("Unique Training uses one static, uncropped replacement per card on home and Programs", () => {
+  for (const detailed of [false, true]) {
+    const training = render(
+      <UniqueTraining detailed={detailed} />,
+      detailed ? "/programs" : "/",
+    );
+    assert.equal(
+      (training.match(/class="training-card-photo"/g) || []).length,
+      4,
+    );
+    assert.equal((training.match(/<img\b/g) || []).length, 4);
+    assert.ok(!training.includes("academy-photo-controls"));
+    assert.ok(!training.includes("academy-photo-collection"));
+    assert.ok(!training.includes("carousel"));
+    for (const method of trainingMethods) {
+      const photo = trainingPhotos[method.title];
+      assert.ok(training.includes(photo.src));
+      assert.ok(
+        training.includes(`aspect-ratio:${photo.width} / ${photo.height}`),
+      );
+      assert.equal(
+        (training.match(new RegExp(`data-photo-id="${photo.id}"`, "g")) || [])
+          .length,
+        1,
+      );
+    }
+  }
+});
+
+test("all eleven renamed New Update files are exported and mapped to their requested placements", () => {
+  const updates = JSON.parse(
+    readFileSync(
+      "artifacts/badminton-club/assets/academy-photo-updates.json",
+      "utf8",
+    ),
+  );
+  const sources: Record<string, string> = {
+    [trainingPhotos["Badminton Yoga"].id]: "Yoga.png",
+    [trainingPhotos["Robo Training"].id]: "Robo.png",
+    [trainingPhotos["Functional Training"].id]: "Functional.png",
+    [trainingPhotos["Coordination Training"].id]: "Coordination.png",
+    [aboutPhotos[1].id]: "About 2png.png",
+    [aboutPhotos[2].id]: "About 3.png",
+  };
+  Object.values(supportPhotos).forEach((photo, index) => {
+    sources[photo.id] = `Discipline${index + 1}.png`;
+  });
+  assert.equal(Object.keys(updates).length, 11);
+  assert.equal(Object.keys(sources).length, 11);
+  for (const [id, filename] of Object.entries(sources)) {
+    const info = updates[id];
+    assert.equal(info.source, `New Update/${filename}`);
+    assert.match(info.sourceSha256, /^[a-f0-9]{64}$/);
+    for (const [suffix, bytes] of [
+      ["", info.bytes],
+      ["-small", info.smallBytes],
+    ] as const) {
+      assert.equal(
+        readFileSync(
+          `artifacts/badminton-club/public/images/academy/${id}${suffix}.webp`,
+        ).length,
+        bytes,
+      );
+    }
+    assert.ok(info.smallWidth <= 640);
+  }
+  const originals = JSON.parse(
+    readFileSync("artifacts/badminton-club/assets/academy-photos.json", "utf8"),
+  );
+  assert.equal(Object.keys(originals).length, 45);
+  for (const [id, info] of Object.entries(originals) as [
+    string,
+    { bytes: number; smallBytes: number },
+  ][]) {
+    assert.equal(
+      readFileSync(`artifacts/badminton-club/public/images/academy/${id}.webp`)
+        .length,
+      info.bytes,
+    );
+    assert.equal(
+      readFileSync(
+        `artifacts/badminton-club/public/images/academy/${id}-small.webp`,
+      ).length,
+      info.smallBytes,
+    );
+  }
+});
+
+test("visible photo collections advance only after three seconds and cancel pending playback", (context) => {
+  context.mock.timers.enable({ apis: ["setTimeout"] });
+  assert.equal(PHOTO_ADVANCE_MS, 3000);
+  let advances = 0;
+  schedulePhotoAdvance(true, 3, () => advances++);
+  context.mock.timers.tick(2000);
+  assert.equal(advances, 0, "must not advance after only two seconds");
+  context.mock.timers.tick(999);
+  assert.equal(advances, 0);
+  context.mock.timers.tick(1);
+  assert.equal(advances, 1);
+  const cancel = schedulePhotoAdvance(true, 3, () => advances++);
+  context.mock.timers.tick(1500);
+  cancel?.();
+  schedulePhotoAdvance(false, 3, () => advances++);
+  schedulePhotoAdvance(true, 1, () => advances++);
+  schedulePhotoAdvance(true, 0, () => advances++);
+  context.mock.timers.tick(10000);
+  assert.equal(advances, 1);
+  schedulePhotoAdvance(true, 3, () => advances++);
+  context.mock.timers.tick(2999);
+  assert.equal(advances, 1);
+  context.mock.timers.tick(1);
+  assert.equal(advances, 2);
+});
+
+test("Inside Dayal displays all 17 supplied images, a five-photo preview and working category data", () => {
+  const full = render(<Gallery />, "/gallery");
+  const preview = render(<Gallery preview />, "/");
+  assert.equal(galleryPhotos.length, 17);
+  assert.equal((full.match(/class="gallery-tile"/g) || []).length, 17);
+  assert.equal((preview.match(/class="gallery-tile"/g) || []).length, 5);
+  assert.ok(!full.includes("images.unsplash.com"));
+  assert.ok(!full.includes("illustrative photography"));
+  for (const category of ["Training", "Camps", "Tournaments", "Yoga"]) {
+    const photos = filterGalleryPhotos(category);
+    assert.ok(photos.length > 0);
+    assert.ok(photos.every((photo) => photo.category === category));
+  }
+  assert.deepEqual(filterGalleryPhotos("ProShop"), []);
+});
+
+test("five full support cards keep their own image and content without changing hero or blog images", () => {
+  const home = render(<Home />, "/");
+  assert.equal((home.match(/class="support-stack-card"/g) || []).length, 5);
+  assert.equal((home.match(/class="support-card-copy"/g) || []).length, 5);
+  for (const photo of Object.values(supportPhotos))
+    assert.ok(home.includes(`data-support-photo="${photo.id}"`));
+  const support = render(<SupportTeam />, "/");
+  assert.equal((support.match(/role="listitem"/g) || []).length, 5);
+  assert.ok(support.includes('class="support-stack" role="list"'));
+  assert.ok(!support.includes("data-active="));
+  assert.ok(!support.includes('class="support-grid"'));
+  assert.ok(!support.includes('class="support-scroll"'));
+  for (const title of Object.keys(supportPhotos))
+    assert.ok(support.includes(`aria-label="Show ${title}"`));
+  assert.ok(support.includes("Teamwork and leadership, on and off the court."));
+  assert.ok(home.includes('src="/images/hero.jpeg"'));
+  for (const post of blogPosts)
+    assert.ok(post.image.startsWith("https://images.unsplash.com/"));
+});
+
+test("support cards reuse the ProShop gradient and bottom swoosh without adding illustrations", () => {
+  const support = render(<SupportTeam />, "/");
+  const cards = [
+    ...support.matchAll(
+      /<article[^>]*class="support-stack-card"[^>]*>([\s\S]*?)<\/article>/g,
+    ),
+  ];
+  assert.equal(cards.length, 5);
+  assert.ok(!support.includes('class="card-illustration"'));
+  for (const [, content] of cards) {
+    assert.equal((content.match(/class="card-decoration"/g) || []).length, 1);
+    assert.equal((content.match(/class="card-swoosh"/g) || []).length, 1);
+    assert.ok(content.includes('class="card-decoration" aria-hidden="true"'));
+    const decoration = content.indexOf('class="card-decoration"');
+    const light = content.indexOf('class="support-pointer-light"');
+    const photo = content.indexOf('class="support-card-visual"');
+    const copy = content.indexOf('class="support-card-copy"');
+    assert.ok(decoration < light && light < photo && photo < copy);
+  }
+});
+
+test("support cards remain readable in DOM order and use native scrolling without switch thresholds", () => {
+  const support = render(<SupportTeam />, "/");
+  const cards = [
+    ...support.matchAll(
+      /<article[^>]*class="support-stack-card"[^>]*>([\s\S]*?)<\/article>/g,
+    ),
+  ];
+  assert.equal(cards.length, 5);
+  Object.entries(supportPhotos).forEach(([title, photo], index) => {
+    const [markup, content] = cards[index];
+    assert.ok(content.includes(title));
+    assert.ok(content.includes(photo.src));
+    assert.ok(markup.includes(`style="z-index:${index + 1}"`));
+    const opening = markup.slice(0, markup.indexOf(">") + 1);
+    assert.ok(!opening.includes("aria-hidden"));
+    assert.ok(!content.includes('class="support-card-copy" aria-hidden='));
+    assert.ok(!markup.includes("data-active="));
+  });
+  const component = readFileSync(
+    "artifacts/badminton-club/src/components/SupportTeam.tsx",
+    "utf8",
+  );
+  assert.ok(!component.includes("addEventListener"));
+  assert.ok(!component.includes("requestAnimationFrame"));
+  assert.ok(!component.includes("setActive"));
+  assert.ok(!component.includes("preventDefault"));
+  assert.ok(!component.includes("scrollTop"));
+});
+
+test("support jump controls target real card positions, including backward navigation and resized cards", () => {
+  const geometry = {
+    stackTop: 1800,
+    pageY: 2000,
+    stickyTop: 124,
+    heights: [480, 480, 480, 480, 480],
+    gap: 32,
+  };
+  for (let index = 0; index < 5; index++) {
+    assert.equal(
+      getStackScrollTarget({ ...geometry, index }),
+      3676 + index * 512,
+    );
+  }
+  assert.equal(
+    getStackScrollTarget({
+      ...geometry,
+      stackTop: -200,
+      pageY: 4000,
+      index: 0,
+    }),
+    3676,
+  );
+  assert.equal(
+    getStackScrollTarget({
+      ...geometry,
+      heights: [430, 460, 520],
+      gap: 24,
+      index: 2,
+    }),
+    4614,
+  );
+  assert.equal(getStackScrollTarget({ ...geometry, index: -5 }), 3676);
+  assert.equal(getStackScrollTarget({ ...geometry, index: 9 }), 5724);
+  assert.equal(getStackScrollTarget({ ...geometry, heights: [], index: 0 }), 0);
+  assert.equal(
+    getStackScrollTarget({ ...geometry, stackTop: -9000, index: 0 }),
+    0,
+  );
+});
+
+test("large glass cards use subtle continuous pointer tilt with bounded highlights", () => {
+  const rect = { left: 100, top: 50, width: 1000, height: 500 };
+  assert.deepEqual(getCardPointer(rect, 600, 300), {
+    rotateX: 0,
+    rotateY: 0,
+    lightX: 50,
+    lightY: 50,
+  });
+  assert.deepEqual(getCardPointer(rect, 100, 50), {
+    rotateX: 1.5,
+    rotateY: -1.5,
+    lightX: 0,
+    lightY: 0,
+  });
+  assert.deepEqual(getCardPointer(rect, 1100, 550), {
+    rotateX: -1.5,
+    rotateY: 1.5,
+    lightX: 100,
+    lightY: 100,
+  });
+  assert.deepEqual(
+    getCardPointer(rect, -100, -100),
+    getCardPointer(rect, 100, 50),
+  );
+  assert.deepEqual(
+    getCardPointer(rect, 9999, 9999),
+    getCardPointer(rect, 1100, 550),
+  );
+  assert.deepEqual(getCardPointer({ ...rect, width: 0, height: 0 }, 100, 50), {
+    rotateX: 0,
+    rotateY: 0,
+    lightX: 50,
+    lightY: 50,
+  });
+  assert.ok(
+    Math.abs(getCardPointer(rect, 601, 300).rotateY - 0.003) < 0.000001,
+  );
+});
+
+test("support pointer effects live inside stable sticky wrappers and respect touch and reduced motion", () => {
+  const support = render(<SupportTeam />, "/");
+  assert.equal(
+    (support.match(/class="support-glass-surface"/g) || []).length,
+    5,
+  );
+  assert.equal(
+    (support.match(/class="support-pointer-light"/g) || []).length,
+    5,
+  );
+  assert.equal((support.match(/class="support-stack-card"/g) || []).length, 5);
+  const source = readFileSync(
+    "artifacts/badminton-club/src/components/SupportGlassSurface.tsx",
+    "utf8",
+  );
+  assert.ok(source.includes('event.pointerType !== "mouse"'));
+  assert.ok(source.includes('"(hover: hover) and (pointer: fine)"'));
+  assert.ok(source.includes("useReducedMotion()"));
+  assert.ok(source.includes("event.currentTarget.parentElement"));
+  assert.ok(source.includes("onPointerLeave={reset}"));
+  assert.ok(source.includes("onPointerCancel={reset}"));
+  assert.ok(source.includes("stiffness: 220, damping: 28"));
+  assert.ok(source.includes("radial-gradient(480px circle"));
+  assert.ok(!source.includes("rgba(255,255,255,0.42)"));
+  assert.ok(!source.includes("whileInView"));
+  assert.ok(!source.includes("setState"));
+});
+
+test("all supplied photos fill their frames with one accessible image and no fitted backdrop", () => {
+  const photos = [
+    ...aboutPhotos,
+    ...Object.values(programPhotos).filter((photo) => photo !== undefined),
+    ...Object.values(trainingPhotos),
+    ...Object.values(supportPhotos),
+    ...galleryPhotos,
+  ];
+  assert.equal(photos.length, 35);
+  for (const photo of photos) {
+    const html = render(<PhotoFrame photo={photo} sizes="500px" />, "/");
+    assert.ok(html.includes('data-fit="cover"'), photo.id);
+    assert.ok(html.includes('class="academy-photo-image"'), photo.id);
+    assert.ok(
+      html.includes(`object-fit:cover;object-position:${photo.position}`),
+      photo.id,
+    );
+    assert.equal((html.match(/<img\b/g) || []).length, 1, photo.id);
+    assert.equal((html.match(/\balt="[^"]+"/g) || []).length, 1, photo.id);
+    assert.ok(!html.includes("academy-photo-backdrop"), photo.id);
+    assert.ok(!html.includes("contain"), photo.id);
+  }
+});
+
+test("gallery and program detail photos retain focal crops while filling their containers", () => {
+  assert.equal(
+    galleryPhotos.find((photo) => photo.id === "inside-yoga-awards")?.position,
+    "50% 70%",
+  );
+  assert.equal(
+    galleryPhotos.find((photo) => photo.id === "inside-academy-community")
+      ?.position,
+    "50% 60%",
+  );
+  assert.equal(
+    galleryPhotos.find((photo) => photo.id === "inside-podium")?.position,
+    "50% 60%",
+  );
+  assert.equal(
+    galleryPhotos.find((photo) => photo.id === "inside-team-journey")?.position,
+    "50% 76%",
+  );
+  assert.equal(programPhotos.intermediate?.position, "48% 12%");
+  assert.equal(programPhotos["pro-team"]?.position, "50% 18%");
+  const proTeam = render(
+    <ProgramDetail slug="pro-team" />,
+    "/programs/pro-team",
+  );
+  assert.ok(proTeam.includes("object-fit:cover;object-position:50% 18%"));
+  const detail = render(
+    <ProgramDetail slug="grassroots" />,
+    "/programs/grassroots",
+  );
+  assert.ok(detail.includes('data-fit="cover" data-photo-id="grassroots"'));
+  assert.ok(detail.includes("object-fit:cover;object-position:50% 28%"));
+  assert.ok(detail.includes('loading="eager" fetchPriority="high"'));
+  const gallery = readFileSync(
+    "artifacts/badminton-club/src/components/Gallery.tsx",
+    "utf8",
+  );
+  assert.ok(gallery.includes("style={{ objectPosition: photo.position }}"));
 });
 
 test("journal cards use a padded editorial composition and coach cards keep their artwork exclusion", () => {

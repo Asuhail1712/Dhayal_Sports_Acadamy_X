@@ -1,6 +1,8 @@
 import { Waves, Bot, Dumbbell, Focus } from "lucide-react";
 import { GlassCard, SectionIntro, TextLink } from "@/components/Design";
 import { trainingMethods } from "@/lib/academy-content";
+import { trainingPhotos } from "@/lib/academy-media";
+import { PhotoFrame } from "@/components/PhotoFrame";
 
 const icons = [Waves, Bot, Dumbbell, Focus];
 export function UniqueTraining({ detailed = false }: { detailed?: boolean }) {
@@ -25,6 +27,7 @@ export function UniqueTraining({ detailed = false }: { detailed?: boolean }) {
         <div className="copy-grid">
           {trainingMethods.map((method, i) => {
             const Icon = icons[i];
+            const photo = trainingPhotos[method.title];
             return (
               <GlassCard
                 key={method.title}
@@ -32,6 +35,15 @@ export function UniqueTraining({ detailed = false }: { detailed?: boolean }) {
                 className="copy-card"
                 artwork={false}
               >
+                <div
+                  className="training-card-photo"
+                  style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
+                >
+                  <PhotoFrame
+                    photo={photo}
+                    sizes="(max-width: 767px) calc(100vw - 88px), 44vw"
+                  />
+                </div>
                 <div className="icon-tile">
                   <Icon size={23} />
                 </div>

@@ -1,0 +1,123 @@
+{
+  "training-yoga-update": {
+    "source": "New Update/Yoga.png",
+    "sourceSha256": "d91084677bd6272bc19ee8289763af49f2d6aa1ecdd32d6ee478b0d920cf264b",
+    "originalBytes": 2544125,
+    "width": 1774,
+    "height": 887,
+    "bytes": 313550,
+    "smallWidth": 640,
+    "smallHeight": 320,
+    "smallBytes": 50032
+  },
+  "training-robo-update": {
+    "source": "New Update/Robo.png",
+    "sourceSha256": "b05c3644eddbc002429ece9515d574a7a5dd2ee57053691335c98288c6f68866",
+    "originalBytes": 2226952,
+    "width": 1774,
+    "height": 887,
+    "bytes": 258466,
+    "smallWidth": 640,
+    "smallHeight": 320,
+    "smallBytes": 42336
+  },
+  "training-functional-update": {
+    "source": "New Update/Functional.png",
+    "sourceSha256": "63a41d7e0fb34091734d6a06f8205f6414711723984381a4102295317d27bf2f",
+    "originalBytes": 2762625,
+    "width": 1774,
+    "height": 887,
+    "bytes": 351772,
+    "smallWidth": 640,
+    "smallHeight": 320,
+    "smallBytes": 49636
+  },
+  "training-coordination-update": {
+    "source": "New Update/Coordination.png",
+    "sourceSha256": "b3c84ec71b0bd3a9243f78caefbed151923864e03d9038523c1c0993daf567a1",
+    "originalBytes": 2301815,
+    "width": 1774,
+    "height": 887,
+    "bytes": 260624,
+    "smallWidth": 640,
+    "smallHeight": 320,
+    "smallBytes": 43974
+  },
+  "about-newspaper-update": {
+    "source": "New Update/About 2png.png",
+    "sourceSha256": "06869de1c972c62458a6bf1946420ded83b32b29887a7161e5deb1724085d9bf",
+    "originalBytes": 3070122,
+    "width": 1086,
+    "height": 1448,
+    "bytes": 380232,
+    "smallWidth": 640,
+    "smallHeight": 853,
+    "smallBytes": 126158
+  },
+  "about-medal-update": {
+    "source": "New Update/About 3.png",
+    "sourceSha256": "63e388100626f420182c2ae2328f8b8bcf5d9fddbcf405f6fcfcb016898c7e65",
+    "originalBytes": 2155683,
+    "width": 1086,
+    "height": 1448,
+    "bytes": 168142,
+    "smallWidth": 640,
+    "smallHeight": 853,
+    "smallBytes": 70144
+  },
+  "sports-psychology-update": {
+    "source": "New Update/Discipline1.png",
+    "sourceSha256": "2db2d59cb6a3a83ff3c0a6b6de072eafe7ed831254282a639ad0b9644f64faf2",
+    "originalBytes": 1838256,
+    "width": 1254,
+    "height": 1254,
+    "bytes": 105500,
+    "smallWidth": 640,
+    "smallHeight": 640,
+    "smallBytes": 32238
+  },
+  "sports-physician-update": {
+    "source": "New Update/Discipline2.png",
+    "sourceSha256": "9d96083b7b828cd12ddb13d74f88c0af85ee5b99b8c3eea0c8f26d9aad203a3b",
+    "originalBytes": 1251487,
+    "width": 1036,
+    "height": 1036,
+    "bytes": 42210,
+    "smallWidth": 640,
+    "smallHeight": 640,
+    "smallBytes": 12378
+  },
+  "sports-trainer-update": {
+    "source": "New Update/Discipline3.png",
+    "sourceSha256": "4651339ab825308c309acd7e988d5e8dc9efe1909344dbec1046579aa42f510d",
+    "originalBytes": 1933489,
+    "width": 1254,
+    "height": 1254,
+    "bytes": 134322,
+    "smallWidth": 640,
+    "smallHeight": 640,
+    "smallBytes": 39156
+  },
+  "sports-nutritionist-update": {
+    "source": "New Update/Discipline4.png",
+    "sourceSha256": "7f20b2150c43d1cadc379dc7e42ece084d050a45b840fcb4b3375084064bf2bf",
+    "originalBytes": 1843455,
+    "width": 1254,
+    "height": 1254,
+    "bytes": 82912,
+    "smallWidth": 640,
+    "smallHeight": 640,
+    "smallBytes": 22424
+  },
+  "sports-yoga-update": {
+    "source": "New Update/Discipline5.png",
+    "sourceSha256": "a7b64f96d3045ef5e68994b2e37867de0af957f44757056352d1a1fa7da3b730",
+    "originalBytes": 2133937,
+    "width": 1254,
+    "height": 1254,
+    "bytes": 187926,
+    "smallWidth": 640,
+    "smallHeight": 640,
+    "smallBytes": 52804
+  }
+}

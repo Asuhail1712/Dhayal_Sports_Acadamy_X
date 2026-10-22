@@ -18,6 +18,7 @@ import {
 import { useLocation } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { startRouteTransition } from "@/hooks/use-scroll-restoration";
+import type { AcademyPhoto } from "@/lib/academy-media";
 import {
   CardArtwork,
   CardVisual,
@@ -152,6 +153,7 @@ export function GlassCard({
   artwork = "shuttlecock",
   artworkLayout = "header",
   artworkTitle,
+  photo,
   header,
   tone,
 }: {
@@ -163,6 +165,7 @@ export function GlassCard({
   artwork?: CardMotif | false;
   artworkLayout?: "header" | "custom";
   artworkTitle?: ReactNode;
+  photo?: AcademyPhoto;
   header?: ReactNode;
   tone?: CardTone;
 }) {
@@ -193,6 +196,7 @@ export function GlassCard({
     <motion.article
       className={`premium-card ${className}`}
       data-card-motif={artwork || undefined}
+      data-card-photo={photo?.id}
       data-artwork-layout={artwork ? artworkLayout : undefined}
       data-card-tone={
         artwork ? tone || (index % 2 ? "green" : "blue") : undefined
@@ -215,7 +219,12 @@ export function GlassCard({
       />
       {artwork && <CardArtwork />}
       {artwork && artworkLayout === "header" && (
-        <CardVisual motif={artwork} header={header} title={artworkTitle} />
+        <CardVisual
+          motif={artwork}
+          header={header}
+          title={artworkTitle}
+          image={photo}
+        />
       )}
       {children}
     </motion.article>

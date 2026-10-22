@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Clock3 } from "lucide-react";
 import { whatsappUrl, type AcademyProgram } from "@/lib/academy-content";
 import { GlassCard, SiteLink, ease } from "@/components/Design";
+import { getProgramPhoto } from "@/lib/academy-media";
+import { PhotoFrame } from "@/components/PhotoFrame";
 
 const levels = ["All", "Beginner", "Intermediate", "Advanced", "Elite"];
 const images: Record<string, string> = {
@@ -67,72 +69,83 @@ export function ProgramCollection({
         }
       >
         <AnimatePresence mode="popLayout">
-          {visible.map((program, index) => (
-            <motion.div
-              key={program.id}
-              layout
-              initial={reduced ? false : { opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.4, ease }}
-            >
-              <GlassCard
-                className="program-card h-full"
-                index={index}
-                artwork={false}
+          {visible.map((program, index) => {
+            const photo = getProgramPhoto(program.slug);
+            return (
+              <motion.div
+                key={program.id}
+                layout
+                initial={reduced ? false : { opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ duration: 0.4, ease }}
               >
-                <SiteLink
-                  href={"/programs/" + program.slug}
-                  className="program-card-image"
-                  aria-label={"Explore " + program.name}
+                <GlassCard
+                  className="program-card h-full"
+                  index={index}
+                  artwork={false}
                 >
-                  <img
-                    src={images[program.level] || images.Beginner}
-                    alt="Badminton training and court sessions"
-                    loading="lazy"
-                  />
-                  <span
-                    className={
-                      "pill " +
-                      (program.level === "Beginner" ? "pill--green" : "")
-                    }
+                  <SiteLink
+                    href={"/programs/" + program.slug}
+                    className="program-card-image"
+                    aria-label={"Explore " + program.name}
                   >
-                    {program.level}
-                  </span>
-                  <span className="program-card-index">0{index + 1}</span>
-                </SiteLink>
-                <div className="program-card-body">
-                  <h3>
-                    <SiteLink href={"/programs/" + program.slug}>
-                      {program.name}
-                    </SiteLink>
-                  </h3>
-                  <p>{preview ? program.summary : program.description}</p>
-                  <div className="program-meta">
-                    <span>
-                      <Clock3 size={13} />
-                      {program.age}
-                    </span>
-                  </div>
-                  <div className="program-card-bottom">
-                    <div>Fees and batch timings on request</div>
-                    <a
-                      href={whatsappUrl(
-                        "Hello Dayal Sports Academy, I would like to enquire about " +
-                          program.name +
-                          ".",
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    {photo ? (
+                      <PhotoFrame
+                        photo={photo}
+                        sizes="(max-width: 767px) calc(100vw - 58px), (max-width: 1100px) 44vw, 40vw"
+                      />
+                    ) : (
+                      <img
+                        src={images[program.level] ?? images.Beginner}
+                        alt="Badminton training and court sessions"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                    <span
+                      className={
+                        "pill " +
+                        (program.level === "Beginner" ? "pill--green" : "")
+                      }
                     >
-                      Enquire
-                      <ArrowUpRight size={16} />
-                    </a>
+                      {program.level}
+                    </span>
+                    <span className="program-card-index">0{index + 1}</span>
+                  </SiteLink>
+                  <div className="program-card-body">
+                    <h3>
+                      <SiteLink href={"/programs/" + program.slug}>
+                        {program.name}
+                      </SiteLink>
+                    </h3>
+                    <p>{preview ? program.summary : program.description}</p>
+                    <div className="program-meta">
+                      <span>
+                        <Clock3 size={13} />
+                        {program.age}
+                      </span>
+                    </div>
+                    <div className="program-card-bottom">
+                      <div>Fees and batch timings on request</div>
+                      <a
+                        href={whatsappUrl(
+                          "Hello Dayal Sports Academy, I would like to enquire about " +
+                            program.name +
+                            ".",
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Enquire
+                        <ArrowUpRight size={16} />
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </GlassCard>
-            </motion.div>
-          ))}
+                </GlassCard>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </motion.div>
       {visible.length === 0 && (

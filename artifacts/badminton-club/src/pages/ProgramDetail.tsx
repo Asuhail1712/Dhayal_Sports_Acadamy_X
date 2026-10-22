@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GlassCard, Reveal, SiteLink, TextLink } from "@/components/Design";
 import { getProgramBySlug } from "@/lib/content";
 import { whatsappUrl } from "@/lib/academy-content";
+import { PhotoFrame } from "@/components/PhotoFrame";
 
 export default function ProgramDetail({ slug }: { slug: string }) {
   const program = getProgramBySlug(slug);
@@ -54,11 +55,21 @@ export default function ProgramDetail({ slug }: { slug: string }) {
             </Button>
           </Reveal>
           <Reveal className="detail-program-photo">
-            <img
-              src={program.heroImage}
-              alt="Badminton training and athlete development"
-              fetchPriority="high"
-            />
+            {program.heroPhoto ? (
+              <PhotoFrame
+                photo={program.heroPhoto}
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1400px) calc(100vw - 80px), 1320px"
+                loading="eager"
+                fetchPriority="high"
+              />
+            ) : (
+              <img
+                src={program.heroImage}
+                alt="Badminton training and athlete development"
+                fetchPriority="high"
+                decoding="async"
+              />
+            )}
           </Reveal>
           <div className="copy-grid mt-10">
             <GlassCard

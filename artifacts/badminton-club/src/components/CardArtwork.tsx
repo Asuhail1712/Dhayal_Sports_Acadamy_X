@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { AcademyPhoto } from "@/lib/academy-media";
 import {
   Trophy,
   Medal,
@@ -72,10 +73,12 @@ export function CardVisual({
   motif,
   header,
   title,
+  image,
 }: {
   motif: CardMotif;
   header?: ReactNode;
   title?: ReactNode;
+  image?: AcademyPhoto;
 }) {
   const Icon = icons[motif];
   return (
@@ -91,8 +94,23 @@ export function CardVisual({
         )}
       </div>
       {title && <div className="card-visual-title">{title}</div>}
-      <div className="card-art-stage" aria-hidden="true">
-        <CardIllustration motif={motif} />
+      <div className="card-art-stage" aria-hidden={image ? undefined : true}>
+        {image ? (
+          <img
+            className="card-portrait"
+            src={image.src}
+            srcSet={image.srcSet}
+            sizes="200px"
+            width={image.width}
+            height={image.height}
+            alt={image.alt}
+            loading="lazy"
+            decoding="async"
+            style={{ objectPosition: image.position }}
+          />
+        ) : (
+          <CardIllustration motif={motif} />
+        )}
       </div>
     </div>
   );

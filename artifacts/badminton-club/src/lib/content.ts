@@ -1,4 +1,5 @@
 import { academyPrograms } from "@/lib/academy-content";
+import { getProgramPhoto } from "@/lib/academy-media";
 
 export function slugify(value: string) {
   return value
@@ -19,10 +20,14 @@ const programImagesByLevel: Record<string, string> = {
     "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=1400&q=85",
 };
 
-export const programDetails = academyPrograms.map((program) => ({
-  ...program,
-  heroImage: programImagesByLevel[program.level],
-}));
+export const programDetails = academyPrograms.map((program) => {
+  const heroPhoto = getProgramPhoto(program.slug);
+  return {
+    ...program,
+    heroPhoto,
+    heroImage: heroPhoto?.src ?? programImagesByLevel[program.level],
+  };
+});
 export type ProgramDetail = (typeof programDetails)[number];
 
 export function getProgramBySlug(slug: string) {
